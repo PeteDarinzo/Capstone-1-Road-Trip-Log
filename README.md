@@ -9,6 +9,7 @@ Springboard Capstone 1 - Road Trip Log
    - The [IP-API](https://ip-api.com/docs/api:json) can be used to obtain a user’s geographic location from their IP address.
    - The [Image Charts](https://documentation.image-charts.com/) API can be used to generate charts of user expenses, daily mileage, etc.
    - The [Observable](https://github.com/d3/d3/blob/main/API.md) API could be used to create interactive maps plotting the trip based on post locations  (stretch goal).
+   - Several APIs exist for route planning, restaurants, and weather. These could be used to accomplish the stretch goal of providing the user information about future destinations to aid in trip planning.
 
 4. **Outline**
    - **Database Schema**
