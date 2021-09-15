@@ -1,7 +1,7 @@
 # Capstone-1-Road-Trip-Log
 Springboard Capstone 1 - Road Trip Log
 
-Goal: The goal of this app is to provide users with a way to create daily logs for road trips. User’s create text posts, and can upload images relating to the post. User’s may optionally input any expenses that day, and add notes on maintenance (oil changes, tire rotations, etc.). The app could be expanded to be a social network with other nomads, where their route is shared, along with pictures and posts. 
+- Goal: The goal of this app is to provide users with a way to create daily logs for road trips. User’s create text posts, and can upload images relating to the post. User’s may optionally input any expenses that day, and add notes on maintenance (oil changes, tire rotations, etc.). The app could be expanded to be a social network with other nomads, where their route is shared, along with pictures and posts. 
 
 Demographic: This app is targeted to anyone underway on a road trip. The app will be more useful to long term RVers and “van lifers”, but is accessible to anyone on a multi day trip. 
 
