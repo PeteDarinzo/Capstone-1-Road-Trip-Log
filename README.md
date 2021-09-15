@@ -10,13 +10,6 @@ Springboard Capstone 1 - Road Trip Log
    - The [Image Charts](https://documentation.image-charts.com/) API can be used to generate charts of user expenses, daily mileage, etc.
    - The [Observable](https://github.com/d3/d3/blob/main/API.md) API could be used to create interactive maps plotting the trip based on post locations  (stretch goal).
 
-4. Drop the salmon into the egg-milk bowl.
-
-   Here are some techniques on salmon-dropping:
-   * Make sure no trout or children are present
-   * Use both hands
-   * Always have a towel nearby in case of messes
-
 4. **Outline**
    - Database Schema
    
