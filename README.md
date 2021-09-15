@@ -19,7 +19,7 @@ Springboard Capstone 1 - Road Trip Log
 
 4. **Outline**
    - Database Schema
-   -
+   
       1. User:
          - Username
          - First name
