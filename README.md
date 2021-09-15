@@ -20,42 +20,42 @@ Springboard Capstone 1 - Road Trip Log
 4. **Outline**
    - Database Schema
    
-      1. User:
+      1. **User**
          - Username
          - First name
          - Last name
          - Password
          
-      2. Posts
+      2. **Posts**
          - Id
          - Content
          - Location
          - Date
          - Mileage
          
-      3. Locations
+      3. **Locations**
          - Location
          - Post id
          
-      4. Images
+      4. **Images**
          - Id
          - Post id 
          - Name
          
-      5. Finances
+      5. **Finances**
          - Id
          - Amount
          - Category
          - Date
          
-      6. Maintenance 
+      6. **Maintenance**
          - Id
          - Description
          - Mileage
          - Date
          - Post Id
          
-      7. TODO
+      7. **TODO**
          - Id
          - Description
 
