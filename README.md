@@ -59,30 +59,30 @@ Springboard Capstone 1 - Road Trip Log
          - Id
          - Description
 
-   3. Potential API Issues
+   - **Potential API Issues**
 
-   4. Sensitive information
+   - **Sensitive information**
       - Location: A user’s location can be considered sensitive. The IP-API will be submitting the user’s IP to retrieve location data. 
       - Password
 
-   5.Functionality
-Create posts/upload images.
-View budget/mileage data.
-(Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
-(Stretch goal) view data on future destinations.
+   - **Functionality**
+      - Create posts/upload images.
+      - View budget/mileage data.
+      - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
+      - (Stretch goal) view data on future destinations.
 
-User flow
-The user starts on the dashboard displaying location, mileage, finance data, and to do list.
-Create a text log to record days events, expenses, mileage, maintenance, and upload pictures.
-View previous logs (also edit/delete).
-(Stretch goal) search future destinations. Enter a destination city, look at routes, weather data, restaurants etc.  
+   - **User flow**
+      - The user starts on the dashboard displaying location, mileage, finance data, and to do list.
+      - Create a text log to record days events, expenses, mileage, maintenance, and upload pictures.
+      - View previous logs (also edit/delete).
+      - (Stretch goal) search future destinations. Enter a destination city, look at routes, weather data, restaurants etc.  
 
-CRUD features
-Create users.
-Create logs.
+   - **CRUD features**
+      - Create users.
+      - Create logs.
 
-Features greater than CRUD?
-View charts of budget, mileage, etc.
-(Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
-(Stretch goal) View POIs/gas/restaurants/weather for future destinations.
+   - **Features greater than CRUD**
+      - View charts of budget, mileage, etc.
+      - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
+      - (Stretch goal) View POIs/gas/restaurants/weather for future destinations.
 
