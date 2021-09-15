@@ -70,6 +70,7 @@
       - The user starts on the dashboard displaying location, mileage, finance data, and to do list.
       - Create a text log to record days events, expenses, mileage, maintenance, and upload pictures.
       - View previous logs (also edit/delete).
+      - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
       - (Stretch goal) search future destinations. Enter a destination city, look at routes, weather data, restaurants etc.  
 
    - **CRUD features**
