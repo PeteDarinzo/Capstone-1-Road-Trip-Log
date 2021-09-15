@@ -11,7 +11,7 @@ Springboard Capstone 1 - Road Trip Log
    - The [Observable](https://github.com/d3/d3/blob/main/API.md) API could be used to create interactive maps plotting the trip based on post locations  (stretch goal).
 
 4. **Outline**
-   - Database Schema
+   - **Database Schema**
    
       1. **User**
          - Username
