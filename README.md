@@ -19,46 +19,53 @@ Springboard Capstone 1 - Road Trip Log
 
 4. **Outline**
    - Database Schema
-      - User:
+   -
+      1. User:
          - Username
          - First name
          - Last name
          - Password
-Posts
-Id
-Content
-Location
-Date
-Mileage
-Locations
-Location
-Post id
-Images
-Id
-Post id 
-Name
-Finances
-Id
-Amount
-Category
-Date
-Maintenance 
-Id
-Description
-Mileage
-Date
-Post Id
-TODO
-Id
-Description
+         
+      2. Posts
+         - Id
+         - Content
+         - Location
+         - Date
+         - Mileage
+         
+      3. Locations
+         - Location
+         - Post id
+         
+      4. Images
+         - Id
+         - Post id 
+         - Name
+         
+      5. Finances
+         - Id
+         - Amount
+         - Category
+         - Date
+         
+      6. Maintenance 
+         - Id
+         - Description
+         - Mileage
+         - Date
+         - Post Id
+         
+      7. TODO
+         - Id
+         - Description
 
-Potential API Issues
+   3. Potential API Issues
 
-Sensitive information
-Location: A user’s location can be considered sensitive. The IP-API will be submitting the user’s IP to retrieve location data. 
-Password
+   4. Sensitive information
+      - Location: A user’s location can be considered sensitive. The IP-API will be submitting the user’s IP to retrieve location data. 
+      - Password
 
-Functionality
+   5.Functionality
 Create posts/upload images.
 View budget/mileage data.
 (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
