@@ -6,14 +6,13 @@ Springboard Capstone 1 - Road Trip Log
 2. **Demographic**: This app is targeted to anyone underway on a road trip. The app will be more useful to long term RVers and “van lifers”, but is accessible to anyone on a multi day trip. 
 
 3. **Data/API**
- - The [IP-API](https://ip-api.com/docs/api:json) can be used to obtain a user’s geographic location from their IP address.
- - The [Image Charts](https://documentation.image-charts.com/) API can be used to generate charts of user expenses, daily mileage, etc.
- - The [Observable](https://github.com/d3/d3/blob/main/API.md) API could be used to create interactive maps plotting the trip based on post locations  (stretch goal).
+   - The [IP-API](https://ip-api.com/docs/api:json) can be used to obtain a user’s geographic location from their IP address.
+   - The [Image Charts](https://documentation.image-charts.com/) API can be used to generate charts of user expenses, daily mileage, etc.
+   - The [Observable](https://github.com/d3/d3/blob/main/API.md) API could be used to create interactive maps plotting the trip based on post locations  (stretch goal).
 
 4. Drop the salmon into the egg-milk bowl.
 
    Here are some techniques on salmon-dropping:
-
    * Make sure no trout or children are present
    * Use both hands
    * Always have a towel nearby in case of messes
