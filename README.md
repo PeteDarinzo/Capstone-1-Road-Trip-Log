@@ -18,12 +18,12 @@ Springboard Capstone 1 - Road Trip Log
    * Always have a towel nearby in case of messes
 
 4. **Outline**
-Database Schema
-User:
-Username
-First name
-Last name
-Password
+   - Database Schema
+      -User:
+         - Username
+         - First name
+         - Last name
+         - Password
 Posts
 Id
 Content
