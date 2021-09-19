@@ -2,7 +2,7 @@
 
 ## Developer: Peter Darinzo
 
-1. **Goal**: The goal of this app is to provide users with a road trip assistant. Users will be able to search for services at the location of their choice, and create daily logs for the trip. User’s create text posts, and can upload images relating to the post. User’s may optionally input any expenses that day, and add notes on maintenance (oil changes, tire rotations, etc.). The app could be expanded to be a social network with other nomads, where their route is shared, along with pictures and posts. 
+1. **Goal**: The goal of this app is to provide users with a road trip assistant. Users will be able to search for services at the location of their choice (local or future), and create daily logs for the trip. Users can create text posts upload images relating to the post. User’s may optionally input any expenses that day, and add notes on maintenance (oil changes, tire rotations, etc.). The app could be expanded to be a social network with other nomads, where their route is shared, along with pictures and posts. 
 
 2. **Demographic**: This app is targeted to anyone underway on a road trip. The app will be more useful to long term RVers and “van lifers”, but is accessible to anyone on a multi day trip. 
 
@@ -13,7 +13,7 @@
    - **Database Schema In Order of Priority**
    
       1. **User**
-         - USer Id
+         - User Id
          - Username
          - First name
          - Last name
@@ -61,13 +61,14 @@
    - **Potential API Issues**
 
    - **Sensitive information**
-      - Location: A user’s location can be considered sensitive. The IP-API will be submitting the user’s IP to retrieve location data. 
+      - Location: A user’s location can be considered sensitive. At this time, user's will be submitting search and post locations manually. APIs exist to obtain a user's location based on IP, this could be implemented as a stretch goal and would require user permission.
       - Password
 
    - **Functionality**
       - Create posts/upload images.
       - View budget/mileage data.
       - View services for local and future destinations.
+      - (Stretch goal) Obtain user location from geocoding API. Posts and local searches will automatically use this location instead of manual location input.
       - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
 
    - **User flow**
@@ -76,7 +77,6 @@
       - Create a text log to record days events, expenses, mileage, maintenance, and upload pictures.
       - View previous logs (also edit/delete).
       - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
-      - (Stretch goal) search future destinations. Enter a destination city, look at routes, weather data, restaurants etc.  
 
    - **CRUD features**
       - Create users.
