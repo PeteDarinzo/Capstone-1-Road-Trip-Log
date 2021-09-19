@@ -7,15 +7,13 @@
 2. **Demographic**: This app is targeted to anyone underway on a road trip. The app will be more useful to long term RVers and “van lifers”, but is accessible to anyone on a multi day trip. 
 
 3. **Data/API**
-   - The [IP-API](https://ip-api.com/docs/api:json) can be used to obtain a user’s geographic location from their IP address.
-   - The [Image Charts](https://documentation.image-charts.com/) API can be used to generate charts of user expenses, daily mileage, etc.
-   - The [Observable](https://github.com/d3/d3/blob/main/API.md) API could be used to create interactive maps plotting the trip based on post locations  (stretch goal).
-   - Several APIs exist for route planning, restaurants, and weather. These could be used to accomplish the stretch goal of providing the user information about future destinations to aid in trip planning.
+   - The [Yelp](https://www.yelp.com/developers/documentation/v3) will be used to show the user local services (campsites, restaurants, libraries), or at a future destination. The Yelp API accepts human readable locations, or lat/lon pairs for a location.
 
 4. **Outline**
    - **Database Schema**
    
       1. **User**
+         - USer Id
          - Username
          - First name
          - Last name
@@ -23,35 +21,41 @@
          
       2. **Posts**
          - Id
+         - User Id
          - Content
          - Location
          - Date
          - Mileage
          
       3. **Locations**
+         - Id
          - Location
          - Post id
-         
-      4. **Images**
+
+      4. **Maintenance**
          - Id
-         - Post id 
-         - Name
-         
-      5. **Finances**
-         - Id
-         - Amount
-         - Category
-         - Date
-         
-      6. **Maintenance**
-         - Id
+         - User Id
          - Description
          - Mileage
          - Date
          - Post Id
          
+      5. **Finances**
+         - Id
+         - User Id
+         - Amount
+         - Category
+         - Date
+         
+      6. **Images**
+         - Id
+         - User Id
+         - Post id 
+         - Name
+         
       7. **TODO**
          - Id
+         - User Id
          - Description
 
    - **Potential API Issues**
@@ -63,11 +67,12 @@
    - **Functionality**
       - Create posts/upload images.
       - View budget/mileage data.
+      - View services for local and future destinations.
       - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
-      - (Stretch goal) view data on future destinations.
 
    - **User flow**
       - The user starts on the dashboard displaying location, mileage, finance data, and to do list.
+      - The dashboard has a search area where users can input a location and type of service, and view results.
       - Create a text log to record days events, expenses, mileage, maintenance, and upload pictures.
       - View previous logs (also edit/delete).
       - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
@@ -78,7 +83,7 @@
       - Create logs.
 
    - **Features greater than CRUD**
+      - View POIs/gas/restaurants/camp sites for local and future destinations.
       - View charts of budget, mileage, etc.
       - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
-      - (Stretch goal) View POIs/gas/restaurants/weather for future destinations.
 
