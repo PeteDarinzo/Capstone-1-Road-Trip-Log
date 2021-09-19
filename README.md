@@ -10,7 +10,7 @@
    - The [Yelp](https://www.yelp.com/developers/documentation/v3) will be used to show the user local services (campsites, restaurants, libraries), or at a future destination. The Yelp API accepts human readable locations, or lat/lon pairs for a location.
 
 4. **Outline**
-   - **Database Schema**
+   - **Database Schema In Order of Priority**
    
       1. **User**
          - USer Id
