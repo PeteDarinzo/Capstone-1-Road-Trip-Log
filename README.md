@@ -74,7 +74,7 @@
    - **User flow**
       - The user starts on the dashboard displaying location, mileage, finance data, and to do list.
       - The dashboard has a search area where users can input a location and type of service, and view results.
-      - Create a text log to record days events, expenses, mileage, maintenance, and upload pictures.
+      - Create a text log to record day's events, expenses, mileage, maintenance, and upload pictures.
       - View previous logs (also edit/delete).
       - (Stretch goal) View map of route taken based on previous posts. Click on a location marker to view related posts. 
 
