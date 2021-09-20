@@ -7,7 +7,7 @@
 2. **Demographic**: This app is targeted to anyone underway on a road trip. The app will be more useful to long term RVers and “van lifers”, but is accessible to anyone on a multi day trip. 
 
 3. **Data/API**
-   - The [Yelp](https://www.yelp.com/developers/documentation/v3) will be used to show the user services (campsites, restaurants, libraries) locally, or at a future destination. The Yelp API accepts a type of service to search for, human readable locations or lat/lon pairs for a location, and returns a list of matching businesses.
+   - The [Yelp](https://www.yelp.com/developers/documentation/v3) API will be used to show the user services (campsites, restaurants, libraries) locally, or at a future destination. The Yelp API accepts a type of service to search for, human readable locations or lat/lon pairs for a location, and returns a list of matching businesses.
 
 4. **Outline**
    - **Database Schema In Order of Priority**
