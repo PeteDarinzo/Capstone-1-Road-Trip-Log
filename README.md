@@ -2,7 +2,7 @@
 
 ## Developer: Peter Darinzo
 
-1. **Goal**: The goal of this app is to provide users with a road trip assistant. Users will be able to search for services at the location of their choice (local or future), and create daily logs for the trip. Users can create text posts upload images relating to the post. User’s may optionally input any expenses that day, and add notes on maintenance (oil changes, tire rotations, etc.). The app could be expanded to be a social network with other nomads, where their route is shared, along with pictures and posts. 
+1. **Goal**: The goal of this app is to provide users with a road trip assistant. Users will be able to search for services at the location of their choice (local or future), and create daily logs for the trip. Users can create text posts and upload images relating to the post. User’s may optionally input any expenses that day, and add notes on maintenance (oil changes, tire rotations, etc.). The app could be expanded to be a social network with other nomads, where their route is shared, along with pictures and posts. 
 
 2. **Demographic**: This app is targeted to anyone underway on a road trip. The app will be more useful to long term RVers and “van lifers”, but is accessible to anyone on a multi day trip. 
 
