@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+All Logs
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col bg-secondary">
+            <h2 style="color:white;">Entries</h2>
+            <div>
+                <form action="/logs/new" method="GET">
+                    <button class="btn btn-primary btn-block w-100">
+                        <p class="text-left">New Entry</p>
+                    </button>
+                </form>
+            </div>
+            {% for log in logs %}
+            <div>
+                <form action="/logs/{{log.id}}" method="GET">
+                    <button class="btn btn-secondary w-100">
+                        <p class="text-left">{{log.title}}</p>
+                        <p class="text-left">{{log.location.location}}</p>
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

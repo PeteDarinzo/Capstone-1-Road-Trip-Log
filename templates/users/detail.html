@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{user.username}}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-2 bg-secondary">
+            <h2 style="color:white;">Entries</h2>
+            <div>
+                <form action="/logs/new" method="GET">
+                    <button class="btn btn-primary btn-block w-100">
+                        <p class="text-left">
+                            New Entry
+                        </p>
+                    </button>
+                </form>
+            </div>
+            <div>
+                <form action="/logs/all" method="GET">
+                    <button class="btn btn-primary btn-block w-100">
+                        <p class="text-left">
+                            All Entries
+                        </p>
+                    </button>
+                </form>
+            </div>
+            {% for log in logs %}
+            <div>
+                <form action="/logs/{{log.id}}" method="GET">
+                    <button class="btn btn-secondary w-100">
+                        <p class="text-left">{{log.title}}</p>
+                        <p class="text-left">{{log.location.location}}</p>
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-8 bg-primary">
+
+        </div>
+
+        <div class="col-2 bg-secondary">
+            <h2 style="color:white;">Records</h2>
+            <div>
+                <form action="/maintenance/new" method="GET">
+                    <button class="btn btn-primary w-100">
+                        <p class="text-left">New Record</p>
+                    </button>
+                </form>
+            </div>
+            <div>
+                <form action="/maintenance/all" method="GET">
+                    <button class="btn btn-primary w-100">
+                        <p class="text-left">All Records</p>
+                    </button>
+                </form>
+            </div>
+            {% for log in maintenance %}
+            <div>
+                <form action="/maintenance/{{log.id}}" method="GET">
+                    <button class="btn btn-secondary w-100">
+                        <p class="text-left">{{log.title}}</p>
+                        <p class="text-left">{{log.location.location}}</p>
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

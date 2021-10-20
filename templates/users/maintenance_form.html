@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+New Maint
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid mt-4 h-100">
+
+    <div class="row gx-5 h-100">
+
+        {{ entry_list(logs) }}
+
+        <div class="col-8">
+            <div>
+                <form method="POST" id="log-form" class="p-3">
+                    {{ form.hidden_tag() }}
+    
+                    <div class="form-group">
+    
+                        {% for field in form if field.widget.input_type != "hidden" %}
+                        <p>
+                            {{ field.label }}
+                            {{ field() }}
+    
+                            {% for error in field.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% endfor%}
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block">Enter Record!</button>
+                </form>
+            </div>
+        </div>
+
+        {{ record_list(maintenance) }}
+
+    </div>
+</div>
+
+
+
+{% endblock %}

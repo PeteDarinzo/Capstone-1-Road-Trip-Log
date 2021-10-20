@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{log.id}}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid mt-4 h-100">
+
+    <div class="row gx-5 h-100">
+
+        {{ entry_list(logs) }}
+
+        <div class="col-8">
+            <div class="p-3" id="log-div">
+                <h2>{{log.title}}</h2>
+                <span>{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
+                <p class="bg-light border border-round p-4">
+                    {{log.text}}
+                </p>
+                <form>
+                    <div class="text-left">
+                        <button formaction="/logs/{{log.id}}/edit" formmethod="GET"
+                            class="btn btn-warning btn-lg m-2">Edit</button>
+
+                        <button formaction="/logs/{{log.id}}/delete" formmethod="POST"
+                            class="btn btn-danger btn-lg m-2">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {{ record_list(maintenance) }}
+
+    </div>
+</div>
+
+{% endblock %}
