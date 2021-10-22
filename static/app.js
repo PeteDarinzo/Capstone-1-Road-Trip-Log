@@ -109,10 +109,8 @@ async function removePlace(evt) {
 
     await axios.post(`/places/${placeId}/delete`);
 
-    $button.closest("div.container").remove();
+    $button.closest("div.accordion-item").remove();
 }
-
-
 
 async function savePlace(evt) {
 
