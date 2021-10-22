@@ -38,16 +38,25 @@ db.session.commit()
 
 first_log = Log(
     user_id=me.id,
-    date=datetime.now(tz=None),
+    date='2021-5-1',
     location_id=salt_lake_city.id,
     mileage=56000,
     title="Setting Off",
     text="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit a."
 )
 
+second_log = Log(
+    user_id=me.id,
+    date='2020-6-9',
+    location_id=las_vegas.id,
+    mileage=58000,
+    title="Lost it all in Vegas.",
+    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
+)
+
 third_log = Log(
     user_id=me.id,
-    date=datetime.now(tz=None),
+    date='2020-8-9',
     location_id=sherman.id,
     mileage=56800,
     title="Second Log.",
@@ -57,7 +66,7 @@ third_log = Log(
 
 fourth_log = Log(
     user_id=me.id,
-    date=datetime.now(tz=None),
+    date='2020-9-9',
     location_id=ames.id,
     mileage=57500,
     title="Where the heck am I?",
@@ -65,14 +74,7 @@ fourth_log = Log(
 )
 
 
-second_log = Log(
-    user_id=me.id,
-    date=datetime.now(tz=None),
-    location_id=las_vegas.id,
-    mileage=58000,
-    title="Lost it all in Vegas.",
-    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
-)
+
 
 
 
@@ -85,7 +87,7 @@ db.session.commit()
 
 first_maintenance = Maintenance(
     user_id=me.id,
-    date="Oct 12 2021",
+    date="2021-10-12",
     mileage=56123,
     location_id=salt_lake_city.id,
     title="Oil",
@@ -95,7 +97,7 @@ first_maintenance = Maintenance(
 
 second_maintenance = Maintenance(
     user_id=me.id,
-    date="Oct 15, 2021",
+    date="2021-10-14",
     mileage=57123,
     location_id=sherman.id,
     title="Elbow Grease.",

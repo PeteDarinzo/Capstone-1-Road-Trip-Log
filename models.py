@@ -27,8 +27,8 @@ class User(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
 
-    logs = db.relationship("Log", cascade="all, delete")
-    maintenance = db.relationship("Maintenance", cascade="all, delete")
+    logs = db.relationship("Log", cascade="all, delete", backref="user")
+    maintenance = db.relationship("Maintenance", cascade="all, delete", backref="user")
     places = db.relationship("Place", secondary="users_places")
 
     # @classmethod
@@ -74,14 +74,14 @@ class Log(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="cascade"))
-    date = db.Column(db.DateTime)
+    date = db.Column(db.Date, nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
     mileage = db.Column(db.Integer, nullable=True)
     title = db.Column(db.Text, nullable=False, unique=True)
     text = db.Column(db.Text, nullable=False)
 
-    user = db.relationship("User")
-    location = db.relationship("Location")
+    # user = db.relationship("User")
+    # location = db.relationship("Location")
 
 
 class Location(db.Model):
@@ -94,8 +94,8 @@ class Location(db.Model):
     # state = db.Column(db.Text, nullable=False)
     location = db.Column(db.Text, nullable=False, unique=True)
     
-    logs = db.relationship("Log")
-
+    logs = db.relationship("Log", backref="location")
+    maintenance = db.relationship("Maintenance", backref="location")
 
 class Maintenance(db.Model):
     """Maintenance model."""
@@ -104,14 +104,14 @@ class Maintenance(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    date = db.Column(db.Text, nullable=False)
+    date = db.Column(db.Date, nullable=False)
     mileage = db.Column(db.Integer)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
     title = db.Column(db.Text,nullable=False)
     description = db.Column(db.Text, nullable=False)
 
-    user = db.relationship("User")
-    location = db.relationship("Location")
+    # user = db.relationship("User")
+    # location = db.relationship("Location")
 
 
 class Image(db.Model):
@@ -141,7 +141,7 @@ class Place(db.Model):
     address_1 = db.Column(db.Text)
     rating = db.Column(db.String)
 
-    users = db.relationship("User", secondary="users_places")
+    # users = db.relationship("User", secondary="users_places")
 
     def serialize(self):
         return {

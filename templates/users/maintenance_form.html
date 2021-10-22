@@ -15,12 +15,38 @@ New Maint
 
         <div class="col-8">
             <div>
+                <h2><span class=" p-1 rounded" style="color: #EDF5E1; ">New Maintenance Record</span></h2>
                 <form method="POST" id="log-form" class="p-3">
                     {{ form.hidden_tag() }}
     
                     <div class="form-group">
     
                         {% for field in form if field.widget.input_type != "hidden" %}
+
+                        {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
+
+                        <p class="one-line">
+                            {{ field.label }}
+                            {{ field() }}
+
+                            {% for error in field.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+
+                        {% else %}
+
+                        <p>
+                            {{ field.label }}
+                            {{ field() }}
+
+                            {% for error in field.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+
+                        {% endif %}
+<!-- 
                         <p>
                             {{ field.label }}
                             {{ field() }}
@@ -28,10 +54,10 @@ New Maint
                             {% for error in field.errors %}
                             {{ error }}
                             {% endfor %}
-                        </p>
+                        </p> -->
                         {% endfor%}
                     </div>
-                    <button class="btn btn-primary btn-lg btn-block">Enter Record!</button>
+                    <button class="btn btn-lg btn-block" style="color: #EDF5E1; background-color: #05386b;">Enter Record!</button>
                 </form>
             </div>
         </div>

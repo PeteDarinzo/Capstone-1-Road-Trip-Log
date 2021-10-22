@@ -14,10 +14,10 @@
         {{ entry_list(logs) }}
 
         <div class="col-8">
-            <div class="p-3" id="log-div">
-                <h2>{{log.title}}</h2>
-                <span>{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
-                <p class="bg-light border border-round p-4">
+            <div class="p-3 h-100" id="log-div" style="background-color: #EDF5E1">
+                <h2><span class="rounded  p-2"> {{log.title}} </span></h2>
+                <span class=" rounded p-1">{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
+                <p class=" rounded p-4">
                     {{log.text}}
                 </p>
                 <form>

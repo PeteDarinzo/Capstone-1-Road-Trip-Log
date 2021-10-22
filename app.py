@@ -293,7 +293,7 @@ def edit_log(id):
         log.mileage = request.form['mileage']
         log.location_id = loc_id
         log.text = request.form['text']
-        log.date = datetime.now(tz=None)
+        log.date = request.form['date']
 
         # db.session.add(log)
         db.session.commit()
@@ -383,7 +383,7 @@ def maintenance_form():
         db.session.add(maintenance)
         db.session.commit()
 
-        return redirect("/users/birel44")
+        return redirect(f"/maintenance/{maintenance.id}/edit")
 
     return render_template("/users/maintenance_form.html", form=form, logs=logs, maintenance=records)
 
@@ -438,7 +438,7 @@ def edit_maintenance(id):
 
         db.session.commit()
 
-        return redirect("/users/birel44")
+        return redirect(f"/maintenance/{id}/edit")
 
     return render_template('/users/edit_maintenance.html', form=edit_form, logs=logs, maintenance=records)
 

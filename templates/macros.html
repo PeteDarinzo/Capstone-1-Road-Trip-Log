@@ -2,32 +2,29 @@
 
 {% macro entry_list(logs) %}
 
-<div class="col-2 bg-secondary">
-    <h2 style="color:white;">Entries</h2>
+<div class="col-2 rounded shadow" style="background-color: #379683;">
+    <h2 style="color: #EDF5E1;">Entries</h2>
     <div>
         <form action="/logs/new" method="GET">
-            <button class="btn btn-primary btn-block w-100">
-                <p>
-                    New Entry
-                </p>
+            <button class="btn btn-block w-100" style="color: white; background-color: #05386b;">
+                <p>New Entry</p>
             </button>
         </form>
     </div>
     <div>
         <form action="/logs/all" method="GET">
-            <button class="btn btn-info btn-block w-100">
-                <p>
-                    All Entries
-                </p>
+            <button class="btn btn-block w-100" style="background-color: #8EE4AF;">
+                <p>All Entries</p>
             </button>
         </form>
     </div>
     {% for log in logs %}
     <div>
         <form action="/logs/{{log.id}}" method="GET">
-            <button class="btn btn-secondary w-100">
-                <p class="title">{{log.title}}</p>
-                <p>{{log.location.location}}</p>
+            <button class="btn w-100" style="background-color: #379683;">
+                <p class="title" style="color: white;">{{ log.title }}</p>
+                <p style="color: white;">{{ log.location.location }}</p>
+                <p style="color: white;">{{ log.date }}</p>
             </button>
         </form>
     </div>
@@ -40,18 +37,18 @@
 
 {% macro record_list(maintenance) %}
 
-<div class="col-2 bg-secondary">
-    <h2 style="color:white;">Records</h2>
+<div class="col-2 rounded shadow" style="background-color: #379683;">
+    <h2 style="color: white;">Records</h2>
     <div>
         <form action="/maintenance/new" method="GET">
-            <button class="btn btn-primary w-100">
+            <button class="btn w-100" style="color: white; background-color: #05386b;">
                 <p class="text-left">New Record</p>
             </button>
         </form>
     </div>
     <div>
         <form action="/maintenance/all" method="GET">
-            <button class="btn btn-info w-100">
+            <button class="btn w-100" style="background-color: #8EE4AF;">
                 <p class="text-left">All Records</p>
             </button>
         </form>
@@ -59,9 +56,10 @@
     {% for log in maintenance %}
     <div>
         <form action="/maintenance/{{log.id}}" method="GET">
-            <button class="btn btn-secondary w-100">
-                <p class="title">{{log.title}}</p>
-                <p>{{log.location.location}}</p>
+            <button class="btn w-100" style="background-color: #379683;">
+                <p class="title" style="color: white;">{{log.title}}</p>
+                <p style="color: white;">{{log.location.location}}</p>
+                <p style="color: white;">{{log.date}}</p>
             </button>
         </form>
     </div>

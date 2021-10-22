@@ -41,27 +41,27 @@ async function processForm(evt) {
 function handleResponse(businesses) {
 
     $('#results-col').prepend(`
-    <h2>Here's what's nearby:</h2>
+    <h2 style="color: #05386B;">Here's what's nearby:</h2>
     `)
 
     for (const business of businesses) {
         $('#search-results').append(`
-        <div class="container mb-2 p-3 border border-dark bg-secondary rounded result">
+        <div class="container mb-2 p-3 rounded result " style="background-color: #EDF5E1;">
         <div class="row">
             <div class="col-2">
                 <img src=${business.image_url} class="rounded" style="width:125px; height:125px;">
             </div>
             <div class="col-4">
-            <p class="text-white" style="font-size: 2rem;">${business.name}</p>
-            <p class="info text-white">Category: ${business.categories[0]["title"]}</p>
-            <p class="info text-white">Rating: ${business.rating}/5</p>
-            <p class="info text-white">Price: ${business.price}</p>
+            <p style="font-size: 2rem; color: #05386B;">${business.name}</p>
+            <p class="info">Category: ${business.categories[0]["title"]}</p>
+            <p class="info">Rating: ${business.rating}/5</p>
+            <p class="info">Price: ${business.price}</p>
             </div>
 
             <div class="col-4">
-            <p class="info text-white">Phone: ${business.phone}/5</p>
-            <p class="address text-white">${business.location.display_address[0]}</p>
-            <p class="address text-white">${business.location.display_address[1]}</p>
+            <p class="info ">Phone: ${business.phone}/5</p>
+            <p class="address">${business.location.display_address[0]}</p>
+            <p class="address">${business.location.display_address[1]}</p>
             <a href=${business.url} class="url">More Info</a>
             </div>
 

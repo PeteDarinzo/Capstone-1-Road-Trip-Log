@@ -15,6 +15,7 @@ New Log
 
         <div class="col-8">
             <div id="log-form">
+                <h2><span class="p-1 rounded" style="color: #EDF5E1; ">New Log Entry</span></h2>
                 <form method="POST" id="log-form" class="p-3">
                     {{ form.hidden_tag() }}
 
@@ -22,7 +23,7 @@ New Log
 
                         {% for field in form if field.widget.input_type != "hidden" %}
 
-                        {% if field.id == "location" or field.id == "mileage" %}
+                        {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
 
                         <p class="one-line">
                             {{ field.label }}
@@ -48,7 +49,7 @@ New Log
 
                         {% endfor%}
                     </div>
-                    <button class="btn btn-primary btn-lg btn-block">Enter Log!</button>
+                    <button class="btn btn-lg btn-block" style="color: #EDF5E1; background-color: #05386B;">Enter Log!</button>
                 </form>
             </div>
 
