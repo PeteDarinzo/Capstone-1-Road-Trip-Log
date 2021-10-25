@@ -21,7 +21,7 @@
     {% for log in logs %}
     <div>
         <form action="/logs/{{log.id}}" method="GET">
-            <button class="btn w-100" style="background-color: #379683;">
+            <button class="btn w-100 border rounded" style="background-color: #379683;">
                 <p class="title" style="color: white;">{{ log.title }}</p>
                 <p style="color: white;">{{ log.location.location }}</p>
                 <p style="color: white;">{{ log.date }}</p>

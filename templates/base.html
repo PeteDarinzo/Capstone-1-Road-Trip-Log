@@ -20,8 +20,41 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-xl navbar-dark p-3" style="background-color: #05386B;">
+    <nav class="navbar navbar-expand-lg navbar-dark  p-3" style="background-color: #05386B;">
+        <div class="container-fluid">
+            <a id="logo" href="/" class="navbar-brand">Green <span class="material-icons">wb_sunny</span> Flash</a>
+            <!-- <button class="navbar-toggler" data-toggle="collapse" data-target="#navigation"><span
+                    class="navbar-toggler-icon"></span></button> -->
+            <div class="collapse navbar-collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/home" class="nav-item nav-link">Search</a>
+                    </li>
+                    <li>
+                        <a href="/places" class="nav-item nav-link">Places</a>
+                    </li>
+                    <li>
+                        <a href="/logs/new" class="nav-item nav-link">Posts</a>
+                    </li>
+                    {% if not g.user %}
+                    <li><a class="nav-item nav-link" href="/signup">Sign up</a></li>
+                    <li><a class="nav-item nav-link" href="/login">Log in</a></li>
+                    {% else %}
+                    <li>
+                        <a class="nav-item nav-link" href="/users/{{ g.user.id }}">{{g.user.username}}</a>
+                    </li>
+                    <li><a class="nav-item nav-link" href="/logout">Log out</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- <nav class="navbar navbar-expand-xl navbar-dark p-3" style="background-color: #05386B;">
         <a id="logo" href="#" class="navbar-brand">Green <span class="material-icons">wb_sunny</span> Flash</a>
+
+
         <button class="navbar-toggler" data-toggle="collapse" data-target="#navigation"><span
                 class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navigation">
@@ -29,14 +62,33 @@
                 <a href="/home" class="nav-item nav-link">Search</a>
                 <a href="/places" class="nav-item nav-link">Places</a>
                 <a href="/logs/new" class="nav-item nav-link">Posts</a>
+
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <a href="/signup" class="nav-link">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/login" class="nav-link">Login</a>
+                    </li>
+                </ul>
+
             </div>
         </div>
-    </nav>
+    </nav> -->
+
+
+    <section class="messages">
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </section>
 
     {% block content %}
 
-    {% endblock%}
-    
+    {% endblock %}
+
+
+
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

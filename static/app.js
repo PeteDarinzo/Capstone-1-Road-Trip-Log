@@ -150,7 +150,7 @@ async function savePlace(evt) {
     // console.log(inputObj);
 
     const res = await axios.post(`places/save`, inputObj);
-    // console.log(res);
+    console.log(res);
 }
 
 // form submit event handler

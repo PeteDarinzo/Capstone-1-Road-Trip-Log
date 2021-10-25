@@ -5,6 +5,7 @@ charset-normalizer==2.0.6
 click==8.0.1
 Flask==2.0.1
 Flask-Bcrypt==0.7.1
+Flask-Reuploaded==1.1.0
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==0.15.1
 greenlet==1.1.2

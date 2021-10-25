@@ -20,6 +20,11 @@
                 <p class=" rounded p-4">
                     {{log.text}}
                 </p>
+                {% if log.image_name %}
+
+                <img src="/static/images/{{log.image_name}}" alt="" style="height:300px; width: 400px;">
+
+                {% endif %}
                 <form>
                     <div class="text-left">
                         <button formaction="/logs/{{log.id}}/edit" formmethod="GET"

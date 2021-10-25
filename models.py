@@ -23,47 +23,63 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.Text, nullable=False, unique=True)
-    # password = db.Colum(db.Text, nullable=False)
-    first_name = db.Column(db.Text, nullable=False)
-    last_name = db.Column(db.Text, nullable=False)
+    email = db.Column(db.Text,nullable=False,unique=True)
+    password = db.Column(db.Text, nullable=False)
+    bio = db.Column(db.Text)
+    image_name = db.Column(db.Text)
 
     logs = db.relationship("Log", cascade="all, delete", backref="user")
     maintenance = db.relationship("Maintenance", cascade="all, delete", backref="user")
     places = db.relationship("Place", secondary="users_places")
 
-    # @classmethod
-    # def signup(cls, username, first_name, last_name, password):
-    #     """Signup User."""
+    @classmethod
+    def signup(cls, username, email, password):
+        """Signup User."""
 
-    #     hashed_pwd = bcrypt.generate_password_hash(password).decode("UTF-8")
+        hashed_pwd = bcrypt.generate_password_hash(password).decode("UTF-8")
 
-    #     user = User(
-    #         username=username,
-    #         first_name=first_name,
-    #         last_name=last_name,
-    #         password=hashed_pwd
-    #     )
+        user = User(
+            username=username,
+            email=email,
+            password=hashed_pwd,
+            image_name="",
+            bio=""
+        )
 
-    #     db.session.add(user)
-    #     return user
+        db.session.add(user)
+        return user
 
-    # @classmethod
-    # def authenticate(cls, username, password):
-    #     """Find user with 'username' and 'password'.
+    @classmethod
+    def authenticate(cls, username, password):
+        """Find user with 'username' and 'password'.
         
-    #     Search for a user with a password hash matching this password. If found, return that user object.
+        Search for a user with a password hash matching this password. If found, return that user object.
 
-    #     If not found, return False.
-    #     """
+        If not found, return False.
+        """
 
-    #     user = cls.query.filter_by(username=username).first()
+        user = cls.query.filter_by(username=username).first()
 
-    #     if user:
-    #         is_auth = bcrypt.check_password_hash(user.password, password)
-    #         if is_auth:
-    #             return user
+        if user:
+            is_auth = bcrypt.check_password_hash(user.password, password)
+            if is_auth:
+                return user
         
-    #     return False
+        return False
+
+    @classmethod
+    def change_password(cls, username, curr_password, new_password):
+
+        user = cls.query.filter_by(username=username).first()
+
+        is_auth = bcrypt.check_password_hash(user.password, curr_password)
+
+        if is_auth:
+            hashed_pwd = bcrypt.generate_password_hash(new_password).decode("UTF-8")
+            user.password = hashed_pwd
+            return user
+        
+        return False
 
 
 class Log(db.Model):
@@ -79,6 +95,7 @@ class Log(db.Model):
     mileage = db.Column(db.Integer, nullable=True)
     title = db.Column(db.Text, nullable=False, unique=True)
     text = db.Column(db.Text, nullable=False)
+    image_name = db.Column(db.Text)
 
     # user = db.relationship("User")
     # location = db.relationship("Location")
@@ -109,20 +126,10 @@ class Maintenance(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
     title = db.Column(db.Text,nullable=False)
     description = db.Column(db.Text, nullable=False)
+    image_name = db.Column(db.Text)
 
     # user = db.relationship("User")
     # location = db.relationship("Location")
-
-
-class Image(db.Model):
-    """Image model."""
-
-    __tablename__ = "images"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    file_path = db.Column(db.Text)
-    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
 
 
 class Place(db.Model):

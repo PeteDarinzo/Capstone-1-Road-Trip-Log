@@ -1,18 +1,17 @@
 from app import app
-from models import db, User, Log, Location, Maintenance, Image, Place, UsersPlaces
+from models import db, User, Log, Location, Maintenance, Place, UsersPlaces
 from datetime import datetime
 
 
 db.drop_all()
 db.create_all()
 
-me = User(
+me = User.signup(
     username="birel44",
-    first_name="Peter",
-    last_name="Darinzo"
+    email="birel44@yahoo.com",
+    password="Eatyourowndogfood",
 )
 
-db.session.add(me)
 db.session.commit()
 
 salt_lake_city = Location(
@@ -42,7 +41,8 @@ first_log = Log(
     location_id=salt_lake_city.id,
     mileage=56000,
     title="Setting Off",
-    text="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit a."
+    text="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit a.",
+    image_name=""
 )
 
 second_log = Log(
@@ -51,7 +51,8 @@ second_log = Log(
     location_id=las_vegas.id,
     mileage=58000,
     title="Lost it all in Vegas.",
-    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
+    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.",
+    image_name=""
 )
 
 third_log = Log(
@@ -60,7 +61,8 @@ third_log = Log(
     location_id=sherman.id,
     mileage=56800,
     title="Second Log.",
-    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil imped."
+    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil imped.",
+    image_name=""
 )
 
 
@@ -70,13 +72,9 @@ fourth_log = Log(
     location_id=ames.id,
     mileage=57500,
     title="Where the heck am I?",
-    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil."
+    text="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil.",
+    image_name=""
 )
-
-
-
-
-
 
 db.session.add(first_log)
 db.session.add(second_log)
@@ -91,7 +89,8 @@ first_maintenance = Maintenance(
     mileage=56123,
     location_id=salt_lake_city.id,
     title="Oil",
-    description="Changed oil to 5W30. Checked tire pressure."
+    description="Changed oil to 5W30. Checked tire pressure.",
+    image_name=""
 )
 
 
@@ -101,7 +100,9 @@ second_maintenance = Maintenance(
     mileage=57123,
     location_id=sherman.id,
     title="Elbow Grease.",
-    description="Liberal application of elbow grease."
+    description="Liberal application of elbow grease.",
+    image_name=""
+
 )
 
 db.session.add(first_maintenance)

@@ -20,6 +20,12 @@
                 <p class="bg-white rounded p-4">
                     {{record.description}}
                 </p>
+
+                {% if record.image_name %}
+
+                <img src="/static/images/{{record.image_name}}" alt="" style="height:300px; width: 400px;">
+
+                {% endif %}
                 <form>
                     <div class="text-left">
                         <button formaction="/maintenance/{{record.id}}/edit" formmethod="GET"

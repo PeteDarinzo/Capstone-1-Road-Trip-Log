@@ -86,6 +86,14 @@ label[for="date"] {
     display: none;
 }
 
+input[id="photo"] {
+    display: inline;
+}
+
+/* label[for="photo"] {
+    display: none;
+} */
+
 label[for="description"] {
     display: none;
 }
