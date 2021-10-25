@@ -159,8 +159,8 @@ def home():
     return render_template('home.html', form=form)
 
 
-@app.route("/users/<username>")
-def user_detail(username):
+@app.route("/users/profile")
+def user_detail():
     """Show a user's profile and logs."""
 
     user = g.user
@@ -168,7 +168,7 @@ def user_detail(username):
     return render_template("users/detail.html", user=user)
 
 
-@app.route("/user/edit", methods=["GET", "POST"])
+@app.route("/users/edit", methods=["GET", "POST"])
 def edit_user():
     """Show a user's profile and logs."""
 
@@ -272,9 +272,6 @@ def save_place():
 
     if not g.user:
 
-        # flash("Log in to start saving places!", "warning")
-        # return redirect("/home")
-
         return jsonify(message="not added")
 
     user = g.user
@@ -290,7 +287,7 @@ def save_place():
     phone = request.json["phone"]
     rating = request.json["rating"]        
 
-    existing_place = Place.query.get(place_id)
+    existing_place = Place.query.get_or_404(place_id)
 
     # if the place isn't in the DB (most likely condition), then it can't be in the user's places
     if not existing_place:
@@ -337,7 +334,7 @@ def remove_place(id):
 
     user = g.user
 
-    place = Place.query.get(id)
+    place = Place.query.get_or_404(id)
 
     user.places.remove(place)
 
@@ -357,6 +354,12 @@ def log_detail(id):
 
     user = g.user
 
+    log_ids = [log.id for log in user.logs]
+
+    if id not in log_ids:
+        flash("UNAUTHORIZED.", "danger")
+        return redirect("/logs/new")
+
     logs = user.logs
 
     maintenance = user.maintenance
@@ -369,7 +372,7 @@ def log_detail(id):
 @app.route("/logs/all")
 @login_required
 def all_logs():
-    """Display a list of all logs."""
+    """Display a list of all of user's logs."""
 
     user = g.user
 
@@ -429,7 +432,7 @@ def new_log():
         db.session.add(log)
         db.session.commit()
 
-        return redirect(url_for("logs", id=log.id))
+        return redirect(f"/logs/{log.id}")
 
     return render_template("users/log_form.html", form=form, logs=logs, maintenance=maintenance)
 
@@ -441,11 +444,17 @@ def edit_log(id):
 
     user = g.user
 
+    log_ids = [log.id for log in user.logs]
+
+    if id not in log_ids:
+        flash("UNAUTHORIZED.", "danger")
+        return redirect("/logs/new")
+
     logs = user.logs
 
     maintenance=user.maintenance
 
-    log = Log.query.get(id)
+    log = Log.query.get_or_404(id)
 
     edit_form = LogForm(obj=log)
 
@@ -506,7 +515,15 @@ def edit_log(id):
 def delete_log(id):
     """Delete a log."""
 
-    log = Log.query.get(id)
+    user = g.user
+
+    log_ids = [log.id for log in user.logs]
+
+    if id not in log_ids:
+        flash("UNAUTHORIZED.", "danger")
+        return redirect("/logs/new")
+
+    log = Log.query.get_or_404(id)
 
     if log.image_name:
         os.remove(f"static/images/{log.image_name}")
@@ -529,6 +546,12 @@ def maintenance_detail(id):
     """Display a maintenance record."""
 
     user = g.user
+
+    maintenance_ids = [record.id for record in user.maintenance]
+
+    if id not in maintenance_ids:
+        flash("UNAUTHORIZED.", "danger")
+        return redirect("/maintenance/new")
 
     logs = user.logs
 
@@ -613,10 +636,16 @@ def edit_maintenance(id):
 
     user = g.user
 
+    maintenance_ids = [record.id for record in user.maintenance]
+
+    if id not in maintenance_ids:
+        flash("UNAUTHORIZED.", "danger")
+        return redirect("/maintenance/new")
+
     logs = user.logs
     records = user.maintenance
 
-    maintenance = Maintenance.query.get(id)
+    maintenance = Maintenance.query.get_or_404(id)
 
     edit_form = MaintenanceForm(obj=maintenance)
 
@@ -675,7 +704,15 @@ def edit_maintenance(id):
 def delete_maintenance(id):
     """Delete a maintenance record."""
 
-    maintenance = Maintenance.query.get(id)
+    user = g.user.id
+
+    maintenance_ids = [record.id for record in user.maintenance]
+
+    if id not in maintenance_ids:
+        flash("UNAUTHORIZED.", "danger")
+        return redirect("/maintenance/new")
+
+    maintenance = Maintenance.query.get_or_404(id)
 
     if maintenance.image_name:
         os.remove(f"static/images/{maintenance.image_name}")
