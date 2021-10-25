@@ -32,8 +32,6 @@ async function processForm(evt) {
 
     const res = await axios.post("/search", inputObj)
 
-    // console.log(res.data.businesses)
-
     handleResponse(res.data.businesses)
 }
 
@@ -95,23 +93,10 @@ function handleResponse(businesses) {
     $('#city').val('');
 }
 
-
-
-
-
-async function removePlace(evt) {
-
-    evt.preventDefault();
-
-    const $button = $(evt.target);
-
-    const placeId = $button.data("id");
-
-    await axios.post(`/places/${placeId}/delete`);
-
-    $button.closest("div.accordion-item").remove();
-}
-
+/**
+ * 
+ * Save a place from the search results
+ */
 async function savePlace(evt) {
 
     evt.preventDefault();
@@ -143,25 +128,52 @@ async function savePlace(evt) {
         phone
     }
 
-    $button.text('Saved!');
-    $button.removeClass('btn-warning');
-    $button.addClass('btn-success');
-
-    // console.log(inputObj);
-
     const res = await axios.post(`places/save`, inputObj);
+
     console.log(res);
+
+    if (res.data.message == "added") {
+        $button.text('Saved!');
+        $button.removeClass('btn-warning');
+        $button.addClass('btn-success');
+    } else if (res.data.message == "not added") {
+        alert("Log in to start saving places!");
+    }
 }
 
-// form submit event handler
+
+
+/**
+ * 
+ * Remove a saved place
+ */
+async function removePlace(evt) {
+
+    evt.preventDefault();
+
+    const $button = $(evt.target);
+
+    const placeId = $button.data("id");
+
+    await axios.post(`/places/${placeId}/delete`);
+
+    $button.closest("div.accordion-item").remove();
+}
+
+
+
+
+
+/**
+ * Event handlers for submitting search form,
+ * Saving a place,
+ * and removing a saved place
+ */
 $("#search-form").on("submit", processForm);
 
-// $(".save-button").on("click", savePlace);
+$body.on("click", ".save-button", savePlace);
 
 $(".remove-button").on("click", removePlace);
-
-// favorite toggle click event handler
-$body.on("click", ".save-button", savePlace);
 
 
 

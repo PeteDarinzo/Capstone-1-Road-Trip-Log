@@ -1,21 +1,17 @@
-import re
-from flask import Flask, render_template, request, url_for, redirect, flash, session, g, jsonify
-from forms import BusinessSearchForm, ChangePasswordForm, EditProfileForm, LogForm, MaintenanceForm, SignupForm, LoginForm
-from key import API_KEY
-import requests
-from datetime import datetime
 import os
 import functools
-from sqlalchemy.exc import IntegrityError
-
+import requests
+from flask import Flask, render_template, request, url_for, redirect, flash, session, g, jsonify
+from forms import BusinessSearchForm, ChangePasswordForm, EditProfileForm, LogForm, MaintenanceForm, SignupForm, LoginForm
 from models import db, Location, connect_db, User, Log, Maintenance, Place
-
+from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
+from key import API_KEY
 
 CURR_USER_KEY = "curr_user"
 API_BASE_URL = "https://api.yelp.com/v3/businesses"
 UPLOAD_FOLDER = 'static/images'
-ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
@@ -28,39 +24,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 connect_db(app)
 
 # check if file is allowed
-# if there is a '.' in the filename
-# split the name at that dot, the second part
-# is the file type
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-# @app.route('/', methods=["GET", "POST"])
-# def upload_file():
-#     if request.method == 'POST':
-#         # check if the post request has the file part
-#         if 'file' not in request.files:
-#             flash('No File Part')
-#             return redirect(request.url)
-#         file = request.files['file']
-#         # if the user does not select a file, the brower submits an empty file with a filename
-#         if file.filename == '':
-#             flash('No selected file')
-#             return redirect(request.url)
-#         if file and allowed_file(file.filename):
-#             filename = secure_filename(file.filename)
-#             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-#             return redirect(url_for('download_file', name=filename))
-#         return '''
-#     <!doctype html>
-#     <title>Upload new File</title>
-#     <h1>Upload new File</h1>
-#     <form method=post enctype=multipart/form-data>
-#       <input type=file name=file>
-#       <input type=submit value=Upload>
-#     </form>
-#     '''
-
 
 ##############################################################################
 # User signup/login/logout
@@ -181,10 +147,8 @@ def logout():
 
 @app.route("/")
 def landing():
-    form = BusinessSearchForm()
 
     return redirect("/home")
-    # return render_template('home-anon.html', form=form)
 
 
 @app.route("/home")
@@ -192,9 +156,7 @@ def home():
 
     form = BusinessSearchForm()
 
-    users=User.query.all()
-
-    return render_template('home.html', users=users, form=form)
+    return render_template('home.html', form=form)
 
 
 @app.route("/users/<username>")
@@ -204,6 +166,7 @@ def user_detail(username):
     user = g.user
 
     return render_template("users/detail.html", user=user)
+
 
 @app.route("/user/edit", methods=["GET", "POST"])
 def edit_user():
@@ -235,17 +198,16 @@ def edit_user():
         
         except IntegrityError:
             flash("Username already taken", "danger")
-            return render_template("user/edit.html", form=form)
+            return render_template("users/edit_profile.html", form=form)
 
-        return redirect(f"/users/{g.user.username}")
-
+        return redirect(url_for("users", user_name=g.user.username))
+        
     return render_template("users/edit_profile.html", user=user, form=form)
 
 
 @app.route("/user/change_password", methods=["GET", "POST"])
 def change_password():
     """Change a user's password."""
-
 
     form = ChangePasswordForm()
 
@@ -263,7 +225,7 @@ def change_password():
                 user = User.change_password(username = user.username, curr_password=curr_password, new_password=new_password_one)
                 db.session.commit()
                 flash("Password Successfully Changed!", "success")
-                return redirect(f"/users/{g.user.username}")
+                return redirect(url_for("users", user_name=g.user.username))
 
             else:
 
@@ -274,7 +236,6 @@ def change_password():
 
             flash("Current password is not correct.", "danger")
             return render_template("users/password_form.html", form=form)
-
 
     return render_template("users/password_form.html", form=form)
 
@@ -303,20 +264,20 @@ def submit_search():
 
     return resp
 
+
 @app.route("/places/save", methods=["POST"])
-@login_required
+# @login_required
 def save_place():
     """Save a place for future reference."""
 
-    # user = User.query.get(g.id)
-
     if not g.user:
-        flash("Log in to save places", "danger")
-        return redirect("/search")
+
+        # flash("Log in to start saving places!", "warning")
+        # return redirect("/home")
+
+        return jsonify(message="not added")
 
     user = g.user
-
-    # user = User.query.filter_by(username="birel44").first()
 
     place_id = request.json["placeId"]
     category=request.json["category"]
@@ -364,13 +325,10 @@ def save_place():
 def show_places():
     """Show a user's saved places."""
 
-    user = g.user
-
-    # user = User.query.filter_by(username="birel44").first()
-
-    places = user.places
+    places = g.user.places
 
     return render_template('/users/places.html', places=places)
+
 
 @app.route("/places/<id>/delete", methods=["POST"])
 @login_required
@@ -378,8 +336,6 @@ def remove_place(id):
     """Remove a place from a user's saved places."""
 
     user = g.user
-
-    # user = User.query.filter_by(username="birel44").first()
 
     place = Place.query.get(id)
 
@@ -401,8 +357,6 @@ def log_detail(id):
 
     user = g.user
 
-    # user = User.query.filter_by(username="birel44").first()
-
     logs = user.logs
 
     maintenance = user.maintenance
@@ -411,6 +365,7 @@ def log_detail(id):
 
     return render_template("users/log.html", log=log, logs=logs, maintenance=maintenance)
 
+
 @app.route("/logs/all")
 @login_required
 def all_logs():
@@ -418,11 +373,10 @@ def all_logs():
 
     user = g.user
 
-    # user = User.query.filter_by(username="birel44").first()
-
     logs = user.logs
 
     return render_template("users/all_logs.html", logs=logs)
+
 
 @app.route("/logs/new", methods=["GET", "POST"])
 @login_required
@@ -432,8 +386,6 @@ def new_log():
     form = LogForm()
 
     user = g.user
-
-    # user = User.query.filter_by(username="birel44").first()
 
     maintenance = user.maintenance
 
@@ -446,7 +398,6 @@ def new_log():
         mileage = request.form['mileage']
         body = request.form['text']
         date = request.form['date']
-        # date=datetime.now(tz=None)
 
         f = request.files['photo']
 
@@ -455,8 +406,8 @@ def new_log():
                 filename = secure_filename(f.filename)
                 f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             else:
-                flash("File must be an image!!!", "danger")
-                return redirect('/logs/new')
+                flash("File must be an image!", "danger")
+                return redirect(url_for("logs/new"))
         else:
             filename = ""
 
@@ -478,7 +429,7 @@ def new_log():
         db.session.add(log)
         db.session.commit()
 
-        return redirect(f"/logs/{log.id}")
+        return redirect(url_for("logs", id=log.id))
 
     return render_template("users/log_form.html", form=form, logs=logs, maintenance=maintenance)
 
@@ -488,12 +439,10 @@ def new_log():
 def edit_log(id):
     """Edit a log."""
 
-
     user = g.user
 
-    # user = User.query.filter_by(username=username).first()
-
     logs = user.logs
+
     maintenance=user.maintenance
 
     log = Log.query.get(id)
@@ -547,7 +496,7 @@ def edit_log(id):
 
         db.session.commit()
 
-        return redirect(f"/logs/{id}")
+        return redirect(url_for("logs", id=id))
 
     return render_template('/users/edit_log.html', form=edit_form, logs=logs, maintenance=maintenance)
 
@@ -566,7 +515,7 @@ def delete_log(id):
 
     db.session.commit()
 
-    return redirect('/logs/new')
+    return redirect(url_for("logs/new"))
 
 
 
@@ -580,9 +529,6 @@ def maintenance_detail(id):
     """Display a maintenance record."""
 
     user = g.user
-
-
-    # user = User.query.filter_by(username="birel44").first()
 
     logs = user.logs
 
@@ -600,7 +546,6 @@ def all_maintenance():
     
     user = g.user
 
-    # user = User.query.filter_by(username="birel44").first()
     maintenance = user.maintenance
 
     return render_template("users/all_maintenance.html", maintenance=maintenance)
@@ -615,8 +560,6 @@ def maintenance_form():
 
     user = g.user
 
-    # user = User.query.filter_by(username="birel44").first()
-
     logs = user.logs
     records = user.maintenance
 
@@ -628,7 +571,6 @@ def maintenance_form():
         description = request.form['description'] 
         date = request.form['date']
 
-
         f = request.files['photo']
 
         if f:
@@ -636,7 +578,7 @@ def maintenance_form():
                 filename = secure_filename(f.filename)
                 f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             else:
-                # flash("File must be an image!!!", "danger")
+                flash("File must be an image!!!", "danger")
                 return redirect('/logs/new')
         else:
             filename = ""  
@@ -670,10 +612,6 @@ def edit_maintenance(id):
     """Edit a maintenance record."""
 
     user = g.user
-
-    # username = "birel44"
-
-    # user = User.query.filter_by(username=username).first()
 
     logs = user.logs
     records = user.maintenance
