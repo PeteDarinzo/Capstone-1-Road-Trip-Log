@@ -32,12 +32,9 @@
             {% endif %}
         </div>
 
-        <form action="/users/edit" method="GET">
-            <button>Edit Profile</button>
-        </form>
-
-        <form action="/user/change_password" method="GET">
-            <button>Change Password</button>
+        <form class="form-" method="GET">
+            <button formaction="/users/edit" class="btn btn-info">Edit Profile</button>
+            <button formaction="/user/change_password" class="btn btn-warning">Change Password</button>
         </form>
 
     </div>

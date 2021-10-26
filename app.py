@@ -175,7 +175,7 @@ def user_detail():
 
 @app.route("/users/edit", methods=["GET", "POST"])
 def edit_user():
-    """Show a user's profile and logs."""
+    """Edit a users credentials, bio, and profile image."""
 
     user = g.user
 
@@ -205,7 +205,7 @@ def edit_user():
             flash("Username already taken", "danger")
             return render_template("users/edit_profile.html", form=form)
 
-        return redirect(url_for("users", user_name=g.user.username))
+        return redirect(url_for("user_detail"))
         
     return render_template("users/edit_profile.html", user=user, form=form)
 
@@ -230,7 +230,7 @@ def change_password():
                 user = User.change_password(username = user.username, curr_password=curr_password, new_password=new_password_one)
                 db.session.commit()
                 flash("Password Successfully Changed!", "success")
-                return redirect(url_for("users", user_name=g.user.username))
+                return redirect(url_for("user_detail"))
 
             else:
 
@@ -417,7 +417,7 @@ def new_log():
                 f.save(os.path.join(f'static/images/{user.id}', filename))
             else:
                 flash("File must be an image!", "danger")
-                return redirect(url_for("logs/new"))
+                return redirect(url_for("new_log"))
         else:
             filename = ""
 
@@ -505,14 +505,14 @@ def edit_log(id):
         if f and allowed_file(f.filename):
             os.remove(f'static/images/{user.id}/{log.image_name}')
             filename = secure_filename(f.filename)
-            f.save(os.path.join(f'static/images/{user.id}/{log.image_name}', filename))
+            f.save(os.path.join(f'static/images/{user.id}', filename))
             log.image_name=filename
         else:
             flash("Incompatible filetype", "danger")
 
         db.session.commit()
 
-        return redirect(url_for("logs", id=id))
+        return redirect(url_for("log_detail", id=id))
 
     return render_template('/users/edit_log.html', form=edit_form, logs=logs, maintenance=maintenance)
 
@@ -694,7 +694,7 @@ def edit_maintenance(id):
         if f and allowed_file(f.filename):
             os.remove(f'static/images/{user.id}/{maintenance.image_name}')
             filename = secure_filename(f.filename)
-            f.save(os.path.join(f'static/images/{user.id}/{maintenance.image_name}', filename))
+            f.save(os.path.join(f'static/images/{user.id}', filename))
             maintenance.image_name=filename
         else:
             flash("Incompatible filetype", "danger")
@@ -711,7 +711,7 @@ def edit_maintenance(id):
 def delete_maintenance(id):
     """Delete a maintenance record."""
 
-    user = g.user.id
+    user = g.user
 
     maintenance_ids = [record.id for record in user.maintenance]
 
