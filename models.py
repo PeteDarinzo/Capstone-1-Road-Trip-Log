@@ -26,7 +26,7 @@ class User(db.Model):
     email = db.Column(db.Text,nullable=False,unique=True)
     password = db.Column(db.Text, nullable=False)
     bio = db.Column(db.Text)
-    image_name = db.Column(db.Text)
+    image_name = db.Column(db.Text, default="default.png")
 
     logs = db.relationship("Log", cascade="all, delete", backref="user")
     maintenance = db.relationship("Maintenance", cascade="all, delete", backref="user")

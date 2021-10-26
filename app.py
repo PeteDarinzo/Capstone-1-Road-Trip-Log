@@ -2,16 +2,18 @@ import os
 import functools
 import requests
 from flask import Flask, render_template, request, url_for, redirect, flash, session, g, jsonify
-from forms import BusinessSearchForm, ChangePasswordForm, EditProfileForm, LogForm, MaintenanceForm, SignupForm, LoginForm
+from forms import BusinessSearchForm, ChangePasswordForm, EditProfileForm, LogForm, MaintenanceForm, SignupForm, LoginForm, images
 from models import db, Location, connect_db, User, Log, Maintenance, Place
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc
 from werkzeug.utils import secure_filename
 from key import API_KEY
+from flask_uploads import UploadSet, configure_uploads
+
 
 CURR_USER_KEY = "curr_user"
 API_BASE_URL = "https://api.yelp.com/v3/businesses"
-UPLOAD_FOLDER = f'static/images'
+UPLOAD_FOLDER = "static/images"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
@@ -20,9 +22,11 @@ app.config['SECRET_KEY'] = "CanadianGeese1195432"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///greenflash'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOADED_IMAGES_DEST'] = UPLOAD_FOLDER
 
 connect_db(app)
+
+configure_uploads(app, (images))
 
 # check if file is allowed
 def allowed_file(filename):
@@ -87,7 +91,7 @@ def signup():
             user = User.signup(
                 username=form.username.data,
                 password=form.password.data,
-                email=form.email.data
+                email=form.email.data,
                 )
             db.session.commit()
         
@@ -95,9 +99,18 @@ def signup():
             flash("Username already taken", "danger")
             return render_template("users/signup.html", form=form)
 
+        # make the user's image folder
         image_path = f"static/images/{user.id}"
 
         os.mkdir(image_path)
+
+        f = request.files['photo']
+
+        if f:
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(f'static/images/{user.id}', filename))
+            user.image_name=filename
+            db.session.commit()
 
         do_login(user)
 
@@ -158,6 +171,7 @@ def landing():
 
 @app.route("/home")
 def home():
+    """Home page which presents business search form."""
 
     form = BusinessSearchForm()
 
@@ -166,7 +180,7 @@ def home():
 
 @app.route("/users/profile")
 def user_detail():
-    """Show a user's profile and logs."""
+    """Show a user's credentials, bio, and profile image."""
 
     user = g.user
 
@@ -175,7 +189,7 @@ def user_detail():
 
 @app.route("/users/edit", methods=["GET", "POST"])
 def edit_user():
-    """Edit a users credentials, bio, and profile image."""
+    """Edit a user's credentials, bio, and profile image."""
 
     user = g.user
 
@@ -187,18 +201,14 @@ def edit_user():
             
             form.populate_obj(user)
 
-            f = request.files['profile_photo']
+            f = request.files['photo']
 
             if f:
-
                 if user.image_name:
-                    
-                    os.remove(f"static/images/{user.image_name}")
-
-                if allowed_file(f.filename):
-                    filename = secure_filename(f.filename)
-                    f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    user.image_name=filename
+                    os.remove(f"static/images/{user.id}/{user.image_name}")
+                filename = secure_filename(f.filename)
+                f.save(os.path.join(f"static/images/{user.id}", filename))
+                user.image_name=filename
             db.session.commit()
         
         except IntegrityError:
@@ -292,7 +302,7 @@ def save_place():
     phone = request.json["phone"]
     rating = request.json["rating"]        
 
-    existing_place = Place.query.get_or_404(place_id)
+    existing_place = Place.query.get(place_id)
 
     # if the place isn't in the DB (most likely condition), then it can't be in the user's places
     if not existing_place:
@@ -365,9 +375,9 @@ def log_detail(id):
         flash("UNAUTHORIZED.", "danger")
         return redirect("/logs/new")
 
-    logs = user.logs
+    logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
 
-    maintenance = user.maintenance
+    maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
 
     log = Log.query.filter_by(id=id).first()
 
@@ -395,11 +405,9 @@ def new_log():
 
     user = g.user
 
-    maintenance = user.maintenance
+    maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
 
-    logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).all()
-
-    # logs = user.logs
+    logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
 
     if form.validate_on_submit():
 
@@ -412,12 +420,8 @@ def new_log():
         f = request.files['photo']
 
         if f:
-            if allowed_file(f.filename):
-                filename = secure_filename(f.filename)
-                f.save(os.path.join(f'static/images/{user.id}', filename))
-            else:
-                flash("File must be an image!", "danger")
-                return redirect(url_for("new_log"))
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(f'static/images/{user.id}', filename))
         else:
             filename = ""
 
@@ -457,9 +461,9 @@ def edit_log(id):
         flash("UNAUTHORIZED.", "danger")
         return redirect("/logs/new")
 
-    logs = user.logs
+    logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
 
-    maintenance=user.maintenance
+    maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
 
     log = Log.query.get_or_404(id)
 
@@ -502,13 +506,11 @@ def edit_log(id):
 
         f = request.files['photo']
 
-        if f and allowed_file(f.filename):
+        if f:
             os.remove(f'static/images/{user.id}/{log.image_name}')
             filename = secure_filename(f.filename)
             f.save(os.path.join(f'static/images/{user.id}', filename))
             log.image_name=filename
-        else:
-            flash("Incompatible filetype", "danger")
 
         db.session.commit()
 
@@ -560,9 +562,10 @@ def maintenance_detail(id):
         flash("UNAUTHORIZED.", "danger")
         return redirect("/maintenance/new")
 
-    logs = user.logs
 
-    maintenance = user.maintenance
+    logs = Log.query.filter_by(user_id=user.id).order_by(desc(Log.date)).limit(5)
+
+    maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
 
     record = Maintenance.query.filter_by(id=id).first()
 
@@ -590,8 +593,8 @@ def maintenance_form():
 
     user = g.user
 
-    logs = user.logs
-    records = user.maintenance
+    logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
+    records = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
 
     if form.validate_on_submit():
 
@@ -604,12 +607,8 @@ def maintenance_form():
         f = request.files['photo']
 
         if f:
-            if allowed_file(f.filename):
-                filename = secure_filename(f.filename)
-                f.save(os.path.join(f'static/images/{user.id}', filename))
-            else:
-                flash("File must be an image!!!", "danger")
-                return redirect('/logs/new')
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(f'static/images/{user.id}', filename))
         else:
             filename = ""  
 
@@ -649,8 +648,8 @@ def edit_maintenance(id):
         flash("UNAUTHORIZED.", "danger")
         return redirect("/maintenance/new")
 
-    logs = user.logs
-    records = user.maintenance
+    logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
+    records = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
 
     maintenance = Maintenance.query.get_or_404(id)
 
@@ -691,13 +690,11 @@ def edit_maintenance(id):
 
         f = request.files['photo']
 
-        if f and allowed_file(f.filename):
+        if f:
             os.remove(f'static/images/{user.id}/{maintenance.image_name}')
             filename = secure_filename(f.filename)
             f.save(os.path.join(f'static/images/{user.id}', filename))
             maintenance.image_name=filename
-        else:
-            flash("Incompatible filetype", "danger")
 
         db.session.commit()
 

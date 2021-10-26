@@ -28,7 +28,9 @@
 
         <div class="col-4">
             {% if user.image_name %}
-            <img src="/static/images/{{user.image_name}}" alt="" style="height: 200px; width: 200px;">
+            <img src="/static/images/{{user.id}}/{{user.image_name}}" alt="" style="height: 200px; width: 200px;">
+            {% else %}
+            <img src="/static/images/default.png" alt="" style="height: 200px; width: 200px;">
             {% endif %}
         </div>
 
