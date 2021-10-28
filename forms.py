@@ -23,7 +23,7 @@ class LogForm(FlaskForm):
     location = StringField("Location", render_kw={'class': 'form-control', 'placeholder' : 'City, State'})
     mileage = IntegerField("Mileage", render_kw={'class': 'form-control', 'placeholder' : 'Mileage'})
     date = DateField('DatePicker', format='%Y-%m-%d', render_kw={'class': 'form-control'}, default=datetime.now)
-    photo = FileField("Profile Image (Optional)", validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+    photo = FileField("Image (Optional)", render_kw={'class': 'form-control', 'style': 'width: 40%;'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
     text = TextAreaField("Body", render_kw={'class': 'form-control', 'rows' : '500', 'cols' :'10'}, validators=[InputRequired("This field is required.")])
 
 
@@ -34,7 +34,7 @@ class MaintenanceForm(FlaskForm):
     location = StringField("Location", render_kw={'class': 'form-control', 'placeholder' : 'City, State'}, validators=[InputRequired("This field is required.")])
     mileage = IntegerField("Mileage", render_kw={'class': 'form-control', 'placeholder' : 'Mileage'})
     date = DateField('DatePicker', render_kw={'class': 'form-control'}, format='%Y-%m-%d', default=datetime.now)
-    photo = FileField("Profile Image (Optional)", validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+    photo = FileField("Image (Optional)", render_kw={'class': 'form-control', 'style': 'width: 40%;'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
     description = TextAreaField("Body", render_kw={'class': 'form-control'}, validators=[InputRequired("This field is required.")])
 
 
@@ -44,7 +44,7 @@ class SignupForm(FlaskForm):
     username = StringField('Username', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     email = StringField('E-mail', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     password = PasswordField('Password', render_kw={'class': 'form-control'}, validators=[Length(min=6)])
-    photo = FileField("Profile Image (Optional)", validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+    photo = FileField("Profile Image (Optional)", render_kw={'class': 'form-control'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
 
 
 class LoginForm(FlaskForm):
