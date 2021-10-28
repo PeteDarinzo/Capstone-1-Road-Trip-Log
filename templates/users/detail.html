@@ -34,9 +34,13 @@
             {% endif %}
         </div>
 
-        <form class="form-" method="GET">
+        <form method="GET">
             <button formaction="/users/edit" class="btn btn-info">Edit Profile</button>
-            <button formaction="/user/change_password" class="btn btn-warning">Change Password</button>
+            <button formaction="/users/change_password" class="btn btn-warning">Change Password</button>
+        </form>
+
+        <form action="/users/delete" method="POST">
+            <button class="m-5 btn btn-danger">DELETE PROFILE</button>
         </form>
 
     </div>

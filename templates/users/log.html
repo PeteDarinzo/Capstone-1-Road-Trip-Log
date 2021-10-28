@@ -15,11 +15,9 @@
 
         <div class="col-8">
             <div class="p-3 h-100" id="log-div" style="background-color: #EDF5E1">
-                <h2><span class="rounded  p-2"> {{log.title}} </span></h2>
+                <h2><span class="rounded p-2">{{log.title}}</span></h2>
                 <span class=" rounded p-1">{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
-                <p class=" rounded p-4">
-                    {{log.text}}
-                </p>
+                <p class="rounded p-4">{{log.text}}</p>
                 {% if log.image_name %}
 
                 <img src="/static/images/{{user.id}}/{{log.image_name}}" alt="" style="height:300px; width: 400px;">

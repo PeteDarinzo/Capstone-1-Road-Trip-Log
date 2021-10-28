@@ -5,8 +5,9 @@ from enum import unique
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
-bcrypt = Bcrypt()
 db = SQLAlchemy()
+
+bcrypt = Bcrypt()
 
 
 def connect_db(app):
@@ -29,8 +30,14 @@ class User(db.Model):
     image_name = db.Column(db.Text, default="default.png")
 
     logs = db.relationship("Log", cascade="all, delete", backref="user")
+
     maintenance = db.relationship("Maintenance", cascade="all, delete", backref="user")
+
     places = db.relationship("Place", secondary="users_places")
+
+
+    def __repr__(self):
+        return f"<User #{self.id}: {self.username}, {self.email}>"
 
     @classmethod
     def signup(cls, username, email, password):
@@ -111,6 +118,10 @@ class Location(db.Model):
     # state = db.Column(db.Text, nullable=False)
     location = db.Column(db.Text, nullable=False, unique=True)
     
+
+    def __repr__(self):
+        return f"<Location #{self.id}: {self.location}>"
+
     logs = db.relationship("Log", backref="location")
     maintenance = db.relationship("Maintenance", backref="location")
 
@@ -120,7 +131,7 @@ class Maintenance(db.Model):
     __tablename__ = "maintenance"
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"))
     date = db.Column(db.Date, nullable=False)
     mileage = db.Column(db.Integer)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))

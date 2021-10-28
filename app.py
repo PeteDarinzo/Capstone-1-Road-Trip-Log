@@ -19,7 +19,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = "CanadianGeese1195432"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///greenflash'
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgresql:///greenflash'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['UPLOADED_IMAGES_DEST'] = UPLOAD_FOLDER
@@ -188,6 +188,7 @@ def user_detail():
 
 
 @app.route("/users/edit", methods=["GET", "POST"])
+@login_required
 def edit_user():
     """Edit a user's credentials, bio, and profile image."""
 
@@ -220,7 +221,8 @@ def edit_user():
     return render_template("users/edit_profile.html", user=user, form=form)
 
 
-@app.route("/user/change_password", methods=["GET", "POST"])
+@app.route("/users/change_password", methods=["GET", "POST"])
+@login_required
 def change_password():
     """Change a user's password."""
 
@@ -254,6 +256,18 @@ def change_password():
 
     return render_template("users/password_form.html", form=form)
 
+
+@app.route("/users/delete", methods=["POST"])
+@login_required
+def delete_user():
+    """Delete user."""
+
+    do_logout()
+
+    db.session.delete(g.user)
+    db.session.commit()
+
+    return redirect(url_for("signup"))
 
 ######################################################
 # Yelp API Request Routes
