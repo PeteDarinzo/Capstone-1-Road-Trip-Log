@@ -34,14 +34,12 @@ class LogModelTestCase(TestCase):
         """Test basic model."""
 
         salt_lake_city = Location(
-            location="Salt Lake City, UT"
-        )
+            location="Salt Lake City, UT")
 
         u = User(
             username="testuser",
             email="test@test.com",
-            password="HASHED_PASSWORD"
-        )
+            password="HASHED_PASSWORD")
 
         db.session.add(salt_lake_city)
         db.session.add(u)

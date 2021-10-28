@@ -1,4 +1,5 @@
 import os
+import shutil
 import functools
 import requests
 from flask import Flask, render_template, request, url_for, redirect, flash, session, g, jsonify
@@ -263,6 +264,8 @@ def delete_user():
     """Delete user."""
 
     do_logout()
+
+    shutil.rmtree(f"static/images/{g.user.id}")
 
     db.session.delete(g.user)
     db.session.commit()
@@ -549,7 +552,7 @@ def delete_log(id):
     log = Log.query.get_or_404(id)
 
     if log.image_name:
-        os.remove(f"static/images/{user.id}/{log.image_name}")
+        shutil.rmtree(f"static/images/{user.id}/{log.image_name}")
 
     db.session.delete(log)
 

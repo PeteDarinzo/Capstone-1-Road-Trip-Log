@@ -1,6 +1,7 @@
 """User view tests."""
 
 import os
+import shutil
 from io import BytesIO
 from unittest import TestCase
 from flask import url_for
@@ -38,6 +39,11 @@ class UserViewTestCase(TestCase):
 
         db.session.rollback()
 
+        user = User.query.filter_by(username="MrTurtle").first()
+        if user and os.path.isdir(f"static/images/{user.id}"):
+            shutil.rmtree(f"static/images/{user.id}")
+
+
     def test_signup_and_logout(self):
 
         with app.test_client() as client:
@@ -58,9 +64,17 @@ class UserViewTestCase(TestCase):
             res = client.post('/signup', content_type="multipart/form-data", data=data, follow_redirects=True)
             html = res.get_data(as_text=True)
 
-            # test that search page is laoded 
+            # test that search page is loaded 
             self.assertEqual(res.status_code, 200)
             self.assertIn("""<h2 style="color: #EDF5E1;">Looking for something?</h2>""", html)
+            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">MrTurtle</a>""", html)
+
+            user = User.query.filter_by(username="MrTurtle").first()
+
+            # verify that image folder was created for this user
+            image_folder = os.path.isdir(f"static/images/{user.id}")
+
+            self.assertTrue(image_folder)
 
             res = client.get('/logout', follow_redirects=True)
 
@@ -69,6 +83,46 @@ class UserViewTestCase(TestCase):
             self.assertEqual(res.status_code, 200)
             self.assertIn("""<h2>Welcome back</h2>""", html)
 
+
+
+    def test_signup_image(self):
+        """"Test signup attempt with an incorrect image type."""
+        
+        with app.test_client() as client:
+
+            res = client.get('/signup')
+            html = res.get_data(as_text=True)
+
+            self.assertEqual(res.status_code, 200)
+            self.assertIn("""<h2>Sign Up</h2>""", html)
+
+            txt_file = {
+                "username": "MrTurtle",
+                "password": "TEST_PASSWORD",
+                "email": "turtle@test.com",
+                "photo": (BytesIO(b'image data'), 'test_image.txt')
+            }
+
+            res = client.post('/signup', content_type="multipart/form-data", data=txt_file, follow_redirects=True)
+            html = res.get_data(as_text=True)
+
+
+            self.assertEqual(res.status_code, 200)
+            self.assertIn("""<h2>Sign Up</h2>""", html)
+
+            pdf_file = {
+                "username": "MrTurtle",
+                "password": "TEST_PASSWORD",
+                "email": "turtle@test.com",
+                "photo": (BytesIO(b'image data'), 'test_image.pdf')
+            }
+
+            res = client.post('/signup', content_type="multipart/form-data", data=pdf_file, follow_redirects=True)
+            html = res.get_data(as_text=True)
+
+
+            self.assertEqual(res.status_code, 200)
+            self.assertIn("""<h2>Sign Up</h2>""", html)
 
 
     def test_log_in(self):
@@ -98,6 +152,7 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(res.status_code, 200)
             self.assertIn("""<h2>Welcome back</h2>""", html)
+
 
     def test_wrong_password_login(self):
         """Test login attempt with wrong password"""
@@ -132,6 +187,7 @@ class UserViewTestCase(TestCase):
 
 
     def test_user_profile(self):
+        """Test user's profile can be viewed"""
 
         with app.test_client() as client:
 
@@ -185,6 +241,61 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(res.status_code, 200)
             self.assertIn("""<p>I am Mr Turtle</p>""", html)
+
+
+    def test_profile_image_edit(self):
+        """Test that a user's profile can be edited."""
+
+        with app.test_client() as client:
+
+            data = {
+                "username": "MrTurtle",
+                "password": "TEST_PASSWORD",
+                "email": "turtle@test.com",
+                "photo": (BytesIO(b'image data'), 'test_image.png')
+            }
+                
+            client.post('/signup', content_type="multipart/form-data", data=data, follow_redirects=True)
+
+            res = client.get("/users/edit")
+            html = res.get_data(as_text=True)
+
+            self.assertEqual(res.status_code, 200)
+            self.assertIn("""<h2>Edit Profile</h2>""", html)
+
+            user = User.query.filter_by(username="MrTurtle").first()
+
+            # verify that image folder was created for this user
+            image_folder = os.path.isdir(f"static/images/{user.id}")
+            self.assertTrue(image_folder)
+
+            data = {
+                "username": "MrTurtle",
+                "email": "mrturtle@test.com",
+                "image_url" : "/static/images/default-pic.png",
+                "bio" : "I am Mr Turtle",
+                "photo": (BytesIO(b'image data'), 'new_image.png')}
+
+            res = client.post('/users/edit', content_type="multipart/form-data", data=data, follow_redirects=True)
+            html = res.get_data(as_text=True)
+
+            self.assertEqual(res.status_code, 200)
+            self.assertIn("""<p>I am Mr Turtle</p>""", html)
+
+            user = User.query.filter_by(image_name="new_image.png").all()
+            self.assertEqual(len(user), 1)
+
+            data = {
+                "username": "MrTurtle",
+                "email": "mrturtle@test.com",
+                "image_url" : "/static/images/default-pic.png",
+                "bio" : "I am Mr Turtle",
+                "photo": (BytesIO(b'image data'), 'new_image.txt')}
+
+            res = client.post('/users/edit', content_type="multipart/form-data", data=data, follow_redirects=True)
+
+            user = User.query.filter_by(image_name="new_image.txt").all()
+            self.assertEqual(len(user), 0)
 
 
     def test_logged_out_profile_edit(self):
@@ -307,20 +418,32 @@ class UserViewTestCase(TestCase):
         
         with app.test_client() as client:
 
-            data = {"username" : "testuser",
-                        "password" : "Test_Password123"}
+            data = {
+                "username": "MrTurtle",
+                "password": "TEST_PASSWORD",
+                "email": "turtle@test.com",
+                "photo": (BytesIO(b'image data'), 'test_image.png')}
 
-            res = client.post('/login', data=data, follow_redirects=True)
-
+            res = client.post('/signup', content_type="multipart/form-data", data=data, follow_redirects=True)
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">testuser</a>""", html)
+            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">MrTurtle</a>""", html)
+
+            user = User.query.filter_by(username="MrTurtle").first()
+            user_id = user.id
 
             res = client.post('/users/delete', follow_redirects=True)
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
             self.assertIn("""<h2>Sign Up</h2>""", html)
             
-            user = User.query.filter_by(username="testuser").all()
+            user = User.query.filter_by(username="MrTurtle").all()
             self.assertEqual(len(user), 0)
+
+            # verify that image folder was created for this user
+            image_folder = os.path.isdir(f"static/images/{user_id}")
+
+            self.assertFalse(image_folder)
+
+
