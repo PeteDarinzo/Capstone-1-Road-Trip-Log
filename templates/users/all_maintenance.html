@@ -4,34 +4,35 @@
 All Maint
 {% endblock %}
 
-
 {% block content %}
 
-
 <div class="container">
-    <div class="row">
-        <div class="col bg-secondary">
-            <h2 style="color:white;">Records</h2>
-            <div>
-                <form action="/maintenance/new" method="GET">
-                    <button class="btn btn-primary w-100">
-                        <p class="text-left">New Record</p>
-                    </button>
-                </form>
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-5 p-3 rounded">
+            {{ page_select_dropdown() }}
+            <div class="p-3 table rounded" >
+                <h2>Maintenance Records</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in maintenance %}
+                        <tr>
+                            <td><a href="/maintenance/{{record.id}}">{{record.title}}</a></td>
+                            <td>{{record.location.location}}</td>
+                            <td>{{record.date}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            {% for log in maintenance %}
-            <div>
-                <form action="/maintenance/{{log.id}}" method="GET">
-                    <button class="btn btn-secondary w-100">
-                        <p class="text-left">{{log.title}}</p>
-                        <p class="text-left">{{log.location.location}}</p>
-                    </button>
-                </form>
-            </div>
-            {% endfor %}
         </div>
     </div>
 </div>
-
 
 {% endblock %}

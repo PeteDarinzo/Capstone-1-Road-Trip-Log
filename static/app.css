@@ -1,6 +1,10 @@
-
 html, body{
-    height: 100%
+    height: 100%;
+    overflow: hidden;
+} 
+
+.navbar {
+    background-color: #042C55;
 }
 
 .navbar .navbar-brand {
@@ -19,8 +23,69 @@ html, body{
     font-size:1.5rem;
 } 
 
+/* sun icon color */
 span[class="material-icons"] {
     color: yellow;
+}
+
+.jumbotron {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
+}
+
+form[id="search-form"] {
+    background-color: #31708E;
+}
+
+.log-form {
+    background-color: #FBEEC1;
+}
+
+.maint-form {
+    background-color: #EDF5E1;
+}
+
+
+div[class="img-container"] {
+    width: 50%;
+}
+
+.text-bg {
+    background-color: #F7F9FB;
+}
+
+h2 {
+    color: #F7F9FB;
+}
+
+h2[class="dark-title"] {
+    color: #042C55;
+}
+
+.log-container {
+    background-color: #FBEEC1;
+}
+
+.maint-container {
+    background-color: #EDF5E1;
+}
+
+.submit {
+    color: #F7F9FB;
+    background-color: #05386b;
+}
+
+.table {
+    background-color: #F7F9FB;
+}
+
+/* scrolling div */
+.scroll {
+    height: 500px;
+    width: auto;
+    overflow-y: auto;
 }
 
 button > p {
@@ -38,6 +103,7 @@ button > p[class="title"] {
 .info {
     margin: 0;
 }
+
 .address {
     margin: 0;
 }
@@ -48,24 +114,37 @@ button > p[class="title"] {
 }
 
 body {
-     background-color: #5CDB95; 
+    background-image: url(/static/images/background_image.jpg);
 
-    /* background-image: url("https://images.unsplash.com/photo-1542159919831-40fb0656b45a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"); */
-
-    /* Full height */
-    height: 100%;
+    /* Photo by <a href="https://unsplash.com/@aaronburden?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Aaron Burden</a> on <a href="https://unsplash.com/s/photos/road?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+    https://unsplash.com/photos/jyB40-iOtis
+   */
   
-    /* Center and scale the image nicely */
+    /* Center and scale the image*/
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
+/* have an image fit it's parent container
+    maintaining aspect ratio
+*/
+.contain {
+    width: 100%;
+    object-fit: contain;
+  }
+
+  ul {
+      margin: 0;
+      padding: 0;
+  }
+  
 
 label {
     font-size: 1.5rem;
 }
 
+/* take away most form labels for inputs with default values*/
 label[for="title"] {
     display: none;
 }
@@ -90,10 +169,6 @@ input[id="photo"] {
     display: inline;
 }
 
-/* label[for="photo"] {
-    display: none;
-} */
-
 label[for="description"] {
     display: none;
 }
@@ -101,6 +176,7 @@ label[for="description"] {
 label[for="category"] {
     color: #EDF5E1;
 }
+
 label[for="city"] {
     color: #EDF5E1;
 }
@@ -110,14 +186,41 @@ textarea {
     height: 150px;
   }
 
-.one-line {
+/* .one-line {
     display: inline-block;
+} */
+
+.side-bar {
+    background-color: #5085A5;
+}
+
+.log-button {
+    background-color: #5085A5;
+}
+
+.log-button:hover {
+    background-color: #31708E;
 }
 
 /*
-#05386b
+#05386B
 #379683
 #5CDB95
 #8EE4AF
 #EDF5E1
+*/
+
+/* 
+#687864
+#31708E
+#5085A5
+#8FC1E3
+#F7F9FB
+*/
+
+/* 
+#659DBD
+#DAAD86
+#BC986A
+#FBEEC1
 */

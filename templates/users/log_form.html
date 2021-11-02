@@ -8,51 +8,41 @@ New Log
 {% block content %}
 
 <div class="container-fluid mt-4 h-100">
-
-    <div class="row gx-5 h-100">
+    <div class="row gx-5 h-100 justify-content-center">
         {{ entry_list(logs) }}
-        <div class="col-8">
-            <div id="log-form">
-                <h2><span class="p-1 rounded" style="color: #EDF5E1; ">New Log Entry</span></h2>
-                <form method="POST" id="log-form" class="p-3" enctype="multipart/form-data">
+        <div class="col-12 col-lg-6">
+            {{ page_select_dropdown() }}
+            <div class="log-form rounded p-3">
+                <h2 class="dark-title">New Log Entry</h2>
+                <form method="POST" class="p-3" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
                     <div class="form-group">
                         {% for field in form if field.widget.input_type != "hidden" %}
-
                         {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
-
-                        <p class="one-line">
+                        <p class="d-block d-sm-inline-block">
                             {{ field.label }}
                             {{ field() }}
-
                             {% for error in field.errors %}
                             {{ error }}
                             {% endfor %}
                         </p>
-
                         {% else %}
-
                         <p>
                             {{ field.label }}
                             {{ field() }}
-
                             {% for error in field.errors %}
                             {{ error }}
                             {% endfor %}
                         </p>
-
                         {% endif %}
-
                         {% endfor%}
                     </div>
-                    <button class="btn btn-lg btn-block" style="color: #EDF5E1; background-color: #05386B;">Enter Log!</button>
+                    <button class="btn btn-lg btn-block submit">Enter
+                        Log!</button>
                 </form>
             </div>
-
         </div>
-
         {{ record_list(maintenance) }}
-
     </div>
 </div>
 

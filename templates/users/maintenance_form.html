@@ -4,69 +4,45 @@
 New Maint
 {% endblock %}
 
-
 {% block content %}
-
 <div class="container-fluid mt-4 h-100">
-
-    <div class="row gx-5 h-100">
-
+    <div class="row gx-5 h-100 justify-content-center">
         {{ entry_list(logs) }}
+        <div class="col-12 col-lg-6">
+            
+            {{ page_select_dropdown() }}
 
-        <div class="col-8">
-            <div>
-                <h2><span class=" p-1 rounded" style="color: #EDF5E1; ">New Maintenance Record</span></h2>
+            <div class="rounded p-3 maint-form">
+                <h2 class="dark-title">New Maintenance Record</span></h2>
                 <form method="POST" id="log-form" class="p-3" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
-    
                     <div class="form-group">
-    
                         {% for field in form if field.widget.input_type != "hidden" %}
-
                         {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
-
-                        <p class="one-line">
+                        <p class="d-block d-sm-inline-block">
                             {{ field.label }}
                             {{ field() }}
-
                             {% for error in field.errors %}
                             {{ error }}
                             {% endfor %}
                         </p>
-
                         {% else %}
-
                         <p>
                             {{ field.label }}
                             {{ field() }}
-
                             {% for error in field.errors %}
                             {{ error }}
                             {% endfor %}
                         </p>
-
                         {% endif %}
-<!-- 
-                        <p>
-                            {{ field.label }}
-                            {{ field() }}
-    
-                            {% for error in field.errors %}
-                            {{ error }}
-                            {% endfor %}
-                        </p> -->
                         {% endfor%}
                     </div>
-                    <button class="btn btn-lg btn-block" style="color: #EDF5E1; background-color: #05386b;">Enter Record!</button>
+                    <button class="btn btn-lg btn-block submit">Enter
+                        Record!</button>
                 </form>
             </div>
         </div>
-
         {{ record_list(maintenance) }}
-
     </div>
 </div>
-
-
-
 {% endblock %}

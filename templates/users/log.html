@@ -8,35 +8,30 @@
 {% block content %}
 
 <div class="container-fluid mt-4 h-100">
-
-    <div class="row gx-5 h-100">
-
+    <div class="row gx-5 h-100 justify-content-center">
         {{ entry_list(logs) }}
-
-        <div class="col-8">
-            <div class="p-3 h-100" id="log-div" style="background-color: #EDF5E1">
-                <h2><span class="rounded p-2">{{log.title}}</span></h2>
-                <span class=" rounded p-1">{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
-                <p class="rounded p-4">{{log.text}}</p>
+        <div class="col-12 col-lg-6">
+            {{ page_select_dropdown() }}
+            <div class="p-4 h-100 rounded scroll log-container">
+                <h2 class="dark-title">{{log.title}}</h2>
+                <span class="rounded p-md-5">{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
+                <p class="rounded mt-5 mt-md-2 p-md-3 border text-bg">{{log.text}}</p>
                 {% if log.image_name %}
-
-                <img src="/static/images/{{user.id}}/{{log.image_name}}" alt="" style="height:300px; width: 400px;">
-
+                <div class="img-container">
+                    <img src="/static/images/{{user.id}}/{{log.image_name}}" alt="" class="contain">
+                </div>
                 {% endif %}
                 <form>
                     <div class="text-left">
                         <button formaction="/logs/{{log.id}}/edit" formmethod="GET"
                             class="btn btn-warning btn-lg m-2">Edit</button>
-
                         <button formaction="/logs/{{log.id}}/delete" formmethod="POST"
                             class="btn btn-danger btn-lg m-2">Delete</button>
                     </div>
                 </form>
             </div>
         </div>
-
         {{ record_list(maintenance) }}
-
     </div>
 </div>
 

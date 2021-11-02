@@ -3,10 +3,10 @@
 
 {% block content %}
 
-<div class="container mt-5">
-  <div class="row justify-content-md-center">
-    <div class="col-md-7 col-lg-5">
-      <h2>Welcome back</h2>
+<div class="container">
+  <div class="row m-2 m-md-5 justify-content-md-center">
+    <div class="col-md-7 col-lg-5 bg-light rounded p-3">
+      <h2>Log In</h2>
       <form method="POST" id="user_form">
         {{ form.hidden_tag() }}
         <input type="hidden" name="next" value="{{ request.args.get('next', "") }}">
@@ -14,13 +14,11 @@
         <p>
           {{ field.label }}
           {{ field() }}
-
           {% for error in field.errors %}
           {{ error }}
           {% endfor %}
         </p>
         {% endfor%}
-
         <button class="btn btn-primary btn-block btn-lg">Log in</button>
       </form>
     </div>

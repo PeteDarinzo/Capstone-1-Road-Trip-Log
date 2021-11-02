@@ -12,9 +12,12 @@ images = UploadSet('images', IMAGES)
 class BusinessSearchForm(FlaskForm):
     """Form for business search submit."""
 
-    category = StringField("Category", validators=[InputRequired(message="This field is required.")])
-    city = StringField("Location", validators=[InputRequired(message="This field is required.")])
+    category = StringField("Category", render_kw={'class': 'form-control'}, validators=[InputRequired(message="This field is required.")])
+    city = StringField("Location", render_kw={'class': 'form-control'}, validators=[InputRequired(message="This field is required.")])
 
+
+
+                        # {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
 
 class LogForm(FlaskForm):
     """Form to submit a new log."""
@@ -23,9 +26,10 @@ class LogForm(FlaskForm):
     location = StringField("Location", render_kw={'class': 'form-control', 'placeholder' : 'City, State'})
     mileage = IntegerField("Mileage", render_kw={'class': 'form-control', 'placeholder' : 'Mileage'})
     date = DateField('DatePicker', format='%Y-%m-%d', render_kw={'class': 'form-control'}, default=datetime.now)
-    photo = FileField("Image (Optional)", render_kw={'class': 'form-control', 'style': 'width: 40%;'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+    photo = FileField("Image (Optional)", render_kw={'class': 'form-control'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
     text = TextAreaField("Body", render_kw={'class': 'form-control', 'rows' : '500', 'cols' :'10'}, validators=[InputRequired("This field is required.")])
 
+# 'style': 'width: 40%;'
 
 class MaintenanceForm(FlaskForm):
     """Form to submit a new maintenance event."""
@@ -34,7 +38,7 @@ class MaintenanceForm(FlaskForm):
     location = StringField("Location", render_kw={'class': 'form-control', 'placeholder' : 'City, State'}, validators=[InputRequired("This field is required.")])
     mileage = IntegerField("Mileage", render_kw={'class': 'form-control', 'placeholder' : 'Mileage'})
     date = DateField('DatePicker', render_kw={'class': 'form-control'}, format='%Y-%m-%d', default=datetime.now)
-    photo = FileField("Image (Optional)", render_kw={'class': 'form-control', 'style': 'width: 40%;'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+    photo = FileField("Image (Optional)", render_kw={'class': 'form-control'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
     description = TextAreaField("Body", render_kw={'class': 'form-control'}, validators=[InputRequired("This field is required.")])
 
 
@@ -60,7 +64,7 @@ class EditProfileForm(FlaskForm):
     username = StringField('Username', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     email = StringField('E-mail', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     bio = TextAreaField('Bio', render_kw={'class': 'form-control'})
-    photo = FileField("Profile Image (Optional)", validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+    photo = FileField("Profile Image (Optional)", render_kw={'class': 'form-control'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
 
 class ChangePasswordForm(FlaskForm):
     """Form for changing password."""

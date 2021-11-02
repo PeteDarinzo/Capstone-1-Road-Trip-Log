@@ -69,4 +69,7 @@ class UserModelTestCase(TestCase):
 
         self.assertFalse(User.authenticate("JoeyTest", "TEST_PASSWORD"))
        
+
+       # modal dialogue 
+       
         self.assertFalse(User.authenticate("JohnnyTest", "THE_WRONG_TEST_PASSWORD"))

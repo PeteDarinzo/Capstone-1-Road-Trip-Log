@@ -3,6 +3,19 @@
 
 const $body = $("body");
 
+const RATINGS = {
+    "0": "regular_0.png",
+    "1": "regular_1.png",
+    "1.5": "regular_1_half.png",
+    "2": "regular_2.png",
+    "2.5": "regular_2_half.png",
+    "3": "regular_3.png",
+    "3.5": "regular_3_half.png",
+    "4": "regular_4.png",
+    "4.5": "regular_4_half.png",
+    "5": "regular_5.png"
+}
+
 
 // /**
 //  * Retrieve form data and turn it into an object
@@ -13,7 +26,7 @@ const $body = $("body");
 //  * JSON.stringify can be used to provide JSON, but the content-type must be specified
 //  * source: https://masteringjs.io/tutorials/axios/post-json
 //  * 
-//  */
+//  *//
 
 async function processForm(evt) {
 
@@ -38,32 +51,54 @@ async function processForm(evt) {
 
 function handleResponse(businesses) {
 
-    $('#results-col').prepend(`
-    <h2 style="color: #05386B;">Here's what's nearby:</h2>
-    `)
+    $('#results-header').html("Here's what's nearby:")
+
+
+    // $('#results-col').prepend(`
+    // <h2 style="color: #05386B;" id="results-header">Here's what's nearby:</h2>
+    // `)
 
     for (const business of businesses) {
+
+        const rating = business.rating;
+
+        const image_path = `static/images/stars/${RATINGS[rating]}`;
+        
+        let priceDisplay = ""; 
+        let phoneDisplay = "";
+
+        console.log(business.price)
+
+        if(business.price == undefined) {
+            priceDisplay = "display: none;"
+        }
+
+        if(!business.phone) {
+            phoneDisplay = "display: none;"
+        }
+        // style="width:100px; height:100px;"
+
         $('#search-results').append(`
-        <div class="container mb-2 p-3 rounded result " style="background-color: #EDF5E1;">
-        <div class="row">
-            <div class="col-2">
-                <img src=${business.image_url} class="rounded" style="width:125px; height:125px;">
+        <div class="container mb-2 p-3 rounded" style="background-color: #EDF5E1;">
+        <div class="row justify-content-center">
+            <div class="d-none d-md-inline col-md-2 text-center my-auto">
+                <img src=${business.image_url} class="rounded contain" >
             </div>
-            <div class="col-4">
-            <p style="font-size: 2rem; color: #05386B;">${business.name}</p>
-            <p class="info">Category: ${business.categories[0]["title"]}</p>
-            <p class="info">Rating: ${business.rating}/5</p>
-            <p class="info">Price: ${business.price}</p>
+            <div class="col-6 col-md-5 text-center">
+            <p class="fw-bold" style="font-size: 1.2rem; color: #05386B;">${business.name}</p>
+            <p class="info"><img class="mb-2" src="${image_path}"></p>
+            <p class="info d-none d-md-inline m-2 fw-bold">Category: <span class="fw-normal">${business.categories[0]["title"]}</span></p>
+            <p class="info fw-bold" style="${priceDisplay}">Price: <span class="fw-normal">${business.price}</span></p>
             </div>
 
-            <div class="col-4">
-            <p class="info ">Phone: ${business.phone}/5</p>
-            <p class="address">${business.location.display_address[0]}</p>
+            <div class="col-6 col-md-3 text-center">
+            <p class=" mt-3 address">${business.location.display_address[0]}</p>
             <p class="address">${business.location.display_address[1]}</p>
-            <a href=${business.url} class="url">More Info</a>
+            <p class="info mt-2 fw-bold" style="${phoneDisplay}">Phone: <span class="fw-normal">${business.phone}</span></p>
+            <a href=${business.url} class="d-none d-md-inline url"><img class="m-3" src="static/images/yelp_logo.png" style="width: 75px;"></a>
             </div>
 
-            <div class="col-2 align-self-center">
+            <div class="col-12 col-md-2 align-self-center text-center">
 
             <form class="save-form">
 
@@ -77,9 +112,11 @@ function handleResponse(businesses) {
             <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
             <input type="hidden" id="address_1" name="address_0" value="${business.location.display_address[1]}">
             <input type="hidden" id="price" name="price" value="${business.price}">
-            <input type="hidden" id="rating" name="rating" value="${business.rating}">
+            <input type="hidden" id="rating" name="rating" value="${image_path}">
             <input type="hidden" id="phone" name="phone" value="${business.phone}">
             <button type="submit" class="save-button btn-warning btn-lg">Save!</button>
+            <a href=${business.url} class="d-md-none url"><img class="m-3" src="static/images/yelp_logo.png" style="width: 75px;"></a>
+
             </form>  
             </div>
         </div>

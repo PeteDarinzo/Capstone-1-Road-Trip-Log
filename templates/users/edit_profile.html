@@ -3,9 +3,9 @@
 
 {% block content %}
 
-<div class="container mt-5">
-  <div class="row justify-content-md-center">
-    <div class="col-md-7 col-lg-5">
+<div class="container">
+  <div class="row m-2 m-md-4 justify-content-center">
+    <div class="col-12 col-sm-8 col-md-8 col-lg-5 bg-light p-3 rounded">
       <h2>Edit Profile</h2>
       <form method="POST" id="user_form" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
@@ -14,7 +14,6 @@
           <p>
             {{ field.label }}
             {{ field() }}
-
             {% for error in field.errors %}
             {{ error }}
             {% endfor %}
@@ -26,6 +25,5 @@
     </div>
   </div>
 </div>
-
 
 {% endblock %}

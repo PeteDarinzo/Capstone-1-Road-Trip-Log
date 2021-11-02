@@ -1,28 +1,44 @@
+{% macro page_select_dropdown() %}
+
+<div class="dropdown d-md-none m-3 p-2">
+    <button class="btn btn-success btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        Select
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="/logs/new">New Log</a></li>
+        <li><a class="dropdown-item" href="/logs/all">All Logs</a></li>
+        <li><a class="dropdown-item" href="/maintenance/new">New Maintenance</a></li>
+        <li><a class="dropdown-item" href="/maintenance/all">All Maintenance</a></li>
+    </ul>
+</div>
+
+{% endmacro %}
 
 
 {% macro entry_list(logs) %}
 
-<div class="col-2 rounded shadow" style="background-color: #379683;">
-    <h2 style="color: #EDF5E1;">Entries</h2>
+<div class="d-none d-lg-inline col-lg rounded shadow side-bar" style="background-color: #31708E;">
+    <h2>Log Entries</h2>
     <div>
         <form action="/logs/new" method="GET">
             <button class="btn btn-block w-100" style="color: white; background-color: #05386b;">
-                <p>New Entry</p>
+                <p class="lead">New Entry</p>
             </button>
         </form>
     </div>
     <div>
         <form action="/logs/all" method="GET">
-            <button class="btn btn-block w-100" style="background-color: #8EE4AF;">
-                <p>All Entries</p>
+            <button class="btn btn-block w-100" style="color: white; background-color: #379683;">
+                <p class="lead">All Entries</p>
             </button>
         </form>
     </div>
     {% for log in logs %}
     <div>
         <form action="/logs/{{log.id}}" method="GET">
-            <button class="btn w-100 border rounded" style="background-color: #379683;">
-                <p class="title" style="color: white;">{{ log.title }}</p>
+            <button class="btn w-100 border border-2 rounded log-button">
+                <p class="" style="color: white;">{{ log.title }}</p>
                 <p style="color: white;">{{ log.location.location }}</p>
                 <p style="color: white;">{{ log.date }}</p>
             </button>
@@ -37,27 +53,27 @@
 
 {% macro record_list(maintenance) %}
 
-<div class="col-2 rounded shadow" style="background-color: #379683;">
-    <h2 style="color: white;">Records</h2>
+<div class="d-none d-lg-inline col-lg rounded shadow" style="background-color: #31708E;">
+    <h2 style="color: white;">Maintenance Records</h2>
     <div>
         <form action="/maintenance/new" method="GET">
             <button class="btn w-100" style="color: white; background-color: #05386b;">
-                <p class="text-left">New Record</p>
+                <p class="lead">New Record</p>
             </button>
         </form>
     </div>
     <div>
         <form action="/maintenance/all" method="GET">
-            <button class="btn w-100" style="background-color: #8EE4AF;">
-                <p class="text-left">All Records</p>
+            <button class="btn w-100" style="color: white; background-color: #379683;">
+                <p class="lead">All Records</p>
             </button>
         </form>
     </div>
     {% for log in maintenance %}
     <div>
         <form action="/maintenance/{{log.id}}" method="GET">
-            <button class="btn w-100" style="background-color: #379683;">
-                <p class="title" style="color: white;">{{log.title}}</p>
+            <button class="border border-2 btn w-100 log-button">
+                <p class="" style="color: white;">{{log.title}}</p>
                 <p style="color: white;">{{log.location.location}}</p>
                 <p style="color: white;">{{log.date}}</p>
             </button>

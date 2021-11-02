@@ -8,40 +8,41 @@ Edit Maint
 {% block content %}
 
 <div class="container-fluid mt-4 h-100">
-
-    <div class="row gx-5 h-100">
-
+    <div class="row gx-5 h-100 justify-content-center">
         {{ entry_list(logs) }}
-
-        <div class="col-8">
-            <h2>Edit Maintenance</h2>
-            <div class="p-3" id="log-form">
+        <div class="col-12 col-lg-6">
+            {{ page_select_dropdown() }}
+            <div class="p-3 log-form rounded">
+                <h2 class="dark-title">Edit Maintenance</h2>
                 <form method="POST" id="maintenance-edit-form" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
-    
                     <div class="form-group">
-    
                         {% for field in form if field.widget.input_type != "hidden" %}
-                        <p>
+                        {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
+                        <p class="d-block d-sm-inline-block">
                             {{ field.label }}
-                            {{ field(class_="form-control") }}
-    
+                            {{ field() }}
                             {% for error in field.errors %}
                             {{ error }}
                             {% endfor %}
                         </p>
+                        {% else %}
+                        <p>
+                            {{ field.label }}
+                            {{ field() }}
+                            {% for error in field.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
                         {% endfor%}
                     </div>
                     <button class="btn btn-primary btn-lg btn-block">Save Record!</button>
                 </form>
             </div>
         </div>
-
-        {{ record_list(maintenance) }}
-     
+        {{ record_list(maintenance) }}     
     </div>
 </div>
-
-
 
 {% endblock %}

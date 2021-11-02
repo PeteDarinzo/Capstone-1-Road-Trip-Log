@@ -7,48 +7,36 @@ Greenflash
 
 {% block content %}
 
-<div class="container m-5">
-
-    <div class="row">
-
-        <div class="col-4 ">
-            
-            <form id="search-form" class="shadow rounded p-3 position-sticky" style="background-color: #379683;">
-
-                <h2 style="color: #EDF5E1;">Looking for something?</h2>
-
+<div class="container-fluid">
+    <div class="row justify-content-center mt-3 m-lg-5">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+            <form id="search-form" class="shadow rounded p-3 position-sticky">
+                <h2 style="color: #F7F9FB;">Looking for something?</h2>
                 {{ form.hidden_tag() }}
-
                 <div class="form-group">
-
                     {% for field in form if field.widget.input_type != "hidden" %}
                     <p>
                         {{ field.label }}
-                        {{ field(class_="form-control") }}
-
+                        {{ field() }}
                         {% for error in field.errors %}
                         {{ error }}
                         {% endfor %}
                     </p>
                     {% endfor%}
                 </div>
-                <button type="submit" class="btn btn-lg" style="color: #EDF5E1; background-color: #05386b;">Search</button>
+                <button type="submit" class="btn btn-lg btn-primary">Search</button>
             </form>
         </div>
 
-        <div class="col-8" id="results-col">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-8" id="results-col">
 
-            <div id="search-results" class="overflow-auto">
+            <h2 style="color: #05386B;" id="results-header"></h2>
+
+            <div id="search-results" class="scroll p-md-3">
 
             </div>
         </div>
     </div>
 </div>
-<ul>
-
-
-</ul>
-
-
 
 {% endblock %}

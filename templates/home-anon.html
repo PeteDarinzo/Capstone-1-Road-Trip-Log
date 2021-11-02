@@ -7,14 +7,25 @@ Greenflash
 
 {% block content %}
 
-
-<div class="container m-5">
+<div class="container m-4">
 
     <div class="row">
 
-        <div class="col-6">
-            <h2>Looking for something?</h2>
-            <form id="search-form" class="border p-3 bg-light">
+        <div class="jumbotron">
+            <div class="hstack gap-3">
+                <h1 class="display-5">Travel. Discover. Document. Share.</h1>
+                <div class="ms-auto lead">Your roadtrip companion.</div>
+                <div class="vr"></div>
+                <div class="lead ">Wherever each sunset finds you.</div>
+            </div>
+        </div>
+
+        <div class="col-4 ">
+
+            <form id="search-form" class="shadow rounded p-3 position-sticky" style="background-color: #379683;">
+
+                <h2 style="color: #EDF5E1;">Looking for something?</h2>
+
                 {{ form.hidden_tag() }}
 
                 <div class="form-group">
@@ -30,17 +41,20 @@ Greenflash
                     </p>
                     {% endfor%}
                 </div>
-                <input type="submit" value="Search">
+                <button type="submit" class="btn btn-lg"
+                    style="color: #EDF5E1; background-color: #05386b;">Search</button>
             </form>
+        </div>
 
-            <div id="search-results">
+        <div class="col-8" id="results-col">
+
+            <h2 style="color: white;" id="results-header"></h2>
+
+            <div id="search-results" class="scroll">
 
             </div>
-
         </div>
     </div>
 </div>
-
-
 
 {% endblock %}

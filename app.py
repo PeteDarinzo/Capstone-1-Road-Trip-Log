@@ -167,7 +167,13 @@ def logout():
 @app.route("/")
 def landing():
 
-    return redirect("/home")
+    if g.user:
+
+        return redirect("/home")
+
+    form = BusinessSearchForm()
+
+    return render_template("home-anon.html", form=form)
 
 
 @app.route("/home")
@@ -257,8 +263,16 @@ def change_password():
 
     return render_template("users/password_form.html", form=form)
 
+@app.route("/users/delete/confirm", methods=["GET"])
+@login_required
+def delete_confirm():
+    """Confirm account deletion."""
 
-@app.route("/users/delete", methods=["POST"])
+    return render_template('users/account_delete.html')
+
+
+
+@app.route("/users/delete", methods=["GET", "POST"])
 @login_required
 def delete_user():
     """Delete user."""
@@ -270,7 +284,9 @@ def delete_user():
     db.session.delete(g.user)
     db.session.commit()
 
+    flash("Account successfully deleted.", "danger")
     return redirect(url_for("signup"))
+
 
 ######################################################
 # Yelp API Request Routes
