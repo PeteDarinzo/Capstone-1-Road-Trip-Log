@@ -149,24 +149,24 @@ class Place(db.Model):
     __tablename__ = "places"
 
     id = db.Column(db.String, primary_key=True)
-    name = db.Column(db.Text, nullable=False)
-    category = db.Column(db.String)
-    url = db.Column(db.Text)
-    image_url = db.Column(db.Text)
-    price = db.Column(db.String)    
-    phone = db.Column(db.String)
-    address_0 = db.Column(db.Text)
-    address_1 = db.Column(db.Text)
-    rating = db.Column(db.String)
+    # name = db.Column(db.Text, nullable=False)
+    # category = db.Column(db.String)
+    # url = db.Column(db.Text)
+    # image_url = db.Column(db.Text)
+    # price = db.Column(db.String)    
+    # phone = db.Column(db.String)
+    # address_0 = db.Column(db.Text)
+    # address_1 = db.Column(db.Text)
+    # rating = db.Column(db.String)
 
     # users = db.relationship("User", secondary="users_places")
 
     def serialize(self):
         return {
-            "id": self.id,
-            "name": self.name,
-            "url": self.url,
-            "address": self.address,
+            "id": self.id
+            # "name": self.name,
+            # "url": self.url,
+            # "address": self.address,
         }
 
 

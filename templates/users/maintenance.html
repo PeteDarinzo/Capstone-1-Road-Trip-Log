@@ -17,8 +17,11 @@
                 <span class="rounded p-md-5">{{record.date}} - {{record.location.location}} - {{record.mileage}}</span>
                 <p class="rounded mt-5 mt-md-2 p-md-3 text-bg border">{{record.description}}</p>
                 {% if record.image_name %}
-                <div class="img-container">
-                    <img src="/static/images/{{user.id}}/{{record.image_name}}" alt="" class="contain">
+
+                <div class="row justify-content-center">
+                    <div class="col-12 col-sm-8">
+                        <img src="/static/images/{{user.id}}/{{record.image_name}}" alt="" class="contain">
+                    </div>
                 </div>
                 {% endif %}
                 <form>

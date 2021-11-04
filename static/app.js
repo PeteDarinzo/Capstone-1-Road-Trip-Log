@@ -1,6 +1,3 @@
-
-
-
 const $body = $("body");
 
 const RATINGS = {
@@ -53,76 +50,78 @@ function handleResponse(businesses) {
 
     $('#results-header').html("Here's what's nearby:")
 
-
-    // $('#results-col').prepend(`
-    // <h2 style="color: #05386B;" id="results-header">Here's what's nearby:</h2>
-    // `)
-
     for (const business of businesses) {
 
         const rating = business.rating;
 
         const image_path = `static/images/stars/${RATINGS[rating]}`;
-        
-        let priceDisplay = ""; 
+
+        let priceDisplay = "";
         let phoneDisplay = "";
 
-        console.log(business.price)
-
-        if(business.price == undefined) {
+        if (business.price == undefined) {
             priceDisplay = "display: none;"
         }
 
-        if(!business.phone) {
+        if (!business.phone) {
             phoneDisplay = "display: none;"
         }
-        // style="width:100px; height:100px;"
 
         $('#search-results').append(`
         <div class="container mb-2 p-1 rounded" style="background-color: #EDF5E1;">
         <div class="row justify-content-center">
-            <div class="d-none d-md-inline col-md-2 text-center my-auto">
-                <img src=${business.image_url} class="rounded contain" >
-            </div>
-            <div class="col-6 col-md-5 text-center">
-            <p class="fw-bold" style="font-size: 1.2rem; color: #05386B;">${business.name}</p>
-            <p class="info"><img class="mb-2" src="${image_path}"></p>
-            <p class="info d-none d-md-inline m-2 fw-bold">Category: <span class="fw-normal">${business.categories[0]["title"]}</span></p>
-            <p class="info fw-bold" style="${priceDisplay}">Price: <span class="fw-normal">${business.price}</span></p>
-            </div>
+        <div class="d-none d-md-inline col-md-2 text-center my-auto">
+        <img src=${business.image_url} class="rounded contain">
+        </div>
+        <div class="col-6 col-md-5 text-center">
+        <p class="fw-bold" style="font-size: 1.2rem; color: #05386B;">${business.name}</p>
+        <p class="info"><img class="mb-2" src="${image_path}"></p>
+        <p class="info d-none d-md-inline m-2 fw-bold">Category: <span
+                class="fw-normal">${business.categories[0]["title"]}</span></p>
+        <p class="info fw-bold" style="${priceDisplay}">Price: <span class="fw-normal">${business.price}</span></p>
+        </div>
 
-            <div class="col-6 col-md-3 text-center">
-            <p class=" mt-3 address">${business.location.display_address[0]}</p>
-            <p class="address">${business.location.display_address[1]}</p>
-            <p class="info mt-2 fw-bold" style="${phoneDisplay}">Phone: <span class="fw-normal">${business.phone}</span></p>
-            <a href=${business.url} class="d-none d-md-inline url"><img class="m-3" src="static/images/yelp_logo.png" style="width: 75px;"></a>
-            </div>
-
-            <div class="col-12 col-md-2 align-self-center text-center">
-
-            <form class="save-form">
-
-            <input type="hidden" id="place-id" name="placeId" value="${business.id}">
-            <input type="hidden" id="category" name="category" value="${business.categories[0]["title"]}">
-            <input type="hidden" id="name" name="name" value="${business.name}">
-            <input type="hidden" id="url" name="url" value="${business.url}">
-            <input type="hidden" id="image_url" name="image_url" value="${business.image_url}">
-            <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
-            <input type="hidden" id="address_1" name="address_1" value="${business.location.display_address[1]}">
-            <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
-            <input type="hidden" id="address_1" name="address_0" value="${business.location.display_address[1]}">
-            <input type="hidden" id="price" name="price" value="${business.price}">
-            <input type="hidden" id="rating" name="rating" value="${image_path}">
-            <input type="hidden" id="phone" name="phone" value="${business.phone}">
-            <button type="submit" class="save-button btn-warning btn-lg">Save!</button>
-            <a href=${business.url} class="d-md-none url"><img class="m-3" src="static/images/yelp_logo.png" style="width: 75px;"></a>
-
-            </form>  
-            </div>
+        <div class="col-6 col-md-3 text-center">
+        <p class=" mt-3 address">${business.location.display_address[0]}</p>
+        <p class="address">${business.location.display_address[1]}</p>
+        <p class="info mt-2 fw-bold" style="${phoneDisplay}">Phone: <span class="fw-normal">${business.phone}</span>
+        </p>
+        <a href=${business.url} class="d-none d-md-inline url"><img class="m-3" src="static/images/yelp_logo.png"
+                    style="width: 75px;"></a>
+        </div>
+        <div class="col-12 col-md-2 align-self-center text-center">
+        <form class="save-form">
+        <input type="hidden" id="place-id" name="placeId" value="${business.id}">
+        <input type="hidden" id="category" name="category" value="${business.categories[0]["title"]}">
+        <input type="hidden" id="name" name="name" value="${business.name}">
+        <input type="hidden" id="url" name="url" value="${business.url}">
+        <input type="hidden" id="image_url" name="image_url" value="${business.image_url}">
+        <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
+        <input type="hidden" id="address_1" name="address_1" value="${business.location.display_address[1]}">
+        <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
+        <input type="hidden" id="address_1" name="address_0" value="${business.location.display_address[1]}">
+        <input type="hidden" id="price" name="price" value="${business.price}">
+        <input type="hidden" id="rating" name="rating" value="${image_path}">
+        <input type="hidden" id="phone" name="phone" value="${business.phone}">
+        <button type="submit" class="save-button btn-warning btn-lg">Save!</button>
+        </form>
+        <a href=${business.url} class="d-md-none url"><img class="m-3" src="static/images/yelp_logo.png"
+                    style="width: 75px;"></a>
+        </div>
         </div>
         </div>
         `)
     }
+
+    // <input type="hidden" id="category" name="category" value="${business.categories[0]["title"]}">
+    // <input type="hidden" id="name" name="name" value="${business.name}">
+    // <input type="hidden" id="url" name="url" value="${business.url}">
+    // <input type="hidden" id="image_url" name="image_url" value="${business.image_url}">
+    // <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
+    // <input type="hidden" id="address_1" name="address_1" value="${business.location.display_address[1]}">
+    // <input type="hidden" id="price" name="price" value="${business.price}">
+    // <input type="hidden" id="rating" name="rating" value="${image_path}">
+    // <input type="hidden" id="phone" name="phone" value="${business.phone}">
 
 
     // clear inputs if successful
@@ -152,36 +151,25 @@ async function savePlace(evt) {
     const rating = $('input[name=rating]', this.form).val();
     const phone = $('input[name=phone]', this.form).val();
 
-    const inputObj = {
-        name,
-        url,
-        image_url,
-        placeId,
-        category,
-        address_0,
-        address_1,
-        price,
-        rating,
-        phone
+    // submit place Id to server to be stored in db
+    const placeIdObj = {
+        placeId
     }
 
-    const res = await axios.post(`places/save`, inputObj);
-
-    console.log(res);
+    const res = await axios.post(`places/save`, placeIdObj);
 
     if (res.data.message == "added") {
         $button.text('Saved!');
         $button.removeClass('btn-warning');
         $button.addClass('btn-success');
+
     } else if (res.data.message == "not added") {
         alert("Log in to start saving places!");
     }
 }
 
 
-
 /**
- * 
  * Remove a saved place
  */
 async function removePlace(evt) {

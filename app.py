@@ -1,3 +1,4 @@
+from operator import add
 import os
 import shutil
 import functools
@@ -16,6 +17,18 @@ CURR_USER_KEY = "curr_user"
 API_BASE_URL = "https://api.yelp.com/v3/businesses"
 UPLOAD_FOLDER = "static/images"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+RATINGS = {
+    "0": "regular_0.png",
+    "1.0": "regular_1.png",
+    "1.5": "regular_1_half.png",
+    "2.0": "regular_2.png",
+    "2.5": "regular_2_half.png",
+    "3.0": "regular_3.png",
+    "3.5": "regular_3_half.png",
+    "4.0": "regular_4.png",
+    "4.5": "regular_4_half.png",
+    "5.0": "regular_5.png"
+    }
 
 app = Flask(__name__)
 
@@ -92,8 +105,7 @@ def signup():
             user = User.signup(
                 username=form.username.data,
                 password=form.password.data,
-                email=form.email.data,
-                )
+                email=form.email.data)
             db.session.commit()
         
         except IntegrityError:
@@ -204,13 +216,9 @@ def edit_user():
     form = EditProfileForm(obj=user)
 
     if form.validate_on_submit():
-
         try: 
-            
             form.populate_obj(user)
-
             f = request.files['photo']
-
             if f:
                 if user.image_name:
                     os.remove(f"static/images/{user.id}/{user.image_name}")
@@ -236,28 +244,20 @@ def change_password():
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
-
         curr_password = form.curr_password.data
         new_password_one = form.new_password_one.data
         new_password_two = form.new_password_two.data
-
         user = User.authenticate(username=g.user.username, password=curr_password)
-
         if user:
-
             if new_password_one == new_password_two:
                 user = User.change_password(username = user.username, curr_password=curr_password, new_password=new_password_one)
                 db.session.commit()
                 flash("Password Successfully Changed!", "success")
                 return redirect(url_for("user_detail"))
-
             else:
-
                 flash("New Passwords Must Match", "danger")
                 return render_template("users/password_form.html", form=form)
-        
         else:
-
             flash("Current password is not correct.", "danger")
             return render_template("users/password_form.html", form=form)
 
@@ -303,8 +303,7 @@ def submit_search():
     params = {'term' : term, 'location' : location}
 
     headers = {
-        'Authorization' : f'Bearer {API_KEY}'
-        }
+        'Authorization' : f'Bearer {API_KEY}'}
 
     results = requests.get(f"{API_BASE_URL}/search", headers=headers, params=params)
 
@@ -319,21 +318,20 @@ def save_place():
     """Save a place for future reference."""
 
     if not g.user:
-
         return jsonify(message="not added")
 
     user = g.user
 
     place_id = request.json["placeId"]
-    category=request.json["category"]
-    name = request.json["name"]
-    url = request.json["url"]   
-    image_url = request.json["image_url"]
-    address_0 = request.json["address_0"] 
-    address_1 = request.json["address_1"]
-    price = request.json["price"]
-    phone = request.json["phone"]
-    rating = request.json["rating"]        
+    # category=request.json["category"]
+    # name = request.json["name"]
+    # url = request.json["url"]   
+    # image_url = request.json["image_url"]
+    # address_0 = request.json["address_0"] 
+    # address_1 = request.json["address_1"]
+    # price = request.json["price"]
+    # phone = request.json["phone"]
+    # rating = request.json["rating"]        
 
     existing_place = Place.query.get(place_id)
 
@@ -341,7 +339,7 @@ def save_place():
     if not existing_place:
 
         # create the place.
-        place = Place(id=place_id, category=category, name=name, url=url, image_url=image_url, address_0=address_0, address_1=address_1, price=price, phone=phone, rating=rating)
+        place = Place(id=place_id)
 
         db.session.add(place)
         db.session.commit()
@@ -365,12 +363,64 @@ def save_place():
     return jsonify(message="already saved")
 
 
-@app.route("/places")
+@app.route("/places", methods=["GET"])
 @login_required
 def show_places():
     """Show a user's saved places."""
 
-    places = g.user.places
+    place_ids = [place.id for place in g.user.places]
+
+    places = []
+
+    # resp = requests.get("https://api.yelp.com/v3/businesses/VwG-Nb3WyRxyQTC9BBgQcQ", headers=headers)
+
+    headers = {
+        'Authorization' : f'Bearer {API_KEY}'}
+
+
+    for place_id in place_ids:
+        res = requests.get(f"{API_BASE_URL}/{place_id}", headers=headers)
+
+        business = res.json()
+    
+        name = business["name"]
+        image_url = business["image_url"]
+        category = (business["categories"])[0]["title"]
+        # price = business["price"] if business["price"] else "undefined"
+        # phone = business["phone"] if business["phone"] else ""
+        address_0 = (business["location"])["display_address"][0]
+        address_1 = (business["location"])["display_address"][1]
+        url = business["url"]
+        rating = business["rating"]
+        image = RATINGS[f"{rating}"]
+        path = f"static/images//stars/{image}"
+
+        try:
+            phone = business["phone"]
+        except KeyError:
+            phone = ""
+
+        try:
+            price = business["price"]
+        except KeyError:
+            price = ""
+
+
+
+        placeDict = {
+            "place_id" : place_id,
+            "name": name,
+            "image_url" : image_url,
+            "category" : category,
+            "price": price,
+            "phone" : phone,
+            "address_0": address_0,
+            "address_1" : address_1,
+            "url": url,
+            "rating": path
+        }
+
+        places.append(placeDict)
 
     return render_template('/users/places.html', places=places)
 
@@ -381,13 +431,9 @@ def remove_place(id):
     """Remove a place from a user's saved places."""
 
     user = g.user
-
     place = Place.query.get_or_404(id)
-
     user.places.remove(place)
-
     db.session.commit()
-
     return jsonify(message="deleted")
 
 
@@ -401,7 +447,6 @@ def log_detail(id):
     """Display a full log."""
 
     user = g.user
-
     log_ids = [log.id for log in user.logs]
 
     if id not in log_ids:
@@ -409,11 +454,8 @@ def log_detail(id):
         return redirect("/logs/new")
 
     logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
-
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
-
     log = Log.query.filter_by(id=id).first()
-
     return render_template("users/log.html", user=user, log=log, logs=logs, maintenance=maintenance)
 
 
@@ -423,9 +465,7 @@ def all_logs():
     """Display a list of all of user's logs."""
 
     user = g.user
-
     logs = user.logs
-
     return render_template("users/all_logs.html", logs=logs)
 
 
@@ -435,21 +475,16 @@ def new_log():
     """Show user new log form."""
 
     form = LogForm()
-
     user = g.user
-
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
-
     logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
 
     if form.validate_on_submit():
-
         title = request.form['title']
         location = request.form['location']
         mileage = request.form['mileage']
         body = request.form['text']
         date = request.form['date']
-
         f = request.files['photo']
 
         if f:
@@ -461,16 +496,11 @@ def new_log():
         existing_location = Location.query.filter_by(location=f"{location}").first()
 
         if existing_location:
-
             log = Log(user_id=user.id, title=title, location_id=existing_location.id, mileage=mileage, text=body,date=date, image_name=filename)
-
         else: 
-        
             new_location = Location(location=location)
-
             db.session.add(new_location)
             db.session.commit()
-
             log = Log(user_id=user.id, title=title, location_id=new_location.id, mileage=mileage, text=body,date=date, image_name=filename)
         
         db.session.add(log)
@@ -487,7 +517,6 @@ def edit_log(id):
     """Edit a log."""
 
     user = g.user
-
     log_ids = [log.id for log in user.logs]
 
     if id not in log_ids:
@@ -495,13 +524,9 @@ def edit_log(id):
         return redirect("/logs/new")
 
     logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
-
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
-
     log = Log.query.get_or_404(id)
-
     edit_form = LogForm(obj=log)
-
     edit_form.location.data = log.location.location
 
     if edit_form.validate_on_submit():
@@ -540,7 +565,8 @@ def edit_log(id):
         f = request.files['photo']
 
         if f:
-            os.remove(f'static/images/{user.id}/{log.image_name}')
+            if log.image_name:
+                os.remove(f'static/images/{user.id}/{log.image_name}')
             filename = secure_filename(f.filename)
             f.save(os.path.join(f'static/images/{user.id}', filename))
             log.image_name=filename
@@ -558,7 +584,6 @@ def delete_log(id):
     """Delete a log."""
 
     user = g.user
-
     log_ids = [log.id for log in user.logs]
 
     if id not in log_ids:
@@ -571,9 +596,7 @@ def delete_log(id):
         shutil.rmtree(f"static/images/{user.id}/{log.image_name}")
 
     db.session.delete(log)
-
     db.session.commit()
-
     return redirect("/logs/new")
 
 
@@ -588,20 +611,15 @@ def maintenance_detail(id):
     """Display a maintenance record."""
 
     user = g.user
-
     maintenance_ids = [record.id for record in user.maintenance]
 
     if id not in maintenance_ids:
         flash("UNAUTHORIZED.", "danger")
         return redirect("/maintenance/new")
 
-
     logs = Log.query.filter_by(user_id=user.id).order_by(desc(Log.date)).limit(5)
-
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
-
     record = Maintenance.query.filter_by(id=id).first()
-
     return render_template("users/maintenance.html", user=user, record=record, logs=logs, maintenance=maintenance)
 
 
@@ -611,9 +629,7 @@ def all_maintenance():
     """Display all maintenance records."""
     
     user = g.user
-
     maintenance = user.maintenance
-
     return render_template("users/all_maintenance.html", maintenance=maintenance)
 
 
@@ -623,20 +639,16 @@ def maintenance_form():
     """Display new maintenance event form."""
 
     form = MaintenanceForm()
-
     user = g.user
-
     logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
     records = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
 
     if form.validate_on_submit():
-
         mileage = request.form['mileage']
         location = request.form['location']
         title = request.form['title']
         description = request.form['description'] 
         date = request.form['date']
-
         f = request.files['photo']
 
         if f:
@@ -648,16 +660,11 @@ def maintenance_form():
         existing_location = Location.query.filter_by(location=f"{location}").first()
 
         if existing_location:
-
             maintenance = Maintenance(user_id=user.id, date=date, mileage=mileage, location_id=existing_location.id, title=title, description=description, image_name=filename)
-
         else: 
-        
             new_location = Location(location=location)
-
             db.session.add(new_location)
             db.session.commit()
-
             maintenance = Maintenance(user_id=user.id, date=date, mileage=mileage, location_id=new_location.id, title=title, description=description, image_name=filename)
         
         db.session.add(maintenance)
@@ -674,7 +681,6 @@ def edit_maintenance(id):
     """Edit a maintenance record."""
 
     user = g.user
-
     maintenance_ids = [record.id for record in user.maintenance]
 
     if id not in maintenance_ids:
@@ -683,11 +689,8 @@ def edit_maintenance(id):
 
     logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
     records = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
-
     maintenance = Maintenance.query.get_or_404(id)
-
     edit_form = MaintenanceForm(obj=maintenance)
-
     edit_form.location.data = maintenance.location.location
 
     if edit_form.validate_on_submit():
@@ -724,7 +727,8 @@ def edit_maintenance(id):
         f = request.files['photo']
 
         if f:
-            os.remove(f'static/images/{user.id}/{maintenance.image_name}')
+            if maintenance.image_name:
+                os.remove(f'static/images/{user.id}/{maintenance.image_name}')
             filename = secure_filename(f.filename)
             f.save(os.path.join(f'static/images/{user.id}', filename))
             maintenance.image_name=filename
@@ -742,7 +746,6 @@ def delete_maintenance(id):
     """Delete a maintenance record."""
 
     user = g.user
-
     maintenance_ids = [record.id for record in user.maintenance]
 
     if id not in maintenance_ids:

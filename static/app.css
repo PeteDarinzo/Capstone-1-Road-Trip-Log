@@ -50,6 +50,10 @@ form[id="search-form"] {
     background-color: #EDF5E1;
 }
 
+.profile-img {
+    width: 30%;
+    height: 30%;
+}
 
 div[class="img-container"] {
     width: 50%;
@@ -65,6 +69,11 @@ h2 {
 
 h2[class="dark-title"] {
     color: #042C55;
+}
+
+h2[class="light-title"] {
+    color: #F7F9FB;
+    ;
 }
 
 .log-container {
@@ -143,7 +152,8 @@ body {
     maintaining aspect ratio
 */
 .contain {
-    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
   }
 
@@ -187,11 +197,11 @@ label[for="description"] {
 }
 
 label[for="category"] {
-    color: #EDF5E1;
+    color: #F7F9FB;
 }
 
 label[for="city"] {
-    color: #EDF5E1;
+    color: #F7F9FB;
 }
 
 textarea {
