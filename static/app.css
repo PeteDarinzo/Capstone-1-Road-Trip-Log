@@ -1,10 +1,11 @@
 html, body{
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
 } 
 
 .navbar {
     background-color: #042C55;
+    height: 12vh;
 }
 
 .navbar .navbar-brand {
@@ -41,6 +42,8 @@ form[id="search-form"] {
 
 .log-form {
     background-color: #FBEEC1;
+    height: 80vh;
+    overflow-y: auto;
 }
 
 .maint-form {
@@ -66,6 +69,7 @@ h2[class="dark-title"] {
 
 .log-container {
     background-color: #FBEEC1;
+    /* height: 100%; */
 }
 
 .maint-container {
@@ -83,14 +87,23 @@ h2[class="dark-title"] {
 
 /* scrolling div */
 .scroll {
-    height: 500px;
+    height: 65vh;
     width: auto;
+    overflow-y: auto;
+}
+
+.full-scroll {
+    height: 84vh;
     overflow-y: auto;
 }
 
 button > p {
     margin: 0;
     text-align: left;
+}
+
+.top-space {
+    margin-top: 4vh;
 }
 
 button > p[class="title"] {
@@ -134,7 +147,7 @@ body {
     object-fit: contain;
   }
 
-  ul {
+ul {
       margin: 0;
       padding: 0;
   }

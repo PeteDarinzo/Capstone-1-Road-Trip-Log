@@ -1,6 +1,6 @@
 {% macro page_select_dropdown() %}
 
-<div class="dropdown d-md-none m-3 p-2">
+<div class="dropdown d-lg-none m-1 p-2">
     <button class="btn btn-success btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1"
         data-bs-toggle="dropdown" aria-expanded="false">
         Select
@@ -18,7 +18,7 @@
 
 {% macro entry_list(logs) %}
 
-<div class="d-none d-lg-inline col-lg rounded shadow side-bar" style="background-color: #31708E;">
+<div class="d-none d-lg-inline col-lg rounded shadow side-bar top-space" style="background-color: #31708E;">
     <h2>Log Entries</h2>
     <div>
         <form action="/logs/new" method="GET">
@@ -53,7 +53,7 @@
 
 {% macro record_list(maintenance) %}
 
-<div class="d-none d-lg-inline col-lg rounded shadow" style="background-color: #31708E;">
+<div class="d-none d-lg-inline col-lg rounded shadow top-space side-bar" style="background-color: #31708E;">
     <h2 style="color: white;">Maintenance Records</h2>
     <div>
         <form action="/maintenance/new" method="GET">

@@ -7,12 +7,12 @@
 
 {% block content %}
 
-<div class="container-fluid mt-4 h-100">
+<div class="container-fluid h-100">
     <div class="row gx-5 h-100 justify-content-center">
         {{ entry_list(logs) }}
         <div class="col-12 col-lg-6">
             {{ page_select_dropdown() }}
-            <div class="p-4 h-100 rounded maint-container">
+            <div class="p-4 h-100 rounded top-space maint-container">
                 <h2 class="dark-title">{{record.title}}</span></h2>
                 <span class="rounded p-md-5">{{record.date}} - {{record.location.location}} - {{record.mileage}}</span>
                 <p class="rounded mt-5 mt-md-2 p-md-3 text-bg border">{{record.description}}</p>

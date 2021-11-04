@@ -79,7 +79,7 @@ function handleResponse(businesses) {
         // style="width:100px; height:100px;"
 
         $('#search-results').append(`
-        <div class="container mb-2 p-3 rounded" style="background-color: #EDF5E1;">
+        <div class="container mb-2 p-1 rounded" style="background-color: #EDF5E1;">
         <div class="row justify-content-center">
             <div class="d-none d-md-inline col-md-2 text-center my-auto">
                 <img src=${business.image_url} class="rounded contain" >
