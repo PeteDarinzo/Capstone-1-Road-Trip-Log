@@ -48,6 +48,8 @@ async function processForm(evt) {
 
 function handleResponse(businesses) {
 
+    $('#homepage-greeting').remove()
+
     $('#results-header').html("Here's what's nearby:")
 
     for (const business of businesses) {

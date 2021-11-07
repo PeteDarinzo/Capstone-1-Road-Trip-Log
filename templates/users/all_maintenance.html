@@ -6,32 +6,30 @@ All Maint
 
 {% block content %}
 
-<div class="container pt-5 h-100">
-    <div class="row pt-5 h-100 justify-content-center">
-        <div class="col-12 col-md-5 h-100">
-            <div class="h-100 overflow-auto">
-                {{ page_select_dropdown() }}
-                <div class="p-2 table rounded">
-                    <h2 class="dark-title">Maintenance Records</h2>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Title</th>
-                                <th scope="col">Location</th>
-                                <th scope="col">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for record in maintenance %}
-                            <tr>
-                                <td><a href="/maintenance/{{record.id}}">{{record.title}}</a></td>
-                                <td>{{record.location.location}}</td>
-                                <td>{{record.date}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+<div class="row pt-5 h-100 justify-content-center">
+    <div class="col-12 col-md-5 h-100">
+        <div class="h-100 overflow-auto">
+            {{ page_select_dropdown() }}
+            <div class="p-2 table rounded">
+                <h2 class="dark-title">Maintenance Records</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in maintenance %}
+                        <tr>
+                            <td><a href="/maintenance/{{record.id}}">{{record.title}}</a></td>
+                            <td>{{record.location.location}}</td>
+                            <td>{{record.date}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

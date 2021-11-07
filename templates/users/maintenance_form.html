@@ -5,42 +5,42 @@ New Maint
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid pt-5 h-100">
-    <div class="row pt-5 justify-content-center h-100">
-        {{ entry_list(logs) }}
-        <div class="col-12 col-lg-6 h-100">
-            <div class="rounded p-2 overflow-auto maint-form h-100">
-                {{ page_select_dropdown() }}
-                <h2 class="dark-title">New Maintenance Record</span></h2>
-                <form method="POST" class="p-3" id="log-form" enctype="multipart/form-data">
-                    {{ form.hidden_tag() }}
-                    <div class="form-group">
-                        {% for field in form if field.widget.input_type != "hidden" %}
-                        {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
-                        <p class="d-block d-sm-inline-block">
-                            {{ field.label }}
-                            {{ field() }}
-                            {% for error in field.errors %}
-                            {{ error }}
-                            {% endfor %}
-                        </p>
-                        {% else %}
-                        <p>
-                            {{ field.label }}
-                            {{ field() }}
-                            {% for error in field.errors %}
-                            {{ error }}
-                            {% endfor %}
-                        </p>
-                        {% endif %}
-                        {% endfor%}
-                    </div>
-                    <button class="btn btn-lg btn-block submit">Enter
-                        Record!</button>
-                </form>
-            </div>
+
+<div class="row pt-5 justify-content-center h-100">
+    {{ entry_list(logs) }}
+    <div class="col-12 col-lg-6 h-100">
+        <div class="rounded p-2 overflow-auto maint-form h-100">
+            {{ page_select_dropdown() }}
+            <h2 class="dark-title">New Maintenance Record</span></h2>
+            <form method="POST" class="p-3" id="log-form" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {% for field in form if field.widget.input_type != "hidden" %}
+                    {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
+                    <p class="d-block d-sm-inline-block">
+                        {{ field.label }}
+                        {{ field() }}
+                        {% for error in field.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </p>
+                    {% else %}
+                    <p>
+                        {{ field.label }}
+                        {{ field() }}
+                        {% for error in field.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+                    {% endfor%}
+                </div>
+                <button class="btn btn-lg btn-block submit">Enter
+                    Record!</button>
+            </form>
         </div>
-        {{ record_list(maintenance) }}
     </div>
+    {{ record_list(maintenance) }}
 </div>
+
 {% endblock %}

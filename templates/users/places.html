@@ -7,57 +7,55 @@ Your Places
 
 {% block content %}
 
-<div class="container pt-5 h-100">
-  <div class="row justify-content-center pt-5 m-lg-5">
-    <div class="col-12 col-lg-8 h-100">
-      <div class="scroll">
-        <div class="accordion" id="places-accordion">
-          {% for place in places %}
-          <div class="accordion-item" style="background-color: #379683;">
-            <h2 class="accordion-header" id="{{place.place_id}}">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapse-{{place.place_id}}" aria-expanded="true"
-                aria-controls="collapse-{{place.place_id}}" style="color: white; background-color: #379683;">
-                {{place.name}} Category: {{place.category}}
-              </button>
-            </h2>
-            <div id="collapse-{{place.place_id}}" class="accordion-collapse collapse"
-              aria-labelledby="{{place.place_id}}" data-bs-parent="#places-accordion">
-              <div class="accordion-body">
-                <div class="container mb-2 p-3 rounded" style="background-color: #EDF5E1;">
-                  <div class="row">
-                    <div class="d-none d-md-inline col-md-2 text-center my-auto">
-                      <img src="{{place.image_url}}" class="rounded contain" style="width:125px; height:125px;">
-                    </div>
-                    <div class="col-6 col-md-5 text-center">
-                      <p class="fw-bold" style="color: #379683; font-size: 1.2rem;">{{place.name}}</p>
-                      <p class="info" style="color: #05386B;"><img class="mb-2" src="{{place.rating}}"></p>
-                      <p class="info fw-bold" style="color: #05386B;">Category: <span
-                          class="fw-normal">{{place.category}}</span></p>
-                      {% if place.price %}
-                      <p class="info fw-bold" style="color: #05386B;">Price: <span
-                          class="fw-normal">{{place.price}}</span></p>
-                      {% endif %}
-                    </div>
-                    <div class="col-6 col-md-3 text-center">
-                      <p class="address mt-3" style="color: #05386B;">{{place.address_0}}</p>
-                      <p class="address" style="color: #05386B;">{{place.address_1}}</p>
-                      {% if place.phone %}
-                      <p class="info fw-bold">Phone: <span class="fw-normal">{{place.phone}}</span></p>
-                      {% endif %}
-                      <a href="{{place.url}}" class="url" style="color: #05386B;"><img class="mt-3"
-                          src="static/images/yelp_logo.png" style="width: 75px;"></a>
-                    </div>
-                    <div class="col-12 col-md-2 align-self-center text-center">
-                      <button class="btn btn-danger remove-button mt-2" data-id="{{place.place_id}}">Remove</button>
-                    </div>
+<div class="row justify-content-center pt-5 m-lg-5">
+  <div class="col-12 col-lg-8 h-100">
+    <div class="scroll">
+      <div class="accordion" id="places-accordion">
+        {% for place in places %}
+        <div class="accordion-item" style="background-color: #379683;">
+          <h2 class="accordion-header" id="{{place.place_id}}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapse-{{place.place_id}}" aria-expanded="true"
+              aria-controls="collapse-{{place.place_id}}" style="color: white; background-color: #379683;">
+              {{place.name}} Category: {{place.category}}
+            </button>
+          </h2>
+          <div id="collapse-{{place.place_id}}" class="accordion-collapse collapse" aria-labelledby="{{place.place_id}}"
+            data-bs-parent="#places-accordion">
+            <div class="accordion-body">
+              <div class="container mb-2 p-3 rounded" style="background-color: #EDF5E1;">
+                <div class="row">
+                  <div class="d-none d-md-inline col-md-2 text-center my-auto">
+                    <img src="{{place.image_url}}" class="rounded contain" style="width:125px; height:125px;">
+                  </div>
+                  <div class="col-6 col-md-5 text-center">
+                    <p class="fw-bold" style="color: #379683; font-size: 1.2rem;">{{place.name}}</p>
+                    <p class="info" style="color: #05386B;"><img class="mb-2" src="{{place.rating}}"></p>
+                    <p class="info fw-bold" style="color: #05386B;">Category: <span
+                        class="fw-normal">{{place.category}}</span></p>
+                    {% if place.price %}
+                    <p class="info fw-bold" style="color: #05386B;">Price: <span
+                        class="fw-normal">{{place.price}}</span></p>
+                    {% endif %}
+                  </div>
+                  <div class="col-6 col-md-3 text-center">
+                    <p class="address mt-3" style="color: #05386B;">{{place.address_0}}</p>
+                    <p class="address" style="color: #05386B;">{{place.address_1}}</p>
+                    {% if place.phone %}
+                    <p class="info fw-bold">Phone: <span class="fw-normal">{{place.phone}}</span></p>
+                    {% endif %}
+                    <a href="{{place.url}}" class="url" style="color: #05386B;"><img class="mt-3"
+                        src="static/images/yelp_logo.png" style="width: 75px;"></a>
+                  </div>
+                  <div class="col-12 col-md-2 align-self-center text-center">
+                    <button class="btn btn-danger remove-button mt-2" data-id="{{place.place_id}}">Remove</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {% endfor %}
         </div>
+        {% endfor %}
       </div>
     </div>
   </div>

@@ -2,26 +2,18 @@
 
 {% block content %}
 
-<div class="container">
-  <div class="row m-2 m-md-4 justify-content-center">
-    <div class="col-12 col-sm-8 col-md-8 col-lg-5 bg-light p-3 rounded">
-      <h2 class="dark-title">Are you sure?</h2>
-
-      <form method="POST" action="/users/delete">
-        <label for="delete-button"></label>
-      </form>
-
-      <form>
-        <label for="delete-button">Your account will be permanently deleted, along with all log entries. Please be sure that you want to delete everything associated with your account before proceeding.</label>
-
-        <button formaction="/users/profile" formmethod="GET" class="btn btn-success btn-lg btn-block m-4" type="submit">Go Back</button>
-
-        <button formaction="/users/delete" formmethod="POST" id="delete-button" class="btn btn-danger btn-lg btn-block m-4" type="submit">DELETE ACCOUNT</button>
-      </form>
-
-    </div>
+<div class="row pt-5 justify-content-center">
+  <div class="col-12 col-sm-8 col-md-8 col-lg-5 bg-light p-3 rounded">
+    <h2 class="dark-title">Are you sure?</h2>
+    <form>
+      <label for="delete-button">Your account will be permanently deleted, along with all log entries. Please be sure
+        that you want to delete everything associated with your account before proceeding.</label>
+      <button formaction="/users/profile" formmethod="GET" class="btn btn-success btn-lg btn-block m-4" type="submit">Go
+        Back</button>
+      <button formaction="/users/delete" formmethod="POST" id="delete-button"
+        class="btn btn-danger btn-lg btn-block m-4" type="submit">DELETE ACCOUNT</button>
+    </form>
   </div>
 </div>
-
 
 {% endblock %}

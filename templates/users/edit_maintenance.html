@@ -7,44 +7,42 @@ Edit Maint
 
 {% block content %}
 
-<div class="container-fluid pt-5 h-100">
-    <div class="row h-100 pt-5 justify-content-center">
-        {{ entry_list(logs) }}
-        <div class="col-12 col-lg-6 h-100">
-            <div class="rounded p-1 h-100 overflow-auto log-form">
-                {{ page_select_dropdown() }}
-                <div class="p-3 log-form rounded">
-                    <h2 class="dark-title">Edit Maintenance</h2>
-                    <form method="POST" id="maintenance-edit-form" enctype="multipart/form-data">
-                        {{ form.hidden_tag() }}
-                        <div class="form-group">
-                            {% for field in form if field.widget.input_type != "hidden" %}
-                            {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
-                            <p class="d-block d-sm-inline-block">
-                                {{ field.label }}
-                                {{ field() }}
-                                {% for error in field.errors %}
-                                {{ error }}
-                                {% endfor %}
-                            </p>
-                            {% else %}
-                            <p>
-                                {{ field.label }}
-                                {{ field() }}
-                                {% for error in field.errors %}
-                                {{ error }}
-                                {% endfor %}
-                            </p>
-                            {% endif %}
-                            {% endfor%}
-                        </div>
-                        <button class="btn btn-primary btn-lg btn-block">Save Record!</button>
-                    </form>
-                </div>
+<div class="row h-100 pt-5 justify-content-center">
+    {{ entry_list(logs) }}
+    <div class="col-12 col-lg-6 h-100">
+        <div class="rounded p-1 h-100 overflow-auto log-form">
+            {{ page_select_dropdown() }}
+            <div class="p-3 log-form rounded">
+                <h2 class="dark-title">Edit Maintenance</h2>
+                <form method="POST" id="maintenance-edit-form" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {% for field in form if field.widget.input_type != "hidden" %}
+                        {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
+                        <p class="d-block d-sm-inline-block">
+                            {{ field.label }}
+                            {{ field() }}
+                            {% for error in field.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% else %}
+                        <p>
+                            {{ field.label }}
+                            {{ field() }}
+                            {% for error in field.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                        {% endfor%}
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block">Save Record!</button>
+                </form>
             </div>
         </div>
-        {{ record_list(maintenance) }}
     </div>
+    {{ record_list(maintenance) }}
 </div>
 
 {% endblock %}

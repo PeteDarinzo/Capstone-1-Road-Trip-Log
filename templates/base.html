@@ -68,21 +68,22 @@
         </div>
     </nav>
 
-    <div class="container">
-        <section class="messages">
-            {% for category, message in get_flashed_messages(with_categories=True) %}
-            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-                {{message}}
-                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
-                </button>
-            </div>
-            {% endfor %}
-        </section>
+    <div class="container-fluid pt-5 h-100">
+        <div class="row position-absolute w-100 pt-5">
+            <section class="messages">
+                {% for category, message in get_flashed_messages(with_categories=True) %}
+                <div class="alert w-75 p-4 centered-axis-x alert-{{category}} alert-dismissible fade show position-absolute"
+                    role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+                    </button>
+                </div>
+                {% endfor %}
+            </section>
+        </div>
+        {% block content %}
+        {% endblock %}
     </div>
-
-    {% block content %}
-
-    {% endblock %}
 
 
 
