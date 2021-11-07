@@ -7,30 +7,33 @@
 
 {% block content %}
 
-<div class="container-fluid">
-    <div class="row gx-5 h-100 justify-content-center">
+<div class="container-fluid pt-5 h-100">
+    <div class="row pt-5 justify-content-center h-100">
         {{ entry_list(logs) }}
-        <div class="col-12 col-lg-6">
-            {{ page_select_dropdown() }}
-            <div class="p-4 rounded full-scroll top-space log-container">
-                <h2 class="dark-title">{{log.title}}</h2>
-                <span class="rounded p-md-5">{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
-                <p class="rounded mt-2 p-3 border text-bg">{{log.text}}</p>
-                {% if log.image_name %}
-                <div class="row justify-content-center">
-                    <div class="col-12 col-sm-8">
-                        <img src="/static/images/{{user.id}}/{{log.image_name}}" alt="" class="mt-3 mb-3 contain">
+        <div class="col-12 col-lg-6 h-100">
+            <div class= "rounded h-100 overflow-auto log-container">
+                {{ page_select_dropdown() }}
+                <div class="p-4">
+                    <h2 class="dark-title">{{log.title}}</h2>
+                    <span class="rounded p-md-5">{{log.date}} - {{log.location.location}} - {{log.mileage}}</span>
+                    <p class="rounded mt-2 p-3 border text-bg">{{log.text}}</p>
+                    {% if log.image_name %}
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-sm-8">
+                            <img src="/static/images/{{user.id}}/{{log.image_name}}" alt="" class="mt-3 mb-3 contain">
+                        </div>
                     </div>
+                    {% endif %}
+                    <form>
+                        <div class="text-left">
+                            <button formaction="/logs/{{log.id}}/edit" formmethod="GET"
+                                class="btn btn-warning btn-lg m-2">Edit</button>
+                            <button formaction="/logs/{{log.id}}/delete" formmethod="POST"
+                                class="btn btn-danger btn-lg m-2">Delete</button>
+                        </div>
+                    </form>
                 </div>
-                {% endif %}
-                <form>
-                    <div class="text-left">
-                        <button formaction="/logs/{{log.id}}/edit" formmethod="GET"
-                            class="btn btn-warning btn-lg m-2">Edit</button>
-                        <button formaction="/logs/{{log.id}}/delete" formmethod="POST"
-                            class="btn btn-danger btn-lg m-2">Delete</button>
-                    </div>
-                </form>
+                
             </div>
         </div>
         {{ record_list(maintenance) }}

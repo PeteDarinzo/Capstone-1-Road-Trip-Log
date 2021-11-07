@@ -1,11 +1,13 @@
 html, body{
-    height: 100vh;
-    overflow: hidden;
+    height: 100%;
+    /* overflow: hidden; */
+    margin: 0;
+    padding: 0;
 } 
 
 .navbar {
     background-color: #042C55;
-    height: 12vh;
+    /* height: 12vh; */
 }
 
 .navbar .navbar-brand {
@@ -42,8 +44,8 @@ form[id="search-form"] {
 
 .log-form {
     background-color: #FBEEC1;
-    height: 80vh;
-    overflow-y: auto;
+    /* height: 80vh;
+    overflow-y: auto; */
 }
 
 .maint-form {
@@ -102,7 +104,7 @@ h2[class="light-title"] {
 }
 
 .full-scroll {
-    height: 84vh;
+    height: 100vh;
     overflow-y: auto;
 }
 

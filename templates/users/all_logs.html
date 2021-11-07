@@ -7,30 +7,32 @@ All Logs
 
 {% block content %}
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-5 col-lg-5 p-3 full-scroll rounded">
-            {{ page_select_dropdown() }}
-            <div class="p-3 rounded table">
-                <h2 class="dark-title">Log Entries</h2>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Title</th>
-                            <th scope="col">Location</th>
-                            <th scope="col">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for log in logs %}
-                        <tr>
-                            <td><a href="/logs/{{log.id}}">{{log.title}}</a></td>
-                            <td>{{log.location.location}}</td>
-                            <td>{{log.date}}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+<div class="container pt-5 h-100">
+    <div class="row pt-5 justify-content-center h-100">
+        <div class="col-12 col-md-5 h-100">
+            <div class="h-100 overflow-auto">
+                {{ page_select_dropdown() }}
+                <div class="p-2 rounded table">
+                    <h2 class="dark-title">Log Entries</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in logs %}
+                            <tr>
+                                <td><a href="/logs/{{log.id}}">{{log.title}}</a></td>
+                                <td>{{log.location.location}}</td>
+                                <td>{{log.date}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -12,12 +12,9 @@ images = UploadSet('images', IMAGES)
 class BusinessSearchForm(FlaskForm):
     """Form for business search submit."""
 
-    category = StringField("Category", render_kw={'class': 'form-control'}, validators=[InputRequired(message="This field is required.")])
-    city = StringField("Location", render_kw={'class': 'form-control'}, validators=[InputRequired(message="This field is required.")])
+    category = StringField("Category", render_kw={'class': ''}, validators=[InputRequired(message="This field is required.")])
+    city = StringField("Location", render_kw={'class': ''}, validators=[InputRequired(message="This field is required.")])
 
-
-
-                        # {% if field.id == "location" or field.id == "mileage" or field.id == "date" %}
 
 class LogForm(FlaskForm):
     """Form to submit a new log."""

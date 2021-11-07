@@ -7,12 +7,12 @@ Edit Log
 
 {% block content %}
 
-<div class="container-fluid mt-4 h-100">
-    <div class="row gx-5 h-100 justify-content-center">
+<div class="container-fluid pt-5 h-100">
+    <div class="row pt-5 h-100 justify-content-center">
         {{ entry_list(logs) }}
-        <div class="col-12 col-lg-6">
-            {{ page_select_dropdown() }}
-            <div class="rounded p-3 maint-form">
+        <div class="col-12 col-lg-6 h-100">
+            <div class="rounded p-1 h-100 overflow-auto log-form">
+                {{ page_select_dropdown() }}
                 <h2 class="dark-title">Edit Log</h2>
                 <form method="POST" id="log-edit-form" class="p-3" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}

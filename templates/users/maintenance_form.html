@@ -5,16 +5,14 @@ New Maint
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid h-100">
-    <div class="row gx-5 h-100 justify-content-center">
+<div class="container-fluid pt-5 h-100">
+    <div class="row pt-5 justify-content-center h-100">
         {{ entry_list(logs) }}
-        <div class="col-12 col-lg-6">
-            
-            {{ page_select_dropdown() }}
-
-            <div class="rounded p-3 top-space maint-form">
+        <div class="col-12 col-lg-6 h-100">
+            <div class="rounded p-2 overflow-auto maint-form h-100">
+                {{ page_select_dropdown() }}
                 <h2 class="dark-title">New Maintenance Record</span></h2>
-                <form method="POST" id="log-form" class="p-3" enctype="multipart/form-data">
+                <form method="POST" class="p-3" id="log-form" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
                     <div class="form-group">
                         {% for field in form if field.widget.input_type != "hidden" %}

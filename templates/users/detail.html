@@ -7,28 +7,31 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row p-3 justify-content-center">
-        <div class="col-12 col-sm-8 col-lg-6 bg-light p-3 rounded scroll">
-            <p class="display-5">{{user.username}}</p>
-            <div class="profile-img">
-                {% if user.image_name %}
-                <img src="/static/images/{{user.id}}/{{user.image_name}}" class="rounded-circle contain" alt="">
-                {% else %}
+<div class="container h-100 pt-5">
+    <div class="row pt-5 h-100 justify-content-center">
+        <div class="col-12 col-sm-8 col-lg-6 bg-light h-100">
+            <div class="h-100 overflow-auto">
+                <p class="display-5">{{user.username}}</p>
+                <div class="profile-img">
+                    {% if user.image_name %}
+                    <img src="/static/images/{{user.id}}/{{user.image_name}}" class="rounded-circle contain" alt="">
+                    {% else %}
                     <img src="/static/images/default.png" alt="" class="rounded-circle contain">
-                {% endif %}
-            </div>
-            <p class="lead">{{user.email}}</p>
-            <div class="border border-dark rounded m-2 p-2">
-                <h2 class="dark-title">Bio</h2>
-                <p>{{user.bio}}</p>
-            </div>
-            <div class="text-center">
-                <form method="GET">
-                    <button formaction="/users/edit" class="btn btn-info m-2 p-3">Edit Profile</button>
-                    <button formaction="/users/change_password" class="btn btn-warning m-2 p-3">Change Password</button>
-                    <button formaction="/users/delete/confirm" class="btn btn-danger m-2">DELETE ACCOUNT</button>
-                </form>
+                    {% endif %}
+                </div>
+                <p class="lead">{{user.email}}</p>
+                <div class="border border-dark rounded m-2 p-2">
+                    <h2 class="dark-title">Bio</h2>
+                    <p>{{user.bio}}</p>
+                </div>
+                <div class="text-center">
+                    <form method="GET">
+                        <button formaction="/users/edit" class="btn btn-info m-2 p-3">Edit Profile</button>
+                        <button formaction="/users/change_password" class="btn btn-warning m-2 p-3">Change
+                            Password</button>
+                        <button formaction="/users/delete/confirm" class="btn btn-danger m-2">DELETE ACCOUNT</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

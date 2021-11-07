@@ -7,21 +7,25 @@ Greenflash
 
 {% block content %}
 
-<div class="container-fluid">
-    <div class="row justify-content-center mt-3 m-lg-5">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-4">
-            <form id="search-form" class="shadow rounded p-3 form-inline">
+<div class="container-fluid pt-5 h-100">
+    <div class="row justify-content-center pt-5 m-lg-5 h-100">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-4 h-100">
+            <form id="search-form" class="shadow rounded p-3">
                 <h2 class="light-title">Looking for something?</h2>
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {% for field in form if field.widget.input_type != "hidden" %}
-                    <p>
-                        {{ field.label }}
-                        {{ field() }}
-                        {% for error in field.errors %}
-                        {{ error }}
-                        {% endfor %}
-                    </p>
+                    <div class="row mb-3">
+                        <label for="{{ field.id }}" class="col-4">
+                            {{ field.label.text }}
+                        </label>
+                        <div class="col-8">
+                            {{ field() }}
+                        </div>
+                    </div>
+                    {% for error in field.errors %}
+                    {{ error }}
+                    {% endfor %}
                     {% endfor%}
                 </div>
                 <button type="submit" class="btn btn-lg btn-primary">Search</button>
