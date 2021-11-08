@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<div class="row pt-5 justify-content-center h-100">
+<div class="row justify-content-center h-100">
     {{ entry_list(logs) }}
     <div class="col-12 col-lg-6 h-100">
         <div class="rounded h-100 overflow-auto log-container">
@@ -27,7 +27,7 @@
                     <div class="text-left">
                         <button formaction="/logs/{{log.id}}/edit" formmethod="GET"
                             class="btn btn-warning btn-lg m-2">Edit</button>
-                        <button formaction="/logs/{{log.id}}/delete" formmethod="POST"
+                        <button formaction="/logs/{{log.id}}/delete/confirm" formmethod="GET"
                             class="btn btn-danger btn-lg m-2">Delete</button>
                     </div>
                 </form>

@@ -7,36 +7,32 @@ Greenflash
 
 {% block content %}
 
-<!-- <div class="container-fluid h-100"> -->
-    <div class="row pt-5 justify-content-center m-lg-5 h-100">
-        <div class="col-12 col-sm-12 col-md-12 col-lg-4 h-100">
-            <form id="search-form" class="shadow rounded p-3">
-                <h2 class="light-title">Looking for something?</h2>
-                {{ form.hidden_tag() }}
-                <div class="form-group">
-                    {% for field in form if field.widget.input_type != "hidden" %}
-                    <div class="row mb-3">
-                        <label for="{{ field.id }}" class="col-4">
-                            {{ field.label.text }}
-                        </label>
-                        <div class="col-8">
-                            {{ field() }}
-                        </div>
-                    </div>
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+        <form id="search-form" class="shadow rounded p-3 ml-5">
+            <h2 class="light-title">Looking for something?</h2>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {% for field in form if field.widget.input_type != "hidden" %}
+                <p>
+                    {{ field.label }}
+                    {{ field() }}
                     {% for error in field.errors %}
                     {{ error }}
                     {% endfor %}
-                    {% endfor%}
-                </div>
-                <button type="submit" class="btn btn-lg btn-primary">Search</button>
-            </form>
-        </div>
-        <div class="col-12 col-sm-12 col-md-12 col-lg-8" id="results-col">
-            <h2 style="color: #05386B;" id="results-header"></h2>
-            <div id="search-results" class="scroll p-md-3">
+                </p>
+                {% endfor %}
             </div>
+            <button type="submit" class="btn btn-lg submit">Search</button>
+        </form>
+    </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-8" id="results-col">
+        <h2 class="light-title" id="results-header"></h2>
+        <div id="search-results" class="h-100 p-md-3">
         </div>
     </div>
-<!-- </div> -->
+</div>
+
+
 
 {% endblock %}

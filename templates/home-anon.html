@@ -7,52 +7,38 @@ Greenflash
 
 {% block content %}
 
-<!-- <div class="container m-4"> -->
+<div class="row justify-content-center">
 
-    <div class="row pt-5 justify-content-center m-lg-5 h-100">
-
-        <div class="jumbotron" id="homepage-greeting">
-            <div class="hstack gap-3">
-                <h1 class="display-5">Travel. Discover. Document. Share.</h1>
-                <div class="ms-auto lead d-none d-lg-inline">Your roadtrip companion.</div>
-                <div class="vr d-none d-lg-inline"></div>
-                <div class="lead d-none d-lg-inline">Wherever each sunset finds you.</div>
-            </div>
+    <div class="jumbotron w-90" id="homepage-greeting">
+        <div class="hstack gap-3">
+            <h1 class="display-5">Travel. Discover. Document. Share.</h1>
+            <div class="ms-auto lead d-none d-lg-inline">Your roadtrip companion.</div>
+            <div class="vr d-none d-lg-inline"></div>
+            <div class="lead d-none d-lg-inline">Wherever each sunset finds you.</div>
         </div>
+    </div>
 
-        <div class="col-12 col-sm-12 col-md-12 col-lg-4 h-100">
-
-            <form id="search-form" class="shadow rounded p-3 position-sticky" style="background-color: #379683;">
-
-                <h2 style="color: #EDF5E1;">Looking for something?</h2>
-
-                {{ form.hidden_tag() }}
-
-                <div class="form-group">
-
-                    {% for field in form if field.widget.input_type != "hidden" %}
-                    <p>
-                        {{ field.label }}
-                        {{ field(class_="form-control") }}
-
-                        {% for error in field.errors %}
-                        {{ error }}
-                        {% endfor %}
-                    </p>
-                    {% endfor%}
-                </div>
-                <button type="submit" class="btn btn-lg"
-                    style="color: #EDF5E1; background-color: #05386b;">Search</button>
-            </form>
-        </div>
-
-        <div class="col-8" id="results-col">
-
-            <h2 style="color: white;" id="results-header"></h2>
-
-            <div id="search-results" class="scroll">
-
+    <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+        <form id="search-form" class="shadow rounded p-3 ml-5">
+            <h2 class="light-title">Looking for something?</h2>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {% for field in form if field.widget.input_type != "hidden" %}
+                <p>
+                    {{ field.label }}
+                    {{ field() }}
+                    {% for error in field.errors %}
+                    {{ error }}
+                    {% endfor %}
+                </p>
+                {% endfor %}
             </div>
+            <button type="submit" class="btn btn-lg submit">Search</button>
+        </form>
+    </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-8 h-auto overflow-auto" id="results-col">
+        <h2 class="light-title" id="results-header"></h2>
+        <div id="search-results" class="overflow-auto p-md-3">
         </div>
     </div>
 </div>

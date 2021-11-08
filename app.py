@@ -1,4 +1,3 @@
-from operator import add
 import os
 import shutil
 import functools
@@ -10,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc
 from werkzeug.utils import secure_filename
 from key import API_KEY
-from flask_uploads import UploadSet, configure_uploads
+from flask_uploads import configure_uploads
 
 
 CURR_USER_KEY = "curr_user"
@@ -114,11 +113,9 @@ def signup():
 
         # make the user's image folder
         image_path = f"static/images/{user.id}"
-
         os.mkdir(image_path)
 
         f = request.files['photo']
-
         if f:
             filename = secure_filename(f.filename)
             f.save(os.path.join(f'static/images/{user.id}', filename))
@@ -126,9 +123,7 @@ def signup():
             db.session.commit()
 
         do_login(user)
-
         return redirect(url_for("home"))
-
     else:
         return render_template('users/signup.html', form=form)
 
@@ -142,19 +137,14 @@ def login():
     if form.validate_on_submit():
         user = User.authenticate(form.username.data,
                                 form.password.data)
-
         next_url = request.form.get('next')
-
         if user:
             do_login(user)
             flash(f"Hello, {user.username}!", "success")
-
             if next_url:
                 return redirect(next_url)
-
             else:
                 return redirect(url_for("home"))
-
         flash("Invalid credentials.", "danger")
 
     return render_template('users/login.html', form=form)
@@ -165,9 +155,7 @@ def logout():
     """Handle user logout."""
 
     do_logout()
-
     flash("Logout successful!", 'success')
-
     return redirect(url_for("login"))
     
 
@@ -180,11 +168,8 @@ def logout():
 def landing():
 
     if g.user:
-
         return redirect("/home")
-
     form = BusinessSearchForm()
-
     return render_template("home-anon.html", form=form)
 
 
@@ -193,7 +178,6 @@ def home():
     """Home page which presents business search form."""
 
     form = BusinessSearchForm()
-
     return render_template('home.html', form=form)
 
 
@@ -202,7 +186,6 @@ def user_detail():
     """Show a user's credentials, bio, and profile image."""
 
     user = g.user
-
     return render_template("users/detail.html", user=user)
 
 
@@ -212,9 +195,7 @@ def edit_user():
     """Edit a user's credentials, bio, and profile image."""
 
     user = g.user
-
     form = EditProfileForm(obj=user)
-
     if form.validate_on_submit():
         try: 
             form.populate_obj(user)
@@ -263,6 +244,7 @@ def change_password():
 
     return render_template("users/password_form.html", form=form)
 
+
 @app.route("/users/delete/confirm", methods=["GET"])
 @login_required
 def delete_confirm():
@@ -271,19 +253,15 @@ def delete_confirm():
     return render_template('users/account_delete.html')
 
 
-
 @app.route("/users/delete", methods=["GET", "POST"])
 @login_required
 def delete_user():
     """Delete user."""
 
     do_logout()
-
     shutil.rmtree(f"static/images/{g.user.id}")
-
     db.session.delete(g.user)
     db.session.commit()
-
     flash("Account successfully deleted.", "danger")
     return redirect(url_for("signup"))
 
@@ -299,14 +277,10 @@ def submit_search():
     data = request.json
     term = data['category']
     location = data['city']
-
     params = {'term' : term, 'location' : location}
-
     headers = {
         'Authorization' : f'Bearer {API_KEY}'}
-
     results = requests.get(f"{API_BASE_URL}/search", headers=headers, params=params)
-
     resp = results.json()
 
     return resp
@@ -319,20 +293,9 @@ def save_place():
 
     if not g.user:
         return jsonify(message="not added")
-
     user = g.user
 
     place_id = request.json["placeId"]
-    # category=request.json["category"]
-    # name = request.json["name"]
-    # url = request.json["url"]   
-    # image_url = request.json["image_url"]
-    # address_0 = request.json["address_0"] 
-    # address_1 = request.json["address_1"]
-    # price = request.json["price"]
-    # phone = request.json["phone"]
-    # rating = request.json["rating"]        
-
     existing_place = Place.query.get(place_id)
 
     # if the place isn't in the DB (most likely condition), then it can't be in the user's places
@@ -369,15 +332,10 @@ def show_places():
     """Show a user's saved places."""
 
     place_ids = [place.id for place in g.user.places]
-
     places = []
-
-    # resp = requests.get("https://api.yelp.com/v3/businesses/VwG-Nb3WyRxyQTC9BBgQcQ", headers=headers)
-
     headers = {
         'Authorization' : f'Bearer {API_KEY}'}
-
-
+        
     for place_id in place_ids:
         res = requests.get(f"{API_BASE_URL}/{place_id}", headers=headers)
 
@@ -386,8 +344,6 @@ def show_places():
         name = business["name"]
         image_url = business["image_url"]
         category = (business["categories"])[0]["title"]
-        # price = business["price"] if business["price"] else "undefined"
-        # phone = business["phone"] if business["phone"] else ""
         address_0 = (business["location"])["display_address"][0]
         address_1 = (business["location"])["display_address"][1]
         url = business["url"]
@@ -404,8 +360,6 @@ def show_places():
             price = business["price"]
         except KeyError:
             price = ""
-
-
 
         placeDict = {
             "place_id" : place_id,
@@ -578,6 +532,15 @@ def edit_log(id):
     return render_template('/users/edit_log.html', form=edit_form, logs=logs, maintenance=maintenance)
 
 
+@app.route("/logs/<int:id>/delete/confirm")
+@login_required
+def delete_log_confirm(id):
+    """Confirm log deletion."""
+
+    log = Log.query.get_or_404(id)
+    return render_template('/users/log_delete.html', log=log)
+
+
 @app.route("/logs/<int:id>/delete", methods=["POST"])
 @login_required
 def delete_log(id):
@@ -738,6 +701,16 @@ def edit_maintenance(id):
         return redirect(f"/maintenance/{id}")
 
     return render_template('/users/edit_maintenance.html', form=edit_form, logs=logs, maintenance=records)
+
+
+@app.route("/maintenance/<int:id>/delete/confirm")
+@login_required
+def delete_maintenance_confirm(id):
+    """Confirm log deletion."""
+
+    maintenance = Maintenance.query.get_or_404(id)
+
+    return render_template('/users/maintenance_delete.html', maintenance=maintenance)
 
 
 @app.route("/maintenance/<int:id>/delete", methods=["POST"])
