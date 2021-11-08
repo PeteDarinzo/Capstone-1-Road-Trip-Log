@@ -20,9 +20,6 @@ class LogViewTestCase(TestCase):
     
     def setUp(self):
         """Create test client, add sample data."""
-
-        # db.drop_all()
-        # db.create_all()
         
         self.client = app.test_client()
 
@@ -119,10 +116,10 @@ class LogViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="p-1 rounded" style="color: #EDF5E1; ">New Log Entry</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Log Entry</h2>""", html)
 
             data = {
-                "title": "new log",
+                "title": "my test log",
                 "location": "Chicago, IL",
                 "mileage" : 59000,
                 "date": "2020-10-26",
@@ -133,7 +130,7 @@ class LogViewTestCase(TestCase):
 
             self.assertEqual(res.status_code, 302)
 
-            log = Log.query.filter_by(title="new log").first()
+            log = Log.query.filter_by(title="my test log").first()
 
             self.assertEqual(log.user_id, self.test_user_one.id)
             self.assertEqual(log.text, "This is a test log.")
@@ -142,11 +139,12 @@ class LogViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="rounded p-2">new log</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">my test log</h2>""", html)
 
             
     def test_view_log(self):
         """Test view log."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_two_id
@@ -155,12 +153,13 @@ class LogViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="rounded p-2">Second Test Title.</span></h2>""", html)
-            self.assertIn("""<p class="rounded p-4">Second test log.</p>""", html)
+            self.assertIn("""<h2 class="dark-title">Second Test Title.</h2>""", html)
+            self.assertIn("""<p class="rounded mt-2 p-3 border text-bg">Second test log.</p>""", html)
 
     
     def test_edit_log(self):
         """Test edit log."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -169,7 +168,7 @@ class LogViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Edit Log</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Edit Log</h2>""", html)
 
             data = {
                 "title": "New title for first log.",
@@ -184,11 +183,13 @@ class LogViewTestCase(TestCase):
 
             self.assertEqual(res.status_code, 200)
 
-            self.assertIn("""<h2><span class="rounded p-2">New title for first log.</span></h2>""", html)
-            self.assertIn("""<p class="rounded p-4">This is the edited test log.</p>""", html)
+            self.assertIn("""<h2 class="dark-title">New title for first log.</h2>""", html)
+            self.assertIn("""<p class="rounded mt-2 p-3 border text-bg">This is the edited test log.</p>""", html)
 
 
     def test_delete_log(self):
+        """Test that a log can be deleted."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -196,7 +197,7 @@ class LogViewTestCase(TestCase):
             res = c.post(f'/logs/{self.third_test_log_id}/delete', follow_redirects=True)
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="p-1 rounded" style="color: #EDF5E1; ">New Log Entry</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Log Entry</h2>""", html)
 
             # verify log is gone
             log = Log.query.filter_by(id=self.third_test_log_id).all()
@@ -205,6 +206,7 @@ class LogViewTestCase(TestCase):
 
     def test_view_other_user_log(self):
         """Test view attempt on a different user's log."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_two_id
@@ -213,11 +215,12 @@ class LogViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="p-1 rounded" style="color: #EDF5E1; ">New Log Entry</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Log Entry</h2>""", html)
 
 
     def test_delete_other_user_log(self):
         """Test delete attempt on a different user's log."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -225,7 +228,7 @@ class LogViewTestCase(TestCase):
             res = c.post(f'/logs/{self.second_test_log_id}/delete', follow_redirects=True)
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="p-1 rounded" style="color: #EDF5E1; ">New Log Entry</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Log Entry</h2>""", html)
 
             # verify log still exists
             log = Log.query.filter_by(id=self.second_test_log_id).all()
@@ -234,6 +237,7 @@ class LogViewTestCase(TestCase):
 
     def test_edit_other_user_log(self):
         """Test edit attempt different user's log."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -250,11 +254,12 @@ class LogViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="p-1 rounded" style="color: #EDF5E1; ">New Log Entry</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Log Entry</h2>""", html)
 
 
     def test_logged_out_submit(self):
         """Attempt log submit while logged out."""
+
         with self.client as c:
             
             data = {
@@ -272,6 +277,7 @@ class LogViewTestCase(TestCase):
 
     def test_logged_out_view(self):
         """Attempt view log while logged out."""
+
         with self.client as c:
             
             res = c.get('/logs/101')
@@ -281,6 +287,7 @@ class LogViewTestCase(TestCase):
 
     def test_logged_out_delete(self):
         """Attempt delete log while logged out."""
+        
         with self.client as c:
             
             res = c.post('/logs/101/delete')
@@ -295,7 +302,7 @@ class LogViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="rounded p-2">First Test Title.</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">First Test Title.</h2>""", html)
 
             log = Log.query.filter_by(id=self.first_test_log_id).all()
             self.assertEqual(len(log), 1)

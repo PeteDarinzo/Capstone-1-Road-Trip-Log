@@ -114,10 +114,10 @@ class MaintenanceViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class=" p-1 rounded" style="color: #EDF5E1; ">New Maintenance Record</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Maintenance Record</span></h2>""", html)
 
             data = {
-                "title": "new record",
+                "title": "new test record title",
                 "location": "Chicago, IL",
                 "mileage" : 59000,
                 "date": "2020-10-26",
@@ -128,7 +128,7 @@ class MaintenanceViewTestCase(TestCase):
 
             self.assertEqual(res.status_code, 302)
 
-            maintenance = Maintenance.query.filter_by(title="new record").first()
+            maintenance = Maintenance.query.filter_by(title="new test record title").first()
 
             self.assertEqual(maintenance.user_id, self.test_user_one.id)
             self.assertEqual(maintenance.description, "This is a test maintenance record.")
@@ -137,11 +137,12 @@ class MaintenanceViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="bg-white rounded p-2">new record</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">new test record title</span></h2>""", html)
 
             
     def test_view_maintenance(self):
         """Test view maintenance."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_two_id
@@ -150,13 +151,13 @@ class MaintenanceViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="bg-white rounded p-2">Second Test Title.</span></h2>""", html)
-            self.assertIn("""<p class="bg-white rounded p-4">Second test record.</p>""", html)
+            self.assertIn("""<h2 class="dark-title">Second Test Title.</span></h2>""", html)
+            self.assertIn("""<p class="rounded mt-2 p-3 text-bg border">Second test record.</p>""", html)
 
                 
-    
     def test_edit_maintenance(self):
         """Test edit maintenance."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -165,7 +166,7 @@ class MaintenanceViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Edit Maintenance</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Edit Maintenance</h2>""", html)
 
             data = {
                 "title": "New title for first record.",
@@ -180,11 +181,13 @@ class MaintenanceViewTestCase(TestCase):
 
             self.assertEqual(res.status_code, 200)
 
-            self.assertIn("""<h2><span class="bg-white rounded p-2">New title for first record.</span></h2>""", html)
-            self.assertIn("""<p class="bg-white rounded p-4">This is the edited test maintenance.</p>""", html)
+            self.assertIn("""<h2 class="dark-title">New title for first record.</span></h2>""", html)
+            self.assertIn("""<p class="rounded mt-2 p-3 text-bg border">This is the edited test maintenance.</p>""", html)
 
 
-    def test_delete_log(self):
+    def test_delete_maintenance(self):
+        """Test that maintenance can be deleted."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -192,7 +195,7 @@ class MaintenanceViewTestCase(TestCase):
             res = c.post(f'/maintenance/{self.third_test_maintenance_id}/delete', follow_redirects=True)
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class=" p-1 rounded" style="color: #EDF5E1; ">New Maintenance Record</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Maintenance Record</span></h2>""", html)
 
             # verify log is gone
             maintenance = Maintenance.query.filter_by(id=self.third_test_maintenance_id).all()
@@ -201,6 +204,7 @@ class MaintenanceViewTestCase(TestCase):
 
     def test_view_other_user_maintenance(self):
         """Test view attempt on a different user's maintenance record."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_two_id
@@ -209,11 +213,12 @@ class MaintenanceViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class=" p-1 rounded" style="color: #EDF5E1; ">New Maintenance Record</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Maintenance Record</span></h2>""", html)
 
 
-    def test_delete_other_user_log(self):
+    def test_delete_other_user_maintenance(self):
         """Test delete attempt on a different user's maintenance record."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -221,15 +226,16 @@ class MaintenanceViewTestCase(TestCase):
             res = c.post(f'/maintenance/{self.second_test_maintenance_id}/delete', follow_redirects=True)
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class=" p-1 rounded" style="color: #EDF5E1; ">New Maintenance Record</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Maintenance Record</span></h2>""", html)
 
-            # verify log still exists
+            # verify maintenance still exists
             maintenance = Maintenance.query.filter_by(id=self.second_test_maintenance_id).all()
             self.assertEqual(len(maintenance), 1)
 
 
     def test_edit_other_user_maintenance(self):
         """Test edit attempt different user's maintenance record."""
+
         with self.client as c:
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.test_user_one_id
@@ -246,11 +252,12 @@ class MaintenanceViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class=" p-1 rounded" style="color: #EDF5E1; ">New Maintenance Record</span></h2>""", html)
+            self.assertIn("""<h2 class="dark-title">New Maintenance Record</span></h2>""", html)
 
 
     def test_logged_out_submit(self):
         """Attempt maintenance record submit while logged out."""
+        
         with self.client as c:
             
             data = {
@@ -268,6 +275,7 @@ class MaintenanceViewTestCase(TestCase):
 
     def test_logged_out_view(self):
         """Attempt view log while logged out."""
+
         with self.client as c:
             
             res = c.get('/maintenance/101')
@@ -277,6 +285,7 @@ class MaintenanceViewTestCase(TestCase):
 
     def test_logged_out_delete(self):
         """Attempt delete log while logged out."""
+        
         with self.client as c:
             
             res = c.post('/maintenance/101/delete')
@@ -291,8 +300,8 @@ class MaintenanceViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2><span class="bg-white rounded p-2">First Test Title.</span></h2>""", html)
-            self.assertIn("""<p class="bg-white rounded p-4">First test record.</p>""", html)
+            self.assertIn("""<h2 class="dark-title">First Test Title.</span></h2>""", html)
+            self.assertIn("""<p class="rounded mt-2 p-3 text-bg border">First test record.</p>""", html)
 
             maintenance = Maintenance.query.filter_by(id=self.first_test_maintenance_id).all()
             self.assertEqual(len(maintenance), 1)

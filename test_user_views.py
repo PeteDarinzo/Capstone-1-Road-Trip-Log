@@ -52,7 +52,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Sign Up</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Sign Up</h2>""", html)
 
             data = {
                 "username": "MrTurtle",
@@ -66,8 +66,8 @@ class UserViewTestCase(TestCase):
 
             # test that search page is loaded 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2 style="color: #EDF5E1;">Looking for something?</h2>""", html)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">MrTurtle</a>""", html)
+            self.assertIn("""<h2 class="light-title">Looking for something?</h2>""", html)
+            self.assertIn("""<a class="nav-link" href="/users/profile">MrTurtle</a>""", html)
 
             user = User.query.filter_by(username="MrTurtle").first()
 
@@ -81,7 +81,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
 
 
@@ -94,7 +94,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Sign Up</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Sign Up</h2>""", html)
 
             txt_file = {
                 "username": "MrTurtle",
@@ -108,7 +108,7 @@ class UserViewTestCase(TestCase):
 
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Sign Up</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Sign Up</h2>""", html)
 
             pdf_file = {
                 "username": "MrTurtle",
@@ -122,7 +122,7 @@ class UserViewTestCase(TestCase):
 
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Sign Up</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Sign Up</h2>""", html)
 
 
     def test_log_in(self):
@@ -134,7 +134,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
             data = {"username" : "testuser",
                     "password" : "Test_Password123"}
@@ -144,14 +144,14 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">testuser</a>""", html)
+            self.assertIn("""<a class="nav-link" href="/users/profile">testuser</a>""", html)
 
             res = client.get('/logout', follow_redirects=True)
 
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
 
     def test_wrong_password_login(self):
@@ -167,10 +167,10 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
 
-    def test_wrong_password_login(self):
+    def test_wrong_username_login(self):
         """Test login attempt with wrong username"""
 
         with app.test_client() as client:
@@ -183,7 +183,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
 
     def test_user_profile(self):
@@ -199,13 +199,13 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">testuser</a>""", html)
+            self.assertIn("""<a class="nav-link" href="/users/profile">testuser</a>""", html)
 
             res = client.get("/users/profile")
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h1>Your Profile</h1>""", html)
+            self.assertIn("""<p class="display-5">testuser</p>""", html)
 
 
     def test_user_edit_profile(self):
@@ -221,13 +221,13 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">testuser</a>""", html)
+            self.assertIn("""<a class="nav-link" href="/users/profile">testuser</a>""", html)
 
             res = client.get("/users/edit")
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Edit Profile</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Edit Profile</h2>""", html)
 
             data = {
                 "username": "MrTurtle",
@@ -261,7 +261,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Edit Profile</h2>""", html)
+            self.assertIn("""    <h2 class="dark-title">Edit Profile</h2>""", html)
 
             user = User.query.filter_by(username="MrTurtle").first()
 
@@ -308,12 +308,13 @@ class UserViewTestCase(TestCase):
 
             # test for redirect to home page
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
 
     def test_user_change_password(self):
+        """Test changing a user's password."""
 
-         with app.test_client() as client:
+        with app.test_client() as client:
 
             data = {"username" : "testuser",
                         "password" : "Test_Password123"}
@@ -323,14 +324,14 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">testuser</a>""", html)
+            self.assertIn("""<a class="nav-link" href="/users/profile">testuser</a>""", html)
 
             res = client.get('/users/change_password', follow_redirects=True)
 
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Change Password</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Change Password</h2>""", html)
 
             data = {
             "curr_password": "Test_Password123",
@@ -342,7 +343,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h1>Your Profile</h1>""", html)
+            self.assertIn("""<p class="display-5">testuser</p>""", html)
 
             # logout, then log back in with new password to verify
             res = client.get('/logout', follow_redirects=True)
@@ -350,7 +351,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""    <h2 class="dark-title">Log In</h2>""", html)
 
             data = {"username" : "testuser",
                         "password" : "Massachusetts"}
@@ -360,7 +361,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">testuser</a>""", html)
+            self.assertIn("""<a class="nav-link" href="/users/profile">testuser</a>""", html)
 
             wrong_data_one = {
             "curr_password": "Gibberish",
@@ -372,7 +373,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Change Password</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Change Password</h2>""", html)
 
             wrong_data_two = {
             "curr_password": "Test_Password123",
@@ -384,7 +385,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Change Password</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Change Password</h2>""", html)
 
             wrong_data_three = {
             "curr_password": "Test_Password123",
@@ -396,7 +397,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Change Password</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Change Password</h2>""", html)
 
             # logout, then attempt to change password
             res = client.get('/logout', follow_redirects=True)
@@ -404,13 +405,13 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
             res = client.get("/users/change_password", follow_redirects=True)
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Welcome back</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Log In</h2>""", html)
 
             
     def test_user_delete(self):
@@ -428,7 +429,7 @@ class UserViewTestCase(TestCase):
             html = res.get_data(as_text=True)
 
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<a class="nav-item nav-link" href="/users/profile">MrTurtle</a>""", html)
+            self.assertIn("""<a class="nav-link" href="/users/profile">MrTurtle</a>""", html)
 
             user = User.query.filter_by(username="MrTurtle").first()
             user_id = user.id
@@ -436,7 +437,7 @@ class UserViewTestCase(TestCase):
             res = client.post('/users/delete', follow_redirects=True)
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
-            self.assertIn("""<h2>Sign Up</h2>""", html)
+            self.assertIn("""<h2 class="dark-title">Sign Up</h2>""", html)
             
             user = User.query.filter_by(username="MrTurtle").all()
             self.assertEqual(len(user), 0)

@@ -30,9 +30,7 @@ class User(db.Model):
     image_name = db.Column(db.Text, default="default.png")
 
     logs = db.relationship("Log", cascade="all, delete", backref="user")
-
     maintenance = db.relationship("Maintenance", cascade="all, delete", backref="user")
-
     places = db.relationship("Place", secondary="users_places")
 
 
@@ -50,11 +48,11 @@ class User(db.Model):
             email=email,
             password=hashed_pwd,
             image_name="",
-            bio=""
-        )
+            bio="")
 
         db.session.add(user)
         return user
+
 
     @classmethod
     def authenticate(cls, username, password):
@@ -104,9 +102,6 @@ class Log(db.Model):
     text = db.Column(db.Text, nullable=False)
     image_name = db.Column(db.Text)
 
-    # user = db.relationship("User")
-    # location = db.relationship("Location")
-
 
 class Location(db.Model):
     """Location model."""
@@ -114,16 +109,14 @@ class Location(db.Model):
     __tablename__ = "locations"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # city = db.Column(db.Text, nullable=False)
-    # state = db.Column(db.Text, nullable=False)
     location = db.Column(db.Text, nullable=False, unique=True)
     
-
     def __repr__(self):
         return f"<Location #{self.id}: {self.location}>"
 
     logs = db.relationship("Log", backref="location")
     maintenance = db.relationship("Maintenance", backref="location")
+
 
 class Maintenance(db.Model):
     """Maintenance model."""
@@ -139,9 +132,6 @@ class Maintenance(db.Model):
     description = db.Column(db.Text, nullable=False)
     image_name = db.Column(db.Text)
 
-    # user = db.relationship("User")
-    # location = db.relationship("Location")
-
 
 class Place(db.Model):
     """Place model."""
@@ -149,24 +139,10 @@ class Place(db.Model):
     __tablename__ = "places"
 
     id = db.Column(db.String, primary_key=True)
-    # name = db.Column(db.Text, nullable=False)
-    # category = db.Column(db.String)
-    # url = db.Column(db.Text)
-    # image_url = db.Column(db.Text)
-    # price = db.Column(db.String)    
-    # phone = db.Column(db.String)
-    # address_0 = db.Column(db.Text)
-    # address_1 = db.Column(db.Text)
-    # rating = db.Column(db.String)
-
-    # users = db.relationship("User", secondary="users_places")
 
     def serialize(self):
         return {
             "id": self.id
-            # "name": self.name,
-            # "url": self.url,
-            # "address": self.address,
         }
 
 

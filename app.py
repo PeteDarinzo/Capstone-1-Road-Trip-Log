@@ -289,7 +289,9 @@ def submit_search():
 @app.route("/places/save", methods=["POST"])
 # @login_required
 def save_place():
-    """Save a place for future reference."""
+    """Save a place for future reference.
+
+    If the place's ID is not in the DB (most likely condition), it is known that it is not in the user's places. If so the place is then created, and added to the user's places. Otherwise, the place may be in the DB, but not the user's. If so, the place is simply added to the user's places. If the place is in the DB, and the user's places, then the save button was clicked in error, do nothing."""
 
     if not g.user:
         return jsonify(message="not added")
@@ -298,31 +300,17 @@ def save_place():
     place_id = request.json["placeId"]
     existing_place = Place.query.get(place_id)
 
-    # if the place isn't in the DB (most likely condition), then it can't be in the user's places
     if not existing_place:
-
-        # create the place.
         place = Place(id=place_id)
-
         db.session.add(place)
         db.session.commit()
-      
-        # and add it to the user's places
         user.places.append(place)
         db.session.commit()
-
         return jsonify(message="added")
-
-    # if the place is in the DB, but not the user's places
     if existing_place not in user.places:
-
-        #simply add it to the user's places
         user.places.append(existing_place)
         db.session.commit()
-
         return jsonify(message="added")
-
-    # if the place exists and is in the user's place, do nothing
     return jsonify(message="already saved")
 
 
@@ -484,38 +472,21 @@ def edit_log(id):
     edit_form.location.data = log.location.location
 
     if edit_form.validate_on_submit():
-
-        # string from form in the form City, State
         location = request.form['location']
-
-        # check if the submitted location is in the DB
-        new_loc = Location.query.filter_by(location=f"{location}").first()
-        
-        # if it's there
-        if new_loc:
-            
-            # the id is the found location's id (most likely not to change)
-            loc_id = new_loc.id
-
+        existing_location = Location.query.filter_by(location=f"{location}").first()
+        if existing_location:
+            loc_id = existing_location.id
         else: 
-            # make a new location 
             new_location = Location(location=location)
-
-            # and add it to the DB
             db.session.add(new_location)
             db.session.commit()
-
-            # get the new location's id
             loc_id = new_location.id
-
-        # edit_form.populate_obj(log)
 
         log.title = request.form['title']
         log.mileage = request.form['mileage']
         log.location_id = loc_id
         log.text = request.form['text']
         log.date = request.form['date']
-
         f = request.files['photo']
 
         if f:
@@ -657,28 +628,14 @@ def edit_maintenance(id):
     edit_form.location.data = maintenance.location.location
 
     if edit_form.validate_on_submit():
-
-        # string from form in the form City, State
         location = request.form['location']
-
-        # check if the submitted location is in the DB
         existing_location = Location.query.filter_by(location=f"{location}").first()
-        
-        # if it's there
         if existing_location:
-            
-            # the id is the found location's id (most likely not to change)
             loc_id = existing_location.id
-
         else: 
-            # make a new location 
             new_location = Location(location=location)
-
-            # and add it to the DB
             db.session.add(new_location)
             db.session.commit()
-
-            # get the new location's id
             loc_id = new_location.id
 
         maintenance.title = request.form['title']
@@ -686,7 +643,6 @@ def edit_maintenance(id):
         maintenance.location_id = loc_id
         maintenance.description = request.form['description']
         maintenance.date = request.form['date']
-
         f = request.files['photo']
 
         if f:
@@ -709,7 +665,6 @@ def delete_maintenance_confirm(id):
     """Confirm log deletion."""
 
     maintenance = Maintenance.query.get_or_404(id)
-
     return render_template('/users/maintenance_delete.html', maintenance=maintenance)
 
 
