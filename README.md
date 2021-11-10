@@ -38,49 +38,49 @@ Python3 and pip3 must be installed before running this app. The app also require
 
 ## Instructions
 
-## 1. Get a free Yelp API key.
+#### 1. Get a free Yelp API key.
 ```
 https://www.yelp.com/developers/documentation/v3/get_started
 ```
 
-## 2. Clone the Repo.
+#### 2. Clone the Repo.
 ```
 $ git clone https://github.com/PeteDarinzo/Green-Flash
 ```
 
-## 3. Create a virtual environment in the project directory.
+#### 3. Create a virtual environment in the project directory.
 ```
 $ python3 -m venv venv
 ```
 
-## 4. Start the virtual environment in the project directory.
+#### 4. Start the virtual environment in the project directory.
 ```
 $ source venv/bin/activate
 ```
 
-## 5. Install required packages.
+#### 5. Install required packages.
 ```
 $ pip3 install -r requirements.txt
 ```
 
-## 6. Create a python file called key.py and add the API key. **Make sure to add key.py to the .gitignore file in the directory so that your API key doesn't get accidentally shared.**<br/>
+#### 6. Create a python file called key.py and add the API key. **Make sure to add key.py to the .gitignore file in the directory so that your API key doesn't get accidentally shared.**<br/>
 ## 7. Create a variable in key.py called API_KEY, set it equal to your Yelp API key.<br/>
 ## 8. Start Postgresql, entering your password when prompeted.
 ```
 $ sudo service postgresql start
 ```
 
-## 9. Enter Postgresql.
+#### 9. Enter Postgresql.
 ```
 $ psql
 ```
 
-## 10. Create a databse for the app.
+#### 10. Create a databse for the app.
 ```
 # CREATE DATABASE greenflash;
 ```
 
-## 11. Populate database tables through ipython (method 1), or the provided seed file (method 2).
+#### 11. Populate database tables through ipython (method 1), or the provided seed file (method 2).
 
  - #### Method 1
    ```
@@ -95,12 +95,12 @@ $ psql
    $ python seed.py
    ```
 
-## 12. Run flask
+#### 12. Run flask
 ```
 flask run
 ```
 
-## 13. Open a web browser and run the app on the server's port.
+#### 13. Open a web browser and run the app on the server's port.
 
 ## Testing
 
