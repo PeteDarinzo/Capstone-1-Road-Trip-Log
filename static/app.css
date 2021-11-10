@@ -1,4 +1,3 @@
-
 /**
 * Body receives padding to push content below the fixed position navbar
 **/
@@ -7,6 +6,20 @@ html, body{
     margin: 0;
     padding-top: 50px;
 } 
+
+body {
+    /* 
+    * Photo by Aaron Burden on Unsplash
+    * https://unsplash.com/photos/jyB40-iOtis
+   */
+    background-image: url(/static/images/background_image.jpg);
+
+    /* Center and scale the image*/
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
 
 #container {
     height: 100%;
@@ -54,6 +67,14 @@ span[class="material-icons"] {
     border-radius: .3rem;
 }
 
+.green-bg {
+    background-color: #379683;
+}
+
+.blue-text {
+    color: #05386B;
+}
+
 form[id="search-form"] {
     background-color: #379683;
 }
@@ -77,6 +98,10 @@ div[class="img-container"] {
 
 .text-bg {
     background-color: #F7F9FB;
+}
+
+.light-text {
+    color: #F7F9FB;
 }
 
 h2 {
@@ -137,18 +162,9 @@ button > p[class="title"] {
     margin: 15px;
 }
 
-body {
-    /* 
-    * Photo by Aaron Burden on Unsplash
-    * https://unsplash.com/photos/jyB40-iOtis
-   */
-    background-image: url(/static/images/background_image.jpg);
-
-    /* Center and scale the image*/
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+.place-title {
+    color: #379683;
+    font-size: 1.3rem;
 }
 
 /* 

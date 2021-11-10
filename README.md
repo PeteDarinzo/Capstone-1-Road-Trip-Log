@@ -10,9 +10,9 @@
 
 **Goal**
 
-Greenflash is a road trip assistant for RVers, vanlifers, or anyone on extended road trips. Users can use it to search for local services such as RV parks, restaurants, and libraries. Users can also create log and maintenance entries which record their location, and mileage. A log entry is used much like a personal journal, maintenance records keep track of where and when maintenance was performed on the vehicle.
+Greenflash is a road trip assistant for RVers, vanlifers, or anyone on an extended road trip. Users can use it to search for local services, as well as document the journey through log and maintenance entries which record location, mileage, and a text entry with an optional image. A log entry is used much like a personal journal, maintenance records keep track of where and when maintenance was performed on the vehicle.
 
-A [green flash](https://en.wikipedia.org/wiki/Green_flash) is an atmospheric phenomenon in which a setting or rising sun gives off green light. The name of the app is intended to spark the feeling of adventure felt on road trips. While I have never seen a green flash myself, I am always hopeful.
+A [green flash](https://en.wikipedia.org/wiki/Green_flash) is an atmospheric phenomenon in which a setting or rising sun gives off green light. The name of the app is intended to invoke the feeling of adventure felt on road trips. While I have never seen a green flash myself, I am always hopeful.
 
 
 **Data** 
@@ -21,15 +21,15 @@ A [green flash](https://en.wikipedia.org/wiki/Green_flash) is an atmospheric phe
 
 ## Navigation
 
-From the landing screen, anyone can use the search function, simply enter the service and a location. When logged out, a user may only view the results. When logged in, a user may save places of interest for later reference, and then view them by clicking the "Places" button on the navbar.
+From the landing screen, anyone can use the search function by simply entering the service and a location, and viewing the results. When logged in, a user may also save places of interest, and then view them by clicking the "Places" button on the navbar.
 
-Signup to gain access to the log creation features of the app. Once logged in, user's may still use the search function, or click on the "posts" nav button to go to the logs page. 
+Sign up to gain access to the log creation features of the app. Once logged in, users may still use the search function, or click on the "Posts" nav button to go to the logs page. 
 
-The default page is the form to submit a new log entry. The left hand column displays the most recently written logs, and buttons to show all logs, and create new ones. When viewing a log, there are buttons two edit and delete the log. 
+The default page after clicking "Posts" is the form to submit a new log entry. The left hand column displays the most recent logs, and buttons to show all logs, and create new ones. When viewing a log, there are buttons to edit and delete the log. 
 
-The right hand column is identical, but used to record maintenance to the vehicle. When logged in, clicking the username will show the user profile.
+The right hand column is identical, but used to record maintenance of the vehicle. 
 
-A biography and optional profile image may be added. There are buttons to edit and delete the profile, or change the user's password.
+When logged in, clicking the username will show the user profile. There are buttons to edit and delete the profile, or change the user's password. When editing, user's may add an optional biography and change their profile image.
 
 ## Installation
 
@@ -76,7 +76,7 @@ $ sudo service postgresql start
 $ psql
 ```
 
-#### 10. Create a databse for the app.
+#### 10. Create a database for the app.
 ```
 # CREATE DATABASE greenflash;
 ```

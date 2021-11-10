@@ -55,7 +55,7 @@ def login_required(func):
     @functools.wraps(func)
     def wrapper_login_required(*args, **kwargs):
         if not g.user:
-            flash("Access unauthorized.", "danger")
+            flash("Access unauthorized - Please log in or sign up.", "danger")
             return redirect(url_for("login", next=request.url))
         return func(*args, **kwargs)
     return wrapper_login_required
