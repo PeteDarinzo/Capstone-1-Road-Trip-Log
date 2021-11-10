@@ -30,17 +30,16 @@ RATINGS = {
 
 app = Flask(__name__)
 
-
-
-uri = os.getenv('DATABASE_URL', 'postgresql:///greenflash')  # or other relevant config var
+#
+# The following code provided by Heroku as a way of ensuring connection to sqlalchemy versions 1.4 and later
+# https://help.heroku.com/ZKNTJQSK/why-is-sqlalchemy-1-4-x-not-connecting-to-heroku-postgres
+#
+uri = os.getenv('DATABASE_URL', 'postgresql:///greenflash')  
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
-# rest of connection code using the connection string `uri`
-
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'CanadianGeese1195432')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///greenflash')
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(uri, 'postgresql:///greenflash')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'CanadianGeese1195432')
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
