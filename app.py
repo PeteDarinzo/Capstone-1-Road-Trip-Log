@@ -38,8 +38,8 @@ if uri.startswith("postgres://"):
 # rest of connection code using the connection string `uri`
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'CanadianGeese1195432')
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(uri, 'postgresql:///greenflash')
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(uri, 'postgresql:///greenflash')
+# app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['API_KEY'] = os.environ.get('API_KEY')
