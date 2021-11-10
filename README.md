@@ -63,8 +63,9 @@ $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
 
-#### 6. Create a python file called key.py and add the API key. **Make sure to add key.py to the .gitignore file in the directory so that your API key doesn't get accidentally shared.**<br/>
-#### 7. Create a variable in key.py called API_KEY, set it equal to your Yelp API key.<br/>
+#### 6. Create a python file called key.py and add the API key.
+ **Make sure to add key.py to the .gitignore file in the directory so that your API key doesn't get accidentally shared.**
+#### 7. Create a variable in key.py called API_KEY, set it equal to your Yelp API key.
 #### 8. Start Postgresql, entering your password when prompeted.
 ```
 $ sudo service postgresql start
