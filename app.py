@@ -15,7 +15,6 @@ from flask_uploads import configure_uploads
 CURR_USER_KEY = "curr_user"
 API_BASE_URL = "https://api.yelp.com/v3/businesses"
 UPLOAD_FOLDER = "static/images"
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 RATINGS = {
     "0": "regular_0.png",
     "1.0": "regular_1.png",
@@ -31,20 +30,16 @@ RATINGS = {
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = "CanadianGeese1195432"
-app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgresql:///greenflash'))
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'CanadianGeese1195432')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///greenflash')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
+app.config['API_KEY'] = os.environ.get('API_KEY', API_KEY)
 app.config['UPLOADED_IMAGES_DEST'] = UPLOAD_FOLDER
 
 connect_db(app)
 
 configure_uploads(app, (images))
-
-# check if file is allowed
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 ##############################################################################
 # User signup/login/logout
@@ -118,7 +113,7 @@ def signup():
         f = request.files['photo']
         if f:
             filename = secure_filename(f.filename)
-            f.save(os.path.join(f'static/images/{user.id}', filename))
+            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
             user.image_name=filename
             db.session.commit()
 
@@ -202,9 +197,9 @@ def edit_user():
             f = request.files['photo']
             if f:
                 if user.image_name:
-                    os.remove(f"static/images/{user.id}/{user.image_name}")
+                    os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{user.image_name}")
                 filename = secure_filename(f.filename)
-                f.save(os.path.join(f"static/images/{user.id}", filename))
+                f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
                 user.image_name=filename
             db.session.commit()
         
@@ -259,7 +254,8 @@ def delete_user():
     """Delete user."""
 
     do_logout()
-    shutil.rmtree(f"static/images/{g.user.id}")
+
+    shutil.rmtree(app.config['UPLOADED_IMAGES_DEST'] + f"/{g.user.id}")
     db.session.delete(g.user)
     db.session.commit()
     flash("Account successfully deleted.", "danger")
@@ -279,7 +275,7 @@ def submit_search():
     location = data['city']
     params = {'term' : term, 'location' : location}
     headers = {
-        'Authorization' : f'Bearer {API_KEY}'}
+        'Authorization' : (f'Bearer ' + app.config['API_KEY'])}
     results = requests.get(f"{API_BASE_URL}/search", headers=headers, params=params)
     resp = results.json()
 
@@ -322,7 +318,7 @@ def show_places():
     place_ids = [place.id for place in g.user.places]
     places = []
     headers = {
-        'Authorization' : f'Bearer {API_KEY}'}
+        'Authorization' : (f'Bearer ' + app.config['API_KEY'])}
         
     for place_id in place_ids:
         res = requests.get(f"{API_BASE_URL}/{place_id}", headers=headers)
@@ -337,7 +333,7 @@ def show_places():
         url = business["url"]
         rating = business["rating"]
         image = RATINGS[f"{rating}"]
-        path = f"static/images//stars/{image}"
+        path = f"static/images/stars/{image}"
 
         try:
             phone = business["phone"]
@@ -431,7 +427,7 @@ def new_log():
 
         if f:
             filename = secure_filename(f.filename)
-            f.save(os.path.join(f'static/images/{user.id}', filename))
+            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
         else:
             filename = ""
 
@@ -491,9 +487,9 @@ def edit_log(id):
 
         if f:
             if log.image_name:
-                os.remove(f'static/images/{user.id}/{log.image_name}')
+                os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
             filename = secure_filename(f.filename)
-            f.save(os.path.join(f'static/images/{user.id}', filename))
+            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
             log.image_name=filename
 
         db.session.commit()
@@ -527,7 +523,7 @@ def delete_log(id):
     log = Log.query.get_or_404(id)
 
     if log.image_name:
-        os.remove(f"static/images/{user.id}/{log.image_name}")
+        os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
 
     db.session.delete(log)
     db.session.commit()
@@ -587,7 +583,7 @@ def maintenance_form():
 
         if f:
             filename = secure_filename(f.filename)
-            f.save(os.path.join(f'static/images/{user.id}', filename))
+            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
         else:
             filename = ""  
 
@@ -647,9 +643,9 @@ def edit_maintenance(id):
 
         if f:
             if maintenance.image_name:
-                os.remove(f'static/images/{user.id}/{maintenance.image_name}')
+                os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
             filename = secure_filename(f.filename)
-            f.save(os.path.join(f'static/images/{user.id}', filename))
+            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
             maintenance.image_name=filename
 
         db.session.commit()
@@ -683,7 +679,7 @@ def delete_maintenance(id):
     maintenance = Maintenance.query.get_or_404(id)
 
     if maintenance.image_name:
-        os.remove(f"static/images/{user.id}/{maintenance.image_name}")
+        os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
 
     db.session.delete(maintenance)
     db.session.commit()
