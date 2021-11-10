@@ -15,13 +15,9 @@ Greenflash is a road trip assistant for RVers, vanlifers, or anyone on extended 
 A [green flash](https://en.wikipedia.org/wiki/Green_flash) is an atmospheric phenomenon in which a setting or rising sun gives off green light. The name of the app is intended to spark the feeling of adventure felt on road trips. While I have never seen a green flash myself, I am always hopeful.
 
 \
-**Technologies Used** 
+**Data** 
 
   The [Yelp API](https://www.yelp.com/developers/documentation/v3) is used to show the user services (campsites, restaurants, libraries) locally, or at a future destination. The Yelp API accepts a type of service to search for, human readable locations or lat/lon pairs for a location, and returns a list of matching businesses.
-
-The app was created using the following technologies:
-
-<a href="https://www.python.org/" title="Python"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/python.svg" alt="Python" width="21px" height="21px"></a> &nbsp;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" title="JavaScript"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/javascript.svg" alt="JavaScript" width="21px" height="21px"></a>&nbsp; <a href="https://git-scm.com/" title="Git"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/git-icon.svg" alt="Git" width="21px" height="21px"></a>&nbsp; <a href="https://www.w3.org/TR/html5/" title="HTML5"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/html-5.svg" alt="HTML5" width="21px" height="21px"></a>&nbsp; <a href="https://www.w3.org/TR/CSS/" title="CSS3"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/css-3.svg" alt="CSS3" width="21px" height="21px"></a>&nbsp; <a href="https://code.visualstudio.com/" title="Visual Studio Code"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/visual-studio-code.svg" alt="Visual Studio Code" width="21px" height="21px"></a> &nbsp;<a href="https://www.npmjs.com/package/axios" title="AXIOS"><img src="readme_files/axios.png" alt="AXIOS" width="21px" height="21px"></a> &nbsp;<a href="https://www.heroku.com/" title="Heroku"><img src="readme_files/heroku.jpeg" alt="Heroku" width="21px" height="21px"></a> &nbsp;<a href="https://www.postgresql.org/" title="Postgres"><img src="readme_files/postgres.png" alt="Postgres" width="21px" height="21px"></a> &nbsp;<a href="https://getbootstrap.com/" title="Bootstrap"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/bootstrap.svg" alt="Bootstrap" width="21px" height="21px"></a> &nbsp;<a href="https://jquery.com/" title="jQuery"><img src="https://github.com/tomchen/stack-icons/blob/master/logos/jquery-icon.svg" alt="jQuery" width="21px" height="21px"></a> &nbsp;<a href="https://flask.palletsprojects.com/en/1.1.x/" title="Flask"><img src="readme_files/flask_logo_white_background.png" alt="Flask" width="40px" height="21px"></a> &nbsp;<a href="https://www.sqlalchemy.org/" title="Git"><img src="readme_files/sql_alchemy_logo.jpeg" alt="WTForms" width="70px" height="21px"></a> &nbsp;<a href="https://wtforms.readthedocs.io/en/2.3.x/#" title="WTForms"><img src="readme_files/wtforms.png" alt="SQLAlchemy" width="80px" height="21px"></a>
 
 ## Navigation
 
@@ -37,7 +33,7 @@ A biography and optional profile image may be added. There are buttons to edit a
 
 ## Installation
 
-### Before you begin
+### Before beginning:
 Python3 and pip3 must be installed before running this app. The app also requires a Postgresql database.
 
 ## Instructions
@@ -67,12 +63,8 @@ $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
 
-### 6. Create a python file called key.py and add the API key. **Make sure to add key.py to the .gitignore file in the directory so that your API key doesn't get accidentally shared.**
-
-\
-### 7. Create a variable in key.py called API_KEY, set it equal to your Yelp API key.  
-
-\
+### 6. Create a python file called key.py and add the API key. **Make sure to add key.py to the .gitignore file in the directory so that your API key doesn't get accidentally shared.**<br/>
+### 7. Create a variable in key.py called API_KEY, set it equal to your Yelp API key.<br/>
 ### 8. Start Postgresql, entering your password when prompeted.
 ```
 $ sudo service postgresql start
@@ -93,8 +85,8 @@ $ psql
  - #### Method 1
    ```
    $ ipython
-   [1] $run app.py
-   [2] db.create_all()
+   In [1]: $run app.py
+   In [2]: db.create_all()
    ```
 
 - #### Method 2
@@ -102,6 +94,15 @@ $ psql
    ```
    $ python seed.py
    ```
+
+### 12. Run flask
+```
+flask run
+```
+
+### 13. Open a web browser and run the app on the server's port.
+
+
 
 ## Testing
 
