@@ -8,7 +8,7 @@ from models import db, Location, connect_db, User, Log, Maintenance, Place
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc
 from werkzeug.utils import secure_filename
-from key import API_KEY
+# from key import API_KEY
 from flask_uploads import configure_uploads
 
 
@@ -34,7 +34,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'CanadianGeese1195432')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///greenflash')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['API_KEY'] = os.environ.get('API_KEY', API_KEY)
+app.config['API_KEY'] = os.environ.get('API_KEY')
 app.config['UPLOADED_IMAGES_DEST'] = UPLOAD_FOLDER
 
 connect_db(app)
