@@ -527,7 +527,7 @@ def delete_log(id):
     log = Log.query.get_or_404(id)
 
     if log.image_name:
-        shutil.rmtree(f"static/images/{user.id}/{log.image_name}")
+        os.remove(f"static/images/{user.id}/{log.image_name}")
 
     db.session.delete(log)
     db.session.commit()

@@ -1,5 +1,6 @@
 const $body = $("body");
 
+// object to correlate yelp rating to the correct star image
 const RATINGS = {
     "0": "regular_0.png",
     "1": "regular_1.png",
@@ -14,20 +15,19 @@ const RATINGS = {
 }
 
 
-// /**
-//  * Retrieve form data and turn it into an object
-//  * POST the object to the get-lucky-num route
-//  * Take the JSON response and pass to the handleResponse function
-//  * 
-//  * Note: Axios will automatically serialize the dictionary into JSON, and create header content-type of "application/json"
-//  * JSON.stringify can be used to provide JSON, but the content-type must be specified
-//  * source: https://masteringjs.io/tutorials/axios/post-json
-//  * 
-//  *//
-
+/**
+* Retrieve form data and turn it into an object
+* POST the object to the API search route
+* Take the JSON response and pass to the handleResponse function
+* 
+* Note: Axios will automatically serialize the dictionary into JSON, and create header content-type of "application/json"
+* JSON.stringify can be used to provide JSON, but the content-type must be specified
+* source: https://masteringjs.io/tutorials/axios/post-json
+* 
+**/
 async function processForm(evt) {
 
-    evt.preventDefault()
+    evt.preventDefault();
 
     // clear previous search results
     $('#search-results').html('')
@@ -40,17 +40,21 @@ async function processForm(evt) {
         city
     }
 
-    const res = await axios.post("/search", inputObj)
+    const res = await axios.post("/search", inputObj);
 
-    handleResponse(res.data.businesses)
+    handleResponse(res.data.businesses);
 }
 
 
+/**
+ * If on the logged out landing page, remove the jumbotron to free up screen space for the results
+ * Take the result and appened to the results div
+ */
 function handleResponse(businesses) {
 
-    $('#homepage-greeting').remove()
+    $('#homepage-greeting').remove();
 
-    $('#results-header').html("Here's what's nearby:")
+    $('#results-header').html("Here's what's nearby:");
 
     for (const business of businesses) {
 
@@ -73,7 +77,7 @@ function handleResponse(businesses) {
         <div class="container mb-2 p-1 rounded" style="background-color: #EDF5E1;">
         <div class="row justify-content-center">
         <div class="d-none d-md-inline col-md-2 text-center my-auto">
-        <img src=${business.image_url} class="rounded contain">
+        <img src=${business.image_url} class="bus-img rounded contain">
         </div>
         <div class="col-6 col-md-5 text-center">
         <p class="fw-bold" style="font-size: 1.2rem; color: #05386B;">${business.name}</p>
@@ -115,25 +119,15 @@ function handleResponse(businesses) {
         `)
     }
 
-    // <input type="hidden" id="category" name="category" value="${business.categories[0]["title"]}">
-    // <input type="hidden" id="name" name="name" value="${business.name}">
-    // <input type="hidden" id="url" name="url" value="${business.url}">
-    // <input type="hidden" id="image_url" name="image_url" value="${business.image_url}">
-    // <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
-    // <input type="hidden" id="address_1" name="address_1" value="${business.location.display_address[1]}">
-    // <input type="hidden" id="price" name="price" value="${business.price}">
-    // <input type="hidden" id="rating" name="rating" value="${image_path}">
-    // <input type="hidden" id="phone" name="phone" value="${business.phone}">
-
-
-    // clear inputs if successful
+    // clear inputs for next search
     $('#category').val('');
     $('#city').val('');
 }
 
 /**
- * 
  * Save a place from the search results
+ * Just a place's ID will be stored in the DB, this is then used to retreive information when a users clicks "Places"
+ * This satisfies the yelp legal requirement of not storing data for more than 24 hours
  */
 async function savePlace(evt) {
 
@@ -142,18 +136,8 @@ async function savePlace(evt) {
     const $button = $(evt.target);
 
     // must specify "this" to get correct form data
-    const name = $('input[name=name]', this.form).val();
-    const url = $('input[name=url]', this.form).val();
-    const image_url = $('input[name=image_url]', this.form).val();
     const placeId = $('input[name=placeId]', this.form).val();
-    const category = $('input[name=category]', this.form).val();
-    const address_0 = $('input[name=address_0]', this.form).val();
-    const address_1 = $('input[name=address_1]', this.form).val();
-    const price = $('input[name=price]', this.form).val();
-    const rating = $('input[name=rating]', this.form).val();
-    const phone = $('input[name=phone]', this.form).val();
 
-    // submit place Id to server to be stored in db
     const placeIdObj = {
         placeId
     }
@@ -186,9 +170,6 @@ async function removePlace(evt) {
 
     $button.closest("div.accordion-item").remove();
 }
-
-
-
 
 
 /**

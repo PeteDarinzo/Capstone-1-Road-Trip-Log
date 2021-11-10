@@ -1,8 +1,21 @@
+
+/**
+* Body receives padding to push content below the fixed position navbar
+**/
 html, body{
     height: 100%;
     margin: 0;
     padding-top: 50px;
 } 
+
+#container {
+    height: 100%;
+}
+
+.side-bar {
+    background-color: #5085A5;
+    height: 100%;
+}
 
 .navbar-header {
     height: 5rem;
@@ -46,8 +59,7 @@ form[id="search-form"] {
 }
 
 .log-form {
-    background-color: #FBEEC1;
-    
+    background-color: #FBEEC1;  
 }
 
 .maint-form {
@@ -77,7 +89,6 @@ h2[class="dark-title"] {
 
 h2[class="light-title"] {
     color: #F7F9FB;
-    ;
 }
 
 .log-container {
@@ -95,18 +106,6 @@ h2[class="light-title"] {
 
 .table {
     background-color: #F7F9FB;
-}
-
-/* scrolling div */
-.scroll {
-    height: 65vh;
-    width: auto;
-    overflow-y: auto;
-}
-
-.full-scroll {
-    height: 100vh;
-    overflow-y: auto;
 }
 
 button > p {
@@ -139,23 +138,22 @@ button > p[class="title"] {
 }
 
 body {
+    /* 
+    * Photo by Aaron Burden on Unsplash
+    * https://unsplash.com/photos/jyB40-iOtis
+   */
     background-image: url(/static/images/background_image.jpg);
 
-    /* Photo by <a href="https://unsplash.com/@aaronburden?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Aaron Burden</a> on <a href="https://unsplash.com/s/photos/road?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-    https://unsplash.com/photos/jyB40-iOtis
-   */
-  
     /* Center and scale the image*/
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-
-
 }
 
-/* have an image fit it's parent container
-    maintaining aspect ratio
+/* 
+* Make an image fit it's parent container
+* while maintaining aspect ratio
 */
 .contain {
     max-width: 100%;
@@ -214,15 +212,6 @@ textarea {
     height: 150px;
   }
 
-#container {
-    height: 100%;
-}
-
-.side-bar {
-    background-color: #5085A5;
-    height: 100%;
-}
-
 .log-button {
     background-color: #5085A5;
 }
@@ -238,26 +227,8 @@ textarea {
     transform: translate(-50%, 0);
 }
 
+.bus-img {
+    width: 125px;
+    height: 125px;
+}
 
-/*
-#05386B
-#379683
-#5CDB95
-#8EE4AF
-#EDF5E1
-*/
-
-/* 
-#687864
-#31708E
-#5085A5
-#8FC1E3
-#F7F9FB
-*/
-
-/* 
-#659DBD
-#DAAD86
-#BC986A
-#FBEEC1
-*/
