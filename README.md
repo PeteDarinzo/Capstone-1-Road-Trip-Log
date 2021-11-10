@@ -96,8 +96,18 @@ $ psql
    $ python seed.py
    ```
 
-  
+## Testing
 
+### Run all of the unit and integration tests with the following command:
+```
+$ python -m unittest
+```
+
+### To run one particular test file, modify the command as follows:
+```
+$ python -m unittest [test_filename].py
+```
+  
 ## Original Proposal
 
 **Goal**: The goal of this app is to provide users with a road trip assistant. Users will be able to search for services at the location of their choice (local or future), and create daily logs for the trip. Users can create text posts and upload images relating to the post. Users may optionally input any expenses that day, and add notes on maintenance (oil changes, tire rotations, etc.). The app could be expanded to be a social network with other nomads, where their route is shared, along with pictures and posts. 
