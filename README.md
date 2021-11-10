@@ -89,7 +89,6 @@ $ psql
    In [1]: $run app.py
    In [2]: db.create_all()
    ```
-
 - #### Method 2
    The seed file create the database tables, and populates them with data.
    ```
