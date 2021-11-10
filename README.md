@@ -2,6 +2,13 @@
 
 ## Developer: Peter Darinzo
 
+[Navigation](#navigation)  
+[Installation](#installation)  
+[Testing](#testing)
+
+
+
+
 **About**
 
 Greenflash is a road trip assistant for RVers, vanlifers, or anyone on extended road trips. Users can use it to search for local services such as RV parks, restaurants, and libraries. Users can also create log and maintenance entries which record their location, and mileage. A log entry is used much like a personal journal, maintenance records keep track of where and when maintenance was performed on the vehicle.
