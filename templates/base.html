@@ -69,7 +69,7 @@
 
     <div class="container-fluid" id="container">
         {% for category, message in get_flashed_messages(with_categories=True) %}
-        <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        <div class="alert alert-{{category}} alert-dismissible fade show w-50 centered-axis-x" role="alert">
             {{message}}
             <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
             </button>

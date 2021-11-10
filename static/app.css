@@ -238,7 +238,6 @@ textarea {
 
 /* https://stackoverflow.com/questions/1776915/how-can-i-center-an-absolutely-positioned-element-in-a-div */
 .centered-axis-x {
-    position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
 }
