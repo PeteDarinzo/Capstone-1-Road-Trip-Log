@@ -172,7 +172,7 @@ def signup():
         f = request.files['photo']
         if f:
             filename = secure_filename(f.filename)
-            # f.save(os.path.join(UPLOAD_FOLDER, filename))
+            f.save(os.path.join(UPLOAD_FOLDER, filename))
             upload_file(f"uploads/{filename}", S3_BUCKET)
             user.image_name=filename
             db.session.commit()
@@ -269,9 +269,8 @@ def edit_user():
 
                         # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{user.image_name}")
                 filename = secure_filename(f.filename)
+                f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
                 upload_file(f"uploads/{filename}", S3_BUCKET)
-
-                # f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
                 user.image_name=filename
             db.session.commit()
         
