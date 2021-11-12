@@ -18,8 +18,10 @@ load_dotenv() #take environmental API_KEY variable from .env
 
 app = Flask(__name__)
 
+# load information into app
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY')
 S3_BUCKET = os.environ.get('S3_BUCKET')
-
 
 CURR_USER_KEY = "curr_user"
 API_BASE_URL = "https://api.yelp.com/v3/businesses"
@@ -56,46 +58,9 @@ app.config['UPLOADED_IMAGES_DEST'] = UPLOAD_FOLDER
 os.environ.setdefault('S3_USE_SIGV4', 'True')
 
 
-
-# load information into app
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY')
-# S3_BUCKET = os.environ.get('S3_BUCKET')
-
 connect_db(app)
 
 configure_uploads(app, (images))
-
-
-# @app.route('/sign_s3', methods=["GET"])
-# def sign_s3():
-
-#     # load information into app
-#     S3_BUCKET = os.environ.get('S3_BUCKET')
-    
-#     # load data from the request
-#     file_name = request.args.get('file-name')
-#     file_type = request.args.get('file-type')
-
-#     # initialize s3 client
-#     s3 = boto3.client('s3')
-
-#     # generate and return the presigned URL
-#     presigned_post = s3.generate_presigned_post(
-#         Bucket = S3_BUCKET,
-#         Key = file_name,
-#         Fields = {"acl": "public-read", "Content-Type": file_type},
-#         Conditions = [
-#             {"acl": "public-read"},
-#             {"Content-Type": file_type}
-#         ],
-#         ExpiresIn = 3600
-#     )
-
-#     return json.dumps({
-#         'data': presigned_post,
-#         'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
-#     })
 
 
 ##############################################################################
@@ -181,7 +146,6 @@ def signup():
         return render_template('users/signup.html', form=form)
 
 
-
 @app.route('/login', methods=["POST", "GET"])
 def login():
     """Handle user login."""
@@ -262,10 +226,8 @@ def edit_user():
             if f:
                 if user.image_name:
                         profile_image = user.image_name
-
                         delete_image(S3_BUCKET, profile_image)
 
-                        # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{user.image_name}")
                 filename = secure_filename(f.filename)
                 f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
                 upload_file(f"uploads/{filename}", S3_BUCKET)
@@ -323,15 +285,18 @@ def delete_user():
     """Delete user."""
 
     do_logout()
-
-    # shutil.rmtree(app.config['UPLOADED_IMAGES_DEST'] + f"/{g.user.id}")
-
     user = g.user
+    logs = user.logs
+    records = user.maintenance
+
+    for log in logs:
+        delete_image(S3_BUCKET, log.image_name)
+    
+    for record in records:
+        delete_image(S3_BUCKET, record.image_name)
 
     profile_image = user.image_name
-
     delete_image(S3_BUCKET, profile_image)
-
     db.session.delete(user)
     db.session.commit()
     flash("Account successfully deleted.", "danger")
@@ -359,7 +324,6 @@ def submit_search():
 
 
 @app.route("/places/save", methods=["POST"])
-# @login_required
 def save_place():
     """Save a place for future reference.
 
@@ -569,9 +533,7 @@ def edit_log(id):
 
         if f:
             if log.image_name:
-
                 delete_image(S3_BUCKET, log.image_name)
-                # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
             upload_file(f"uploads/{filename}", S3_BUCKET)
@@ -600,17 +562,12 @@ def delete_log(id):
 
     user = g.user
     log_ids = [log.id for log in user.logs]
-
     if id not in log_ids:
         flash("UNAUTHORIZED.", "danger")
         return redirect("/logs/new")
-
     log = Log.query.get_or_404(id)
-
     if log.image_name:
         delete_image(S3_BUCKET, log.image_name)
-        # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
-
     db.session.delete(log)
     db.session.commit()
     return redirect("/logs/new")
@@ -736,7 +693,6 @@ def edit_maintenance(id):
         if f:
             if maintenance.image_name:                                
                 delete_image(S3_BUCKET, maintenance.image_name)
-                # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
             upload_file(f"uploads/{filename}", S3_BUCKET)
@@ -774,8 +730,6 @@ def delete_maintenance(id):
 
     if maintenance.image_name:
         delete_image(S3_BUCKET, maintenance.image_name)
-        # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
-
     db.session.delete(maintenance)
     db.session.commit()
 
