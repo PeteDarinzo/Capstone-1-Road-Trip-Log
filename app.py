@@ -573,7 +573,7 @@ def edit_log(id):
                 delete_image(S3_BUCKET, log.image_name)
                 # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
             filename = secure_filename(f.filename)
-            f.save(os.path.join(UPLOAD_FOLDER, f'{user.id}/{filename}'))
+            f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
             upload_file(f"uploads/{filename}", S3_BUCKET)
             log.image_name=filename
 
