@@ -2,12 +2,15 @@ import boto3
 
 def upload_file(file_name, bucket):
     object_name = file_name
-    s3_client = boto3.client('s3')
+    # s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name='us-west-1')
     response = s3_client.upload_file(file_name, bucket, object_name)
     return response
 
 def list_files(bucket):
-    s3_client = boto3.client('s3')
+    # s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name='us-west-1')
+
     contents = []
     try:
         for item in s3_client.list_objects(Bucket=bucket)['Contents']:
@@ -31,7 +34,8 @@ def show_image(bucket):
 
 def load_image(bucket, image):
 
-    s3_client = boto3.client('s3')
+    # s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name='us-west-1')
 
     response = s3_client.generate_presigned_url('get_object', Params={'Bucket': bucket, 'Key': f'uploads/{image}'}, ExpiresIn=100)
 
@@ -40,7 +44,8 @@ def load_image(bucket, image):
 
 def delete_image(bucket, image):
 
-    s3_client = boto3.client('s3')
+    # s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name='us-west-1')
 
     response = s3_client.delete_object(
         Bucket=bucket,
