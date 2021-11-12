@@ -128,10 +128,6 @@ def signup():
             flash("Username already taken", "danger")
             return render_template("users/signup.html", form=form)
 
-        # make the user's image folder
-        image_path = f"static/images/{user.id}"
-        os.mkdir(image_path)
-
         f = request.files['photo']
         if f:
             filename = secure_filename(f.filename)
