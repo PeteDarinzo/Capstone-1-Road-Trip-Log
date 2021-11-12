@@ -12,7 +12,7 @@ from sqlalchemy import desc
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from flask_uploads import configure_uploads
-from s3_functions import load_image, upload_file, show_image, delete_image
+from s3_functions import load_image, upload_file, delete_image
 
 load_dotenv() #take environmental API_KEY variable from .env
 
