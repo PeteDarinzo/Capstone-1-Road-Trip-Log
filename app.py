@@ -1,10 +1,7 @@
-import os, json, boto3
-import re
-import shutil
+import os
 import functools
 import requests
 from flask import Flask, render_template, request, url_for, redirect, flash, session, g, jsonify
-from sqlalchemy.sql.expression import delete
 from forms import BusinessSearchForm, ChangePasswordForm, EditProfileForm, LogForm, MaintenanceForm, SignupForm, LoginForm, images
 from models import db, Location, connect_db, User, Log, Maintenance, Place
 from sqlalchemy.exc import IntegrityError
