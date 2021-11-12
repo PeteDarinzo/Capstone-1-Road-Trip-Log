@@ -6,13 +6,6 @@ my_config = Config(
     signature_version = 's3v4'
 )
 
-# s3 = boto3.resource(
-#     's3',
-#     aws_access_key_id='xxxxxx',
-#     aws_secret_access_key='xxxxxx',
-#     config=Config(signature_version='s3v4')
-# )
-
 def upload_file(file_name, bucket):
     object_name = file_name
     # s3_client = boto3.client('s3')
