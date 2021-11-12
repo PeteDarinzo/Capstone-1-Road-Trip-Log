@@ -21,8 +21,6 @@ app = Flask(__name__)
 S3_BUCKET = os.environ.get('S3_BUCKET')
 
 
-
-
 CURR_USER_KEY = "curr_user"
 API_BASE_URL = "https://api.yelp.com/v3/businesses"
 UPLOAD_FOLDER = "uploads"
@@ -472,7 +470,11 @@ def log_detail(id):
     logs = Log.query.filter_by(user_id=g.user.id).order_by(desc(Log.date)).limit(5)
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
     log = Log.query.filter_by(id=id).first()
-    return render_template("users/log.html", user=user, log=log, logs=logs, maintenance=maintenance)
+    image = log.image_name
+    if image:
+        image_url = load_image(S3_BUCKET, image)
+
+    return render_template("users/log.html", user=user, log=log, logs=logs, maintenance=maintenance, url=image_url)
 
 
 @app.route("/logs/all")
@@ -505,7 +507,9 @@ def new_log():
 
         if f:
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
+            f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
+            upload_file(f"uploads/{filename}", S3_BUCKET)
+
         else:
             filename = ""
 
@@ -565,9 +569,12 @@ def edit_log(id):
 
         if f:
             if log.image_name:
-                os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
+
+                delete_image(S3_BUCKET, log.image_name)
+                # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
+            f.save(os.path.join(UPLOAD_FOLDER, f'{user.id}/{filename}'))
+            upload_file(f"uploads/{filename}", S3_BUCKET)
             log.image_name=filename
 
         db.session.commit()
@@ -601,7 +608,8 @@ def delete_log(id):
     log = Log.query.get_or_404(id)
 
     if log.image_name:
-        os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
+        delete_image(S3_BUCKET, log.image_name)
+        # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{log.image_name}")
 
     db.session.delete(log)
     db.session.commit()
@@ -628,7 +636,11 @@ def maintenance_detail(id):
     logs = Log.query.filter_by(user_id=user.id).order_by(desc(Log.date)).limit(5)
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
     record = Maintenance.query.filter_by(id=id).first()
-    return render_template("users/maintenance.html", user=user, record=record, logs=logs, maintenance=maintenance)
+    image = record.image_name
+    if image:
+            image_url = load_image(S3_BUCKET, image)
+
+    return render_template("users/maintenance.html", user=user, record=record, logs=logs, maintenance=maintenance, url=image_url)
 
 
 @app.route("/maintenance/all")
@@ -661,7 +673,9 @@ def maintenance_form():
 
         if f:
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
+            f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
+            upload_file(f"uploads/{filename}", S3_BUCKET)
+
         else:
             filename = ""  
 
@@ -720,10 +734,12 @@ def edit_maintenance(id):
         f = request.files['photo']
 
         if f:
-            if maintenance.image_name:
-                os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
+            if maintenance.image_name:                                
+                delete_image(S3_BUCKET, maintenance.image_name)
+                # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
+            f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
+            upload_file(f"uploads/{filename}", S3_BUCKET)
             maintenance.image_name=filename
 
         db.session.commit()
@@ -757,15 +773,13 @@ def delete_maintenance(id):
     maintenance = Maintenance.query.get_or_404(id)
 
     if maintenance.image_name:
-        os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
+        delete_image(S3_BUCKET, maintenance.image_name)
+        # os.remove(app.config['UPLOADED_IMAGES_DEST'] + f"/{user.id}/{maintenance.image_name}")
 
     db.session.delete(maintenance)
     db.session.commit()
 
     return redirect("/maintenance/new")
-
-
-
 
 
 
