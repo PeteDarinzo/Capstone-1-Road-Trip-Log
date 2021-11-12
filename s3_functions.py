@@ -2,7 +2,7 @@ import boto3
 from botocore.config import Config
 
 my_config = Config(
-    region_name = 'us-west-2',
+    region_name = 'us-east-2',
     signature_version = 's3v4'
 )
 
