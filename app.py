@@ -55,6 +55,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['API_KEY'] = os.environ.get('API_KEY')
 app.config['UPLOADED_IMAGES_DEST'] = UPLOAD_FOLDER
+os.environ.setdefault('S3_USE_SIGV4', 'True')
+
 
 
 # load information into app
