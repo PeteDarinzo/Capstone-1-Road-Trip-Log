@@ -1,4 +1,6 @@
 const $body = $("body");
+const $signupForm = $("#user-form")
+const $imageInput = $("#image-input")
 
 // object to correlate yelp rating to the correct star image
 const RATINGS = {
@@ -13,6 +15,98 @@ const RATINGS = {
     "4.5": "regular_4_half.png",
     "5": "regular_5.png"
 }
+
+/*
+Function to carry out the actual POST request to S3 using the signed request from the Python app.
+*/
+// function uploadFile(file, s3Data) {
+//     const xhr = new XMLHttpRequest();
+//     xhr.open('POST', s3Data.url);
+//     xhr.setRequestHeader('x-amz-acl', 'public-read');
+
+//     // console.log(s3Data.fields);
+//     let postData = new FormData();
+
+//     for (let key in s3Data.fields) {
+//         postData.append(key, s3Data.fields[key]);
+//     }
+
+//     postData.append('file', file);
+
+    // console.log(postData.get('file'));
+
+    // xhr.onreadystatechange = () => {
+    //     if (xhr.readyState === 4) {
+    //         if (xhr.status === 200 || xhr.status === 204) {
+    //             alert("Success");
+    //         }
+    //         else {
+    //             alert("Could not upload file.");
+    //         }
+    //     }
+//     // };
+//     console.log("ready to send the postData!!!");
+//     xhr.send(postData);
+// }
+
+/*
+Function to get the temporary signed request from the Python app.
+If request successful, continue to upload the file using this signed
+request.
+// */
+// function getSignedRequest(file) {
+//     const xhr = new XMLHttpRequest();
+//     xhr.open('GET', `/sign_s3?file-name=${file.name}&file-type=${file.type}`);
+//     xhr.onreadystatechange = () => {
+//         console.log(xhr.readyState);
+//         console.log(xhr.status);
+//         if (xhr.readyState === 4) {
+//             if (xhr.status === 200) {
+//                 const response = JSON.parse(xhr.responseText);
+//                 uploadFile(file, response.data);
+//             }
+//             else {
+//                 alert('Could not get signed URL');
+//             }
+//         }
+//     };
+//     xhr.send();
+// }
+
+
+// async function getSignedRequest(file) {
+
+//     const res = await axios.get('/sign_s3', { params: { 'file-name': file.name, 'file-type': file.type } });
+
+//     // console.log(res.data.url)
+//     // console.log(res.fields);
+
+//     if (res.status == 200) {
+//         console.log(res);
+//         // uploadFile(file, res.data);
+//     } else {
+//         alert('Could not get signed URL');
+//     }
+// }
+
+/*
+Function called when file input updated. If there is a file selected, then
+start upload procedure by asking for a signed request from the
+app.
+*/
+// function initUpload() {
+//     const file = $imageInput.prop("files");
+//     const image = file[0];
+//     if (!image) {
+//         return alert('No file selected.');
+//     }
+//     getSignedRequest(image);
+// }
+
+// $signupForm.on("submit", initUpload);
+
+
+
 
 
 /**

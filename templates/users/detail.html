@@ -13,7 +13,7 @@
             <p class="display-5">{{user.username}}</p>
             <div class="profile-img">
                 {% if user.image_name %}
-                <img src="/static/images/{{user.id}}/{{user.image_name}}" class="rounded-circle contain" alt="">
+                <img src="{{ url }}" class="rounded-circle contain" alt="">
                 {% else %}
                 <img src="/static/images/default.png" alt="" class="rounded-circle contain">
                 {% endif %}

@@ -6,13 +6,13 @@
 <div class="row justify-content-center">
   <div class="col-md-7 col-lg-5 bg-light p-3 rounded">
     <h2 class="dark-title">Sign Up</h2>
-    <form method="POST" id="user_form" enctype="multipart/form-data">
+    <form method="POST" id="user-form" enctype="multipart/form-data">
       {{ form.hidden_tag() }}
       <div class="form-group">
         {% for field in form if field.widget.input_type != "hidden" %}
         <p>
           {{ field.label }}
-          {{ field(class_="form-control") }}
+          {{ field() }}
           {% for error in field.errors %}
           {{ error }}
           {% endfor %}

@@ -1,20 +1,31 @@
-import os
+import os, json, boto3
 import re
 import shutil
 import functools
 import requests
 from flask import Flask, render_template, request, url_for, redirect, flash, session, g, jsonify
+from sqlalchemy.sql.expression import delete
 from forms import BusinessSearchForm, ChangePasswordForm, EditProfileForm, LogForm, MaintenanceForm, SignupForm, LoginForm, images
 from models import db, Location, connect_db, User, Log, Maintenance, Place
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import desc
 from werkzeug.utils import secure_filename
-# from key import API_KEY
+from dotenv import load_dotenv
 from flask_uploads import configure_uploads
+from s3_functions import load_image, upload_file, show_image, delete_image
+
+load_dotenv() #take environmental API_KEY variable from .env
+
+app = Flask(__name__)
+
+S3_BUCKET = os.environ.get('S3_BUCKET')
+
+
+
 
 CURR_USER_KEY = "curr_user"
 API_BASE_URL = "https://api.yelp.com/v3/businesses"
-UPLOAD_FOLDER = "static/images"
+UPLOAD_FOLDER = "uploads"
 RATINGS = {
     "0": "regular_0.png",
     "1.0": "regular_1.png",
@@ -28,7 +39,6 @@ RATINGS = {
     "5.0": "regular_5.png"
     }
 
-app = Flask(__name__)
 
 #
 # The following code provided by Heroku as a way of ensuring connection to sqlalchemy versions 1.4 and later
@@ -46,9 +56,47 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['API_KEY'] = os.environ.get('API_KEY')
 app.config['UPLOADED_IMAGES_DEST'] = UPLOAD_FOLDER
 
+
+# load information into app
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY')
+# S3_BUCKET = os.environ.get('S3_BUCKET')
+
 connect_db(app)
 
 configure_uploads(app, (images))
+
+
+# @app.route('/sign_s3', methods=["GET"])
+# def sign_s3():
+
+#     # load information into app
+#     S3_BUCKET = os.environ.get('S3_BUCKET')
+    
+#     # load data from the request
+#     file_name = request.args.get('file-name')
+#     file_type = request.args.get('file-type')
+
+#     # initialize s3 client
+#     s3 = boto3.client('s3')
+
+#     # generate and return the presigned URL
+#     presigned_post = s3.generate_presigned_post(
+#         Bucket = S3_BUCKET,
+#         Key = file_name,
+#         Fields = {"acl": "public-read", "Content-Type": file_type},
+#         Conditions = [
+#             {"acl": "public-read"},
+#             {"Content-Type": file_type}
+#         ],
+#         ExpiresIn = 3600
+#     )
+
+#     return json.dumps({
+#         'data': presigned_post,
+#         'url': 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, file_name)
+#     })
+
 
 ##############################################################################
 # User signup/login/logout
@@ -122,7 +170,8 @@ def signup():
         f = request.files['photo']
         if f:
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOADED_IMAGES_DEST'], f'{user.id}/{filename}'))
+            f.save(os.path.join(UPLOAD_FOLDER, filename))
+            upload_file(f"uploads/{filename}", S3_BUCKET)
             user.image_name=filename
             db.session.commit()
 
@@ -130,6 +179,7 @@ def signup():
         return redirect(url_for("home"))
     else:
         return render_template('users/signup.html', form=form)
+
 
 
 @app.route('/login', methods=["POST", "GET"])
@@ -190,7 +240,12 @@ def user_detail():
     """Show a user's credentials, bio, and profile image."""
 
     user = g.user
-    return render_template("users/detail.html", user=user)
+
+    image = user.image_name
+
+    image_url = load_image(S3_BUCKET, image)
+
+    return render_template("users/detail.html", user=user, url=image_url)
 
 
 @app.route("/users/edit", methods=["GET", "POST"])
@@ -264,8 +319,15 @@ def delete_user():
 
     do_logout()
 
-    shutil.rmtree(app.config['UPLOADED_IMAGES_DEST'] + f"/{g.user.id}")
-    db.session.delete(g.user)
+    # shutil.rmtree(app.config['UPLOADED_IMAGES_DEST'] + f"/{g.user.id}")
+
+    user = g.user
+
+    profile_image = user.image_name
+
+    delete_image(S3_BUCKET, profile_image)
+
+    db.session.delete(user)
     db.session.commit()
     flash("Account successfully deleted.", "danger")
     return redirect(url_for("signup"))
@@ -700,3 +762,7 @@ def delete_maintenance(id):
 
 
 
+# Main code
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

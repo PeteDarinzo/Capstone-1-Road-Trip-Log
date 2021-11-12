@@ -26,7 +26,6 @@ class LogForm(FlaskForm):
     photo = FileField("Image (Optional)", render_kw={'class': 'form-control'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
     text = TextAreaField("Body", render_kw={'class': 'form-control', 'rows' : '500', 'cols' :'10'}, validators=[InputRequired("This field is required.")])
 
-# 'style': 'width: 40%;'
 
 class MaintenanceForm(FlaskForm):
     """Form to submit a new maintenance event."""
@@ -45,7 +44,7 @@ class SignupForm(FlaskForm):
     username = StringField('Username', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     email = StringField('E-mail', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     password = PasswordField('Password', render_kw={'class': 'form-control'}, validators=[Length(min=6)])
-    photo = FileField("Profile Image (Optional)", render_kw={'class': 'form-control'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+    photo = FileField("Profile Image (Optional)", render_kw={'class': 'form-control', 'id': 'image-input'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
 
 
 class LoginForm(FlaskForm):
@@ -62,6 +61,7 @@ class EditProfileForm(FlaskForm):
     email = StringField('E-mail', render_kw={'class': 'form-control'}, validators=[DataRequired()])
     bio = TextAreaField('Bio', render_kw={'class': 'form-control'})
     photo = FileField("Profile Image (Optional)", render_kw={'class': 'form-control'}, validators=[Optional(), FileAllowed(images, "Only Image Files Allowed.")])
+
 
 class ChangePasswordForm(FlaskForm):
     """Form for changing password."""
