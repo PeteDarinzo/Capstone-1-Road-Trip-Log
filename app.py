@@ -428,6 +428,7 @@ def log_detail(id):
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
     log = Log.query.filter_by(id=id).first()
     image = log.image_name
+    image_url = ""
     if image:
         image_url = load_image(S3_BUCKET, image)
 
@@ -587,8 +588,10 @@ def maintenance_detail(id):
     maintenance = Maintenance.query.filter_by(user_id=user.id).order_by(desc(Maintenance.date)).limit(5)
     record = Maintenance.query.filter_by(id=id).first()
     image = record.image_name
+    image_url = ""
     if image:
             image_url = load_image(S3_BUCKET, image)
+    
 
     return render_template("users/maintenance.html", user=user, record=record, logs=logs, maintenance=maintenance, url=image_url)
 
