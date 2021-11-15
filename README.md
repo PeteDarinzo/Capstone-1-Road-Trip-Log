@@ -2,8 +2,7 @@
 
 ## Developer: Peter Darinzo
 
-## View the app:
-https://green-flash.herokuapp.com/
+### View the app: https://green-flash.herokuapp.com/
 
 [Navigation](#navigation)  
 [Installation](#installation)  
