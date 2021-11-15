@@ -14,9 +14,6 @@ user = User.signup(
 
 db.session.commit()
 
-image_path = f"static/images/{user.id}"
-os.mkdir(image_path)
-
 salt_lake_city = Location(
     location="Salt Lake City, UT")
 

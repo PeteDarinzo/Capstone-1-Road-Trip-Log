@@ -10,10 +10,15 @@ New Log
 <div class="row justify-content-center h-100">
     {{ entry_list(logs) }}
     <div class="col-12 col-lg-6 h-100">
-        <div class="log-form rounded p-2 h-100 overflow-auto">
+
+        <div id="preloader" style="display: none">
+            <img src="/static/images/spinner_transparent.svg">
+        </div>
+
+        <div class="log-form rounded p-2 h-100 overflow-auto"> 
             {{ page_select_dropdown() }}
             <h2 class="dark-title">New Log Entry</h2>
-            <form method="POST" class="p-3" enctype="multipart/form-data">
+            <form method="POST" id="log-form" class="p-3" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
                     {% for field in form if field.widget.input_type != "hidden" %}
@@ -36,7 +41,7 @@ New Log
                     {% endif %}
                     {% endfor%}
                 </div>
-                <button class="btn btn-lg btn-block submit">Enter
+                <button id="log-submit" class="btn btn-lg btn-block submit">Enter
                     Log!</button>
             </form>
         </div>

@@ -247,3 +247,20 @@ textarea {
     height: 125px;
 }
 
+/**
+** Styling for loading animation
+** Adapted from https://css-tricks.com/lets-make-a-fancy-but-uncomplicated-page-loader/
+** Author: Maks Akymenko 10/15/2019
+**/
+#preloader {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: opacity 0.3s linear;
+    width: 100%;
+    z-index: 9999 !important;
+  }

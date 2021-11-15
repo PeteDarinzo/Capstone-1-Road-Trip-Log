@@ -1,7 +1,3 @@
-const $body = $("body");
-const $signupForm = $("#user-form")
-const $imageInput = $("#image-input")
-
 // object to correlate yelp rating to the correct star image
 const RATINGS = {
     "0": "regular_0.png",
@@ -17,97 +13,15 @@ const RATINGS = {
 }
 
 /*
-Function to carry out the actual POST request to S3 using the signed request from the Python app.
+* svg file loading spinner functions
 */
-// function uploadFile(file, s3Data) {
-//     const xhr = new XMLHttpRequest();
-//     xhr.open('POST', s3Data.url);
-//     xhr.setRequestHeader('x-amz-acl', 'public-read');
+function showSpinner() {
+    $('#preloader').show();
+}
 
-//     // console.log(s3Data.fields);
-//     let postData = new FormData();
-
-//     for (let key in s3Data.fields) {
-//         postData.append(key, s3Data.fields[key]);
-//     }
-
-//     postData.append('file', file);
-
-    // console.log(postData.get('file'));
-
-    // xhr.onreadystatechange = () => {
-    //     if (xhr.readyState === 4) {
-    //         if (xhr.status === 200 || xhr.status === 204) {
-    //             alert("Success");
-    //         }
-    //         else {
-    //             alert("Could not upload file.");
-    //         }
-    //     }
-//     // };
-//     console.log("ready to send the postData!!!");
-//     xhr.send(postData);
-// }
-
-/*
-Function to get the temporary signed request from the Python app.
-If request successful, continue to upload the file using this signed
-request.
-// */
-// function getSignedRequest(file) {
-//     const xhr = new XMLHttpRequest();
-//     xhr.open('GET', `/sign_s3?file-name=${file.name}&file-type=${file.type}`);
-//     xhr.onreadystatechange = () => {
-//         console.log(xhr.readyState);
-//         console.log(xhr.status);
-//         if (xhr.readyState === 4) {
-//             if (xhr.status === 200) {
-//                 const response = JSON.parse(xhr.responseText);
-//                 uploadFile(file, response.data);
-//             }
-//             else {
-//                 alert('Could not get signed URL');
-//             }
-//         }
-//     };
-//     xhr.send();
-// }
-
-
-// async function getSignedRequest(file) {
-
-//     const res = await axios.get('/sign_s3', { params: { 'file-name': file.name, 'file-type': file.type } });
-
-//     // console.log(res.data.url)
-//     // console.log(res.fields);
-
-//     if (res.status == 200) {
-//         console.log(res);
-//         // uploadFile(file, res.data);
-//     } else {
-//         alert('Could not get signed URL');
-//     }
-// }
-
-/*
-Function called when file input updated. If there is a file selected, then
-start upload procedure by asking for a signed request from the
-app.
-*/
-// function initUpload() {
-//     const file = $imageInput.prop("files");
-//     const image = file[0];
-//     if (!image) {
-//         return alert('No file selected.');
-//     }
-//     getSignedRequest(image);
-// }
-
-// $signupForm.on("submit", initUpload);
-
-
-
-
+function hideSpinner() {
+    $('#preloader').hide();
+}
 
 /**
 * Retrieve form data and turn it into an object
@@ -192,17 +106,6 @@ function handleResponse(businesses) {
         <div class="col-12 col-md-2 align-self-center text-center">
         <form class="save-form">
         <input type="hidden" id="place-id" name="placeId" value="${business.id}">
-        <input type="hidden" id="category" name="category" value="${business.categories[0]["title"]}">
-        <input type="hidden" id="name" name="name" value="${business.name}">
-        <input type="hidden" id="url" name="url" value="${business.url}">
-        <input type="hidden" id="image_url" name="image_url" value="${business.image_url}">
-        <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
-        <input type="hidden" id="address_1" name="address_1" value="${business.location.display_address[1]}">
-        <input type="hidden" id="address_0" name="address_0" value="${business.location.display_address[0]}">
-        <input type="hidden" id="address_1" name="address_0" value="${business.location.display_address[1]}">
-        <input type="hidden" id="price" name="price" value="${business.price}">
-        <input type="hidden" id="rating" name="rating" value="${image_path}">
-        <input type="hidden" id="phone" name="phone" value="${business.phone}">
         <button type="submit" class="save-button btn-warning btn-lg">Save!</button>
         </form>
         <a href=${business.url} class="d-md-none url"><img class="m-3" src="static/images/yelp_logo.png"
@@ -210,10 +113,11 @@ function handleResponse(businesses) {
         </div>
         </div>
         </div>
-        `)
+        `);
     }
 
-    // clear inputs for next search
+    // hide the spinner and clear inputs for next search
+    hideSpinner();
     $('#category').val('');
     $('#city').val('');
 }
@@ -255,29 +159,21 @@ async function savePlace(evt) {
 async function removePlace(evt) {
 
     evt.preventDefault();
-
     const $button = $(evt.target);
-
-    const placeId = $button.data("id");
-
-    await axios.post(`/places/${placeId}/delete`);
-
+    const $placeId = $button.data("id");
+    await axios.post(`/places/${$placeId}/delete`);
     $button.closest("div.accordion-item").remove();
 }
 
 
 /**
- * Event handlers for submitting search form,
- * Saving a place,
- * and removing a saved place
+ * Event handlers for submitting search form, and saving and removing places
+ * the loading spinner is activated anytime a form is submitted
  */
 $("#search-form").on("submit", processForm);
-
-$body.on("click", ".save-button", savePlace);
-
+$("body").on("click", ".save-button", savePlace);
 $(".remove-button").on("click", removePlace);
-
-
-
+$("form").on("submit", showSpinner);
+$(document).ready(hideSpinner);
 
 

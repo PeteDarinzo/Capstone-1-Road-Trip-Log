@@ -67,6 +67,10 @@
         </div>
     </nav>
 
+    <div id="preloader" style="display: none">
+        <img src="/static/images/spinner.svg">
+    </div>
+
     <div class="container-fluid" id="container">
         {% for category, message in get_flashed_messages(with_categories=True) %}
         <div class="row justify-content-center">
@@ -83,7 +87,7 @@
         {% endblock %}
     </div>
 
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -98,7 +102,7 @@
 
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
 
-    <script src="static/app.js"></script>
+    <script src="/static/app.js"></script>
 </body>
 
 </html>

@@ -130,6 +130,7 @@ def signup():
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, filename))
             upload_file(f"uploads/{filename}", S3_BUCKET)
+            os.remove(f"{UPLOAD_FOLDER}/{filename}") # remove file from /uploads, which should be done anyway by Heroku
             user.image_name=filename
             db.session.commit()
 
@@ -224,6 +225,7 @@ def edit_user():
                 filename = secure_filename(f.filename)
                 f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
                 upload_file(f"uploads/{filename}", S3_BUCKET)
+                os.remove(f"{UPLOAD_FOLDER}/{filename}") # remove file from /uploads, which should be done anyway by Heroku
                 user.image_name=filename
             db.session.commit()
         
@@ -467,7 +469,7 @@ def new_log():
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
             upload_file(f"uploads/{filename}", S3_BUCKET)
-
+            os.remove(f"{UPLOAD_FOLDER}/{filename}")
         else:
             filename = ""
 
@@ -531,6 +533,7 @@ def edit_log(id):
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
             upload_file(f"uploads/{filename}", S3_BUCKET)
+            os.remove(f"{UPLOAD_FOLDER}/{filename}") # remove file from /uploads, which should be done anyway by Heroku
             log.image_name=filename
 
         db.session.commit()
@@ -628,7 +631,7 @@ def maintenance_form():
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
             upload_file(f"uploads/{filename}", S3_BUCKET)
-
+            os.remove(f"{UPLOAD_FOLDER}/{filename}") # remove file from /uploads, which should be done anyway by Heroku
         else:
             filename = ""  
 
@@ -692,6 +695,7 @@ def edit_maintenance(id):
             filename = secure_filename(f.filename)
             f.save(os.path.join(UPLOAD_FOLDER, f'{filename}'))
             upload_file(f"uploads/{filename}", S3_BUCKET)
+            os.remove(f"{UPLOAD_FOLDER}/{filename}") # remove file from /uploads, which should be done anyway by Heroku
             maintenance.image_name=filename
 
         db.session.commit()
