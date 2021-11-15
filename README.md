@@ -2,6 +2,8 @@
 
 ## Developer: Peter Darinzo
 
+## View the app: https://green-flash.herokuapp.com/
+
 [Navigation](#navigation)  
 [Installation](#installation)  
 [Testing](#testing)
@@ -43,45 +45,55 @@ Python3 and pip3 must be installed before running this app. The app also require
 https://www.yelp.com/developers/documentation/v3/get_started
 ```
 
-#### 2. Clone the Repo.
+#### 2. (OPTIONAL FOR IMAGE SUPPORT) Create an Amazon Web Services (AWS) account, then follow the steps in this tutorial under "Navigate the Amazon S3 Dashboard" to configure an S3 to store images. 
+
+#### 3. Clone the Repo.
 ```
 $ git clone https://github.com/PeteDarinzo/Green-Flash
 ```
 
-#### 3. Create a virtual environment in the project directory.
+#### 4. Create a virtual environment in the project directory.
 ```
 $ python3 -m venv venv
 ```
 
-#### 4. Start the virtual environment in the project directory.
+#### 5. Start the virtual environment in the project directory.
 ```
 $ source venv/bin/activate
 ```
 
-#### 5. Install required packages.
+#### 6. Install required packages.
 ```
 $ pip3 install -r requirements.txt
 ```
 
-#### 6. Create a python file called key.py and add the API key.
- *Make sure to add key.py to the .gitignore file in the directory so that your API key doesn't get accidentally shared.*
-#### 7. Create a variable in key.py called API_KEY, set it equal to your Yelp API key.
-#### 8. Start Postgresql, entering your password when prompeted.
+#### 7. Create a file called .env in the root directory. =
+ *Make sure to add .env to the .gitignore file in the directory so that your API and AWS credentials do not get accidentally shared.*
+
+#### 8. Create the following variable in .env, and set it equal to your Yelp API key, with no quotations:
+- API_KEY = YOUR_API_KEY_WITH_NO_QUOTATIONS
+
+#### 9. (OPTIONAL IF USING AWS FOR IMAGES) Create the following variables in .env, and set them equal to the proper values generated in step 2:
+- S3_BUCKET
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+
+#### 10. Start Postgresql, entering your password when prompted.
 ```
 $ sudo service postgresql start
 ```
 
-#### 9. Enter Postgresql.
+#### 12. Enter Postgresql.
 ```
 $ psql
 ```
 
-#### 10. Create a database for the app.
+#### 13. Create a database for the app.
 ```
 # CREATE DATABASE greenflash;
 ```
 
-#### 11. Populate database tables through ipython (method 1), or the provided seed file (method 2).
+#### 14. Populate database tables through ipython (method 1), or the provided seed file (method 2).
 
  - #### Method 1
    ```
@@ -95,12 +107,12 @@ $ psql
    $ python seed.py
    ```
 
-#### 12. Run flask
+#### 15. Run flask
 ```
 flask run
 ```
 
-#### 13. Open a web browser and run the app on the server's port.
+#### 16. Open a web browser and run the app on the server's port.
 
 ## Testing
 
