@@ -2,7 +2,8 @@
 
 ## Developer: Peter Darinzo
 
-## View the app: https://green-flash.herokuapp.com/
+## View the app:
+https://green-flash.herokuapp.com/
 
 [Navigation](#navigation)  
 [Installation](#installation)  
@@ -45,7 +46,7 @@ Python3 and pip3 must be installed before running this app. The app also require
 https://www.yelp.com/developers/documentation/v3/get_started
 ```
 
-#### 2. (OPTIONAL FOR IMAGE SUPPORT) Create an Amazon Web Services (AWS) account, then follow the steps in this tutorial under "Navigate the Amazon S3 Dashboard" to configure an S3 to store images. 
+#### 2. (OPTIONAL FOR IMAGE SUPPORT) Create an Amazon Web Services (AWS) account, then follow the steps in this tutorial under "Navigate the Amazon S3 Dashboard" to configure S3 to store images. 
 
 #### 3. Clone the Repo.
 ```
