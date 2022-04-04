@@ -1,4 +1,4 @@
-import boto3
+import boto3 # AWS SDK for python
 from botocore.config import Config
 
 my_config = Config(
